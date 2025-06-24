@@ -1,82 +1,45 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormGroup from '@mui/material/FormGroup';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import { HomeRounded } from '@mui/icons-material';
+import TopBar from '../components/TopBar';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { Button, Card, Paper, Typography, useTheme } from '@mui/material';
+import Quotes from '../components/Quotes';
+import ClockInModule from '../components/ClockInModule';
+import LeaveBalanceModule from '../components/LeaveBalanceModule';
+import LeaveRequestModule from '../components/LeaveRequestModule';
+import AttendanceModule from '../components/AttendanceModule';
 
 export default function MenuAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleChange = (event) => {
-    setAuth(event.target.checked);
-  };
-
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  
+  const theme = useTheme();
+  
+  /** @type {import('@mui/system').SxProps} */
+  const styles = {
+    bodyLayout: {
+      paddingY: 2,
+      paddingX: 10,
+      display: "grid",
+      gridTemplateColumns: "auto 1fr",
+      gap: "2em",
+    }
+  
+  }
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar>
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <HomeRounded />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Elams
-          </Typography>
-        
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </div>
-        </Toolbar>
-      </AppBar>
+    <Box>
+      <TopBar />
+      <Box></Box>
+      <Box sx={styles.bodyLayout}>
+        <Button variant='outlined' sx={{gap: 1}}>
+          <EditNoteIcon/>
+          <Typography>{"Apply Leave"} </Typography>
+        </Button>
+        <Quotes />
+        <ClockInModule />
+        <LeaveBalanceModule />
+        <AttendanceModule />
+        <LeaveRequestModule />
+      </Box>
     </Box>
   );
 }

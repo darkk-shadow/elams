@@ -33,6 +33,7 @@ const Login = () => {
       });
   };
 
+  /** @type {import('@mui/system').SxProps} */
   const styles = {
     form: {
       display: "grid",
