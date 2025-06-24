@@ -3,14 +3,15 @@ import { useAuth } from "../contexts/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
 import Logout from "../pages/Logout";
 import Login from "../pages/Login";
+import EmployeeDashboard from "../pages/EmployeeDashboard";
 
 const RoutesIndex = () => {
     const {token} = useAuth();
 
     const routesForPublic = [
       {
-          path: "/service",
-          element: <div>Service Page</div>
+          path: "/login",
+          element: <Login />
       },
       {
           path: "/about-us",
@@ -25,7 +26,7 @@ const RoutesIndex = () => {
       children: [
         {
           path: "/",
-          element: <div>User Home Page</div>,
+          element: <EmployeeDashboard />,
         },
         {
           path: "/profile",
@@ -42,17 +43,12 @@ const RoutesIndex = () => {
   const routesForNotAuthenticatedOnly = [
     {
       path: "/",
-      element: <div>Home Page</div>,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
+      element: <div>please login</div>,
+    }
   ];
   
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...(!token ? routesForNotAuthenticatedOnly: []),
     ...routesForAuthenticatedOnly
   ]);
   

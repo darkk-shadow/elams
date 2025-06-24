@@ -5,8 +5,6 @@ import ctsLogo from "../assets/ctslogo.png"
 import {
   Box,
   Button,
-  Container,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -88,6 +86,7 @@ const Login = () => {
             type="password"
             label="Password"
             size="small"
+            
           />
           <Button type="submit" variant="outlined">
             Login
