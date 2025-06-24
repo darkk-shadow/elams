@@ -6,7 +6,6 @@ import LoginRoundedIcon from "@mui/icons-material/LoginRounded"
 /** @type {import('@mui/system').SxProps} */
 const style = {
   layout: {
-    padding: 2,
     display: "grid",
     gap: 1,
     placeItems: "center"

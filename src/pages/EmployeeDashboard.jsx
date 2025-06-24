@@ -30,7 +30,7 @@ export default function MenuAppBar() {
       <TopBar />
       <Box></Box>
       <Box sx={styles.bodyLayout}>
-        <Button variant='outlined' sx={{gap: 1}}>
+        <Button variant='outlined' sx={{gap: 1, justifySelf: "start"}}>
           <EditNoteIcon/>
           <Typography>{"Apply Leave"} </Typography>
         </Button>

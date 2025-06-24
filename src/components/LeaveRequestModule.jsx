@@ -1,11 +1,13 @@
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 
+
+/** @type {import('@mui/system').SxProps} */
 const style = {
     layout: {
-        padding: 1,
         display: "grid",
         gap: 1,
+        gridTemplateRows: "auto 1fr"
     },
 }
 const LeaveRequestModule = () => {
@@ -13,23 +15,23 @@ const LeaveRequestModule = () => {
     return (
         <Paper sx={style.layout}>
             <Typography>Leave Requests:</Typography>
-            <TableContainer>
+            <TableContainer sx={{justifySelf: "start"}} >
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell align="right">Type</TableCell>
-                            <TableCell align="right">From</TableCell>
-                            <TableCell align="right">To</TableCell>
-                            <TableCell align="right">Status</TableCell>
+                            <TableCell align="left">Type</TableCell>
+                            <TableCell align="left">From</TableCell>
+                            <TableCell align="left">To</TableCell>
+                            <TableCell align="left">Status</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {Array.from({length: 4}).map(e => (
+                        {Array.from({length: 5}).map(e => (
                             <TableRow>
-                                <TableCell align="right">Sick Leave</TableCell>
-                                <TableCell align="right">12 Jul 2025</TableCell>
-                                <TableCell align="right">15 Jul 2025</TableCell>
-                                <TableCell align="right">Pending</TableCell>
+                                <TableCell align="left">Sick Leave</TableCell>
+                                <TableCell align="left">12 Jul 2025</TableCell>
+                                <TableCell align="left">15 Jul 2025</TableCell>
+                                <TableCell align="left">Pending</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

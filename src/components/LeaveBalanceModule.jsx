@@ -4,7 +4,6 @@ import React from 'react'
 /** @type {import('@mui/system').SxProps} */
 const style = {
     layout: {
-        padding: 1,
         display: "grid",
         gap: 1,
     },

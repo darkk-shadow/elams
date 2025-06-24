@@ -13,7 +13,7 @@ export const useCustomTheme = () => {
                         styleOverrides: {
                             root: {
                                 border: `1px solid ${theme.palette.primary.main}`,
-                                // padding: "1em"
+                                padding: "1em"
                             }
                         }
                     }

@@ -25,7 +25,7 @@ export default function TopBar() {
   };
 
   return (
-      <AppBar position="static">
+      <AppBar position="static" sx={{padding: 0}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -36,8 +36,8 @@ export default function TopBar() {
           >
             <HomeRounded />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Elams
+          <Typography fontWeight="bold" variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            ELAMS
           </Typography>
           <Typography>
             Hello, 
