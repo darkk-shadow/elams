@@ -7,7 +7,7 @@ import Quotes from '../components/employeeDashboard/Quotes';
 import ClockInModule from '../components/employeeDashboard/ClockInModule';
 import LeaveBalanceModule from '../components/employeeDashboard/LeaveBalanceModule';
 import LeaveRequestModule from '../components/employeeDashboard/LeaveRequestModule';
-import AttendanceModule from '../components/employeeDashboard/AttendanceModuled/AttendanceModule';
+import AttendanceModule from '../components/employeeDashboard/AttendanceModule';
 import { ThemeContext } from '../contexts/ThemeContextProvider';
 
 export default function MenuAppBar() {
