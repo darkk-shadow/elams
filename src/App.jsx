@@ -21,6 +21,7 @@ function App() {
         <RoutesIndex />
       </AuthProvider>
       </ThemeContextProvider>
+      
     </div>
   )
 }
