@@ -1,7 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { createContext, useContext, useMemo, useState } from "react"
 
-export const ThemeContext = createContext();
+const ThemeContext = createContext();
 
 const ThemeContextProvider = ({children}) => {
     const [darkTheme, setDarkTheme] = useState(false);
@@ -34,6 +34,10 @@ const ThemeContextProvider = ({children}) => {
         </ThemeContext.Provider>
     );
 
+}
+
+export const useCustomTheme = () => {
+    return useContext(ThemeContext)
 }
 
 export default ThemeContextProvider;
