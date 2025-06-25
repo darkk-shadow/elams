@@ -1,5 +1,6 @@
 package com.cts.api_gateway.controller;
 
+import com.cts.api_gateway.dto.EmployeeAuthResponseDto;
 import com.cts.api_gateway.dto.UserLoginDto;
 import com.cts.api_gateway.security.JwtUtil;
 import com.cts.api_gateway.service.AuthService;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("auth")
+@CrossOrigin
 public class AuthController {
 
     @Autowired
@@ -34,21 +36,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<Map<String, String>>login(@RequestBody UserLoginDto user){
-        try{
-            Authentication authentication =  authManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(
-                            user.getEmail(), user.getPassword()
-                    ));
-
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-            String token = jwtUtil.generateToken(userDetails);
-
-            return ResponseEntity.ok(Map.of("token",token));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Invalid username or password"));
-        }
+    public EmployeeAuthResponseDto login(@RequestBody UserLoginDto user){
+        return authService.login(user);
     }
 }

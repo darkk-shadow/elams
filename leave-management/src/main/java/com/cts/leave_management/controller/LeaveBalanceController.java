@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/leave-balances")
+@CrossOrigin
 public class LeaveBalanceController {
 
     @Autowired

@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/attendance-reports") // Added leading slash for clarity
+@CrossOrigin
 public class AttendanceReportController {
 
     @Autowired
