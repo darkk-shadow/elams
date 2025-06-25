@@ -1,8 +1,9 @@
 import React from 'react'
+import HeroLinks from '../../components/manageEmployees/heroLinks'
 
 const ManageEmployee = () => {
   return (
-    <div>ManageEmployee</div>
+    <HeroLinks />
   )
 }
 

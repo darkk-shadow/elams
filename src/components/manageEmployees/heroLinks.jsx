@@ -1,30 +1,24 @@
 import { Box, Button, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import AttendanceReport from './AttendanceReport';
-import AddEmployee from './AddEmployee';
-import { useSnackbar } from 'notistack';
-import useSnackBar from '../../contexts/useSnackBar';
-import AssignShift from './AssignShift';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import AddEmployee from '../managerDashboard/AddEmployee';
+import AssignShift from '../managerDashboard/AssignShift';
 
-/** @type {import('@mui/system').SxProps} */
 const styles = {
-  layout: {
+layout: {
     display: "grid",
     gridAutoFlow: "column",
     placeContent: "space-between",
     gap: 4,
-  },
-  "& > *": {
+},
+"& > *": {
     placeSelf: "center"
-  }
+}
 }
 
-const QuickActions = () => {
-  const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
-  const [openAssignShift, setOpenAssignShift] = useState(false);
+const heroLinks = () => {
+    const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
+    const [openAssignShift, setOpenAssignShift] = useState(false);
 
-  const navigate = useNavigate();
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
@@ -37,17 +31,16 @@ const QuickActions = () => {
         <Typography>Assign Shift</Typography>
       </Button>
       <Button variant='outlined'>
-        <Typography>Manage Leave</Typography>
+        <Typography>Add Employee to team</Typography>
       </Button>
       <Button variant='outlined'>
-        <Typography>Manage Attendance</Typography>
+        <Typography>Remove Employee from team</Typography>
       </Button>
       <Button variant='outlined' onClick={()=>navigate("manage-employee")}>
-        <Typography>Manage Employee</Typography>
+        <Typography>...</Typography>
       </Button>
     </Box>
-    </>
-  )
+    </>)
 }
 
-export default QuickActions
+export default heroLinks
