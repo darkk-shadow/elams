@@ -97,6 +97,11 @@ public class EmployeeController {
         return employeeService.assignShiftToEmployee(employeeId, shiftType);
     }
 
+    @GetMapping("get-employees-by-manager/{managerId}")
+    public List<EmployeeResponseDto> getEmployeesByManager(@PathVariable Long managerId){
+        return employeeService.getEmployeesByManager(managerId);
+    }
+
     @GetMapping("{id}/exists")
     public boolean checkEmployeeExists(@PathVariable Long id){
         return employeeService.checkEmployeeExists(id);

@@ -44,10 +44,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeResponseDto addEmployee(EmployeeRequestDto employeeDto) {
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
         newEmployee.setRole(Role.EMPLOYEE);
+        Shift shift = shiftRepository.findByType(ShiftType.GENERAL)
+                .orElseThrow(() -> new ResourceNotFoundException("Shift type: " + ShiftType.GENERAL + " not found"));
+        newEmployee.setShift(shift);
         Employee savedEmployee = employeeRepository.save(newEmployee);
         this.createAuth(savedEmployee.getId(), savedEmployee.getEmail());
         logger.info("New employee added with ID: " + savedEmployee.getId());
-        return convertToDto(savedEmployee);
+        EmployeeResponseDto res = convertToDto(savedEmployee);
+        res.setShiftId(savedEmployee.getShift().getId());
+        return res;
     }
 
     @Override
@@ -220,6 +225,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findByEmail(email)
                 .orElseThrow(()->new ResourceNotFoundException("user is not found!"));
         return modelMapper.map(employee, EmployeeAuthDto.class);
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getEmployeesByManager(Long managerId) {
+        return employeeRepository.findByManagerId(managerId)
+                .stream().map(this::convertToDto).toList();
     }
 
     private EmployeeResponseDto convertToDto(Employee employee){

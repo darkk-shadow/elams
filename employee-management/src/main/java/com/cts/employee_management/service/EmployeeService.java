@@ -38,4 +38,6 @@ public interface EmployeeService {
     boolean checkEmployeeExists(Long id);
 
     EmployeeAuthDto loadEmployeeByEmail(String email);
+
+    List<EmployeeResponseDto> getEmployeesByManager(Long managerId);
 }

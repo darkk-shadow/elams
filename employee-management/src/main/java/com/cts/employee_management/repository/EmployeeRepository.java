@@ -14,4 +14,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByShiftType(ShiftType shiftType);
 
     Optional<Employee> findByEmail(String email);
+
+    List<Employee> findByManagerId(Long managerId);
 }
