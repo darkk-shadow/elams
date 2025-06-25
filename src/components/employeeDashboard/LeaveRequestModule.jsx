@@ -1,6 +1,7 @@
 import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import React from 'react'
 import LaunchIcon from '@mui/icons-material/Launch';
+import { useNavigate } from 'react-router-dom';
 
 
 /** @type {import('@mui/system').SxProps} */
@@ -13,10 +14,14 @@ const style = {
 }
 const LeaveRequestModule = () => {
 
+    const navigate = useNavigate();
+
     return (
         <Paper sx={style.layout}>
 
-            <Button sx={{ gap: 1, justifySelf: "start" }}>
+            <Button sx={{ gap: 1, justifySelf: "start" }}
+                onClick={()=>navigate("leaveManagement")}
+            >
                 Leave Requests<LaunchIcon fontSize='small' />
             </Button>
             <TableContainer sx={{ justifySelf: "start" }} >

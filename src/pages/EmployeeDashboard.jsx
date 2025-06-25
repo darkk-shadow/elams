@@ -48,8 +48,6 @@ export default function MenuAppBar() {
       }}
       variant='outlined'>
       <ApplyLeave open={modalOpen} setOpen={setModalOpen} />
-      {/* <Modal sx={styles.modal} open={true} onClose={()=>setModalOpen(false)} children={<ApplyLeave />} /> */}
-      <TopBar />
       <Box></Box>
       <Box sx={styles.bodyLayout}>
         <Button variant='outlined' sx={{ gap: 1, justifySelf: "start" }}

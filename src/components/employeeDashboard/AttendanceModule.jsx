@@ -4,11 +4,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import LaunchIcon from '@mui/icons-material/Launch';
+import { useNavigate } from 'react-router-dom';
 
 const AttendanceModule = () => {
+
+  const naviagte = useNavigate();
+
   return (
     <Paper>
-        <Button sx={{gap:1}}>Attendance Report <LaunchIcon fontSize='small' /></Button>
+        <Button sx={{gap:1}} onClick={()=>naviagte("attendanceManagement")}>
+          Attendance Report <LaunchIcon fontSize='small' />
+        </Button>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateCalendar />
         </LocalizationProvider>

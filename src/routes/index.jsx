@@ -4,6 +4,8 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Logout from "../pages/Logout";
 import Login from "../pages/Login";
 import EmployeeDashboard from "../pages/EmployeeDashboard";
+import EmployeeLeave from "../pages/EmployeeLeave";
+import EmployeeAttendanceReport from "../pages/EmployeeAttendanceReport";
 
 const RoutesIndex = () => {
     const {token} = useAuth();
@@ -29,8 +31,12 @@ const RoutesIndex = () => {
           element: <EmployeeDashboard />,
         },
         {
-          path: "/profile",
-          element: <div>User Profile</div>,
+          path: "/leaveManagement",
+          element: <EmployeeLeave />,
+        },
+        {
+          path: "/attendanceManagement",
+          element: <EmployeeAttendanceReport />,
         },
         {
           path: "/logout",

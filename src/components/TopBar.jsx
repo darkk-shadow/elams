@@ -11,9 +11,12 @@ import { HomeRounded } from '@mui/icons-material';
 import { ThemeContext } from '../contexts/ThemeContextProvider';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function TopBar() {
+
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const {darkTheme, toggleTheme } = React.useContext (ThemeContext);
@@ -39,7 +42,7 @@ export default function TopBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={()=>toggleTheme()}
+            onClick={()=>navigate("/")}
           >
             <HomeRounded />
           </IconButton>
