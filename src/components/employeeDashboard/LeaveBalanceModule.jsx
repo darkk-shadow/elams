@@ -1,5 +1,7 @@
-import { Box, Card, Paper, Typography } from '@mui/material'
+import { Box, Button, Card, Paper, Typography } from '@mui/material'
 import React from 'react'
+
+import LaunchIcon from '@mui/icons-material/Launch';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
@@ -32,28 +34,19 @@ const style = {
 const LeaveBalanceModule = () => {
     return (
         <Paper sx={style.layout}>
-            <Typography>Leave Balances:</Typography>
+            
+          <Button sx={{gap:1, justifySelf:"start"}}>Leave Balances<LaunchIcon fontSize='small' /></Button>
             <Box sx={style.leaves}>
-                <Box>
-                    <Card><Typography>23</Typography></Card>
-                    <Typography>Total Leaves</Typography>
-                </Box>
-                <Box>
-                <Card><Typography>23</Typography></Card>
-                    <Typography>Total Leaves</Typography>
-                </Box>
-                <Box>
-                    <Card><Typography>23</Typography></Card>
-                    <Typography>Total Leaves</Typography>
-                </Box>
-                <Box>
-                    <Card><Typography>23</Typography></Card>
-                    <Typography>Total Leaves</Typography>
-                </Box>
-                <Box>
-                    <Card><Typography>23</Typography></Card>
-                    <Typography>Total Leaves</Typography>
-                </Box>
+
+                {Array.from({length: 5}).map(e => (
+                    <Box >
+                        <Button variant='outlined' >
+                            <Typography>23</Typography>
+                        </Button>
+                        <Typography>Total Leaves</Typography>
+                    </Box>
+                ))}
+
             </Box>
         </Paper>
     )

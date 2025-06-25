@@ -15,7 +15,6 @@ const style = {
 const ClockInModule = () => {
   return (
     <Paper sx={style.layout}>
-          <Typography>Morning Shift</Typography>
           <Box sx={{display: "flex", gap: 1}}>
             <TimelapseRoundedIcon />
             <Typography>08:45:55</Typography>
