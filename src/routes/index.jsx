@@ -1,11 +1,11 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
-import Logout from "../pages/Logout";
 import Login from "../pages/Login";
-import EmployeeDashboard from "../pages/EmployeeDashboard";
-import EmployeeLeave from "../pages/EmployeeLeave";
-import EmployeeAttendanceReport from "../pages/EmployeeAttendanceReport";
+import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
+import EmployeeLeave from "../pages/employee/EmployeeLeave";
+import EmployeeAttendanceReport from "../pages/employee/EmployeeAttendanceReport";
+import ManagerDashboard from "../pages/manager/ManagerDashboard";
 
 const RoutesIndex = () => {
     const {token, user} = useAuth();
@@ -24,7 +24,7 @@ const RoutesIndex = () => {
   const routesForNotAuthenticatedOnly = [
     {
       path: "/",
-      element: <div>please login</div>,
+      element: <ProtectedRoute />,
     }
   ];
 
@@ -56,7 +56,7 @@ const RoutesIndex = () => {
       children: [
         {
           path: "/",
-          element: <div>Manager Dashboard</div>,
+          element: <ManagerDashboard />,
         },
       ],
     },
@@ -64,8 +64,9 @@ const RoutesIndex = () => {
   
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...(user.role=="EMPLOYEE")? routesForEmployeeOnly : [],
-    ...(user.role=="MANAGER")? routesForManagerOnly: []
+    ...(!token)?routesForNotAuthenticatedOnly:[],
+    ...(token && user.role=="EMPLOYEE")? routesForEmployeeOnly : [],
+    ...(token && user.role=="MANAGER")? routesForManagerOnly: []
   ]);
   
   return <RouterProvider router={router} />;

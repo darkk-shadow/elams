@@ -26,7 +26,7 @@ export default function TopBar() {
   
     const handleLogout = () => {
       setToken();
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
     };
   
 

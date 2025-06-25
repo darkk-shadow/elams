@@ -11,7 +11,8 @@ const PageWrapper = ({children}) => {
     <Card sx={{
       padding: 0, border: "none",
       borderRadius: 0,
-      bgcolor: darkTheme ? "#303030" : "#eef7fa"
+      bgcolor: darkTheme ? "#303030" : "#eef7fa",
+      height: "100%"
     }}
     variant='outlined'>
       
