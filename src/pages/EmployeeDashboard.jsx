@@ -11,12 +11,15 @@ import AttendanceModule from '../components/employeeDashboard/AttendanceModule';
 import { useCustomTheme } from '../contexts/ThemeContextProvider';
 import ApplyLeave from '../components/employeeDashboard/ApplyLeave';
 import PageWrapper from '../components/PageWrapper';
+import { getEmployeeName } from '../services/employeeService';
 
 export default function MenuAppBar() {
 
-  const {darkTheme} = useCustomTheme()
-
   const [modalOpen, setModalOpen] = useState(false)
+
+  useEffect(()=>{
+    getEmployeeName()
+  })
 
   /** @type {import('@mui/system').SxProps} */
   const styles = {
