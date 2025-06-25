@@ -1,25 +1,26 @@
 import { ThemeContext } from '@emotion/react'
 import { Card } from '@mui/material'
 import React, { useContext } from 'react'
+import {useCustomTheme} from '../contexts/ThemeContextProvider'
 
-const EmployeeAttendanceReport = () => {
+const PageWrapper = ({children}) => {
 
-  const {darkTheme} = useContext(ThemeContext)
+  const {darkTheme} = useCustomTheme()
 
   return (
     <Card sx={{
       padding: 0, border: "none",
       borderRadius: 0,
-      bgcolor: darkTheme ? "#303030" : "#eef7fa"
+      bgcolor: darkTheme ? "#303030" : "#eef7fa",
+      height: "100%"
     }}
     variant='outlined'>
-
-      {/* start coding here */}
-      <div>EmployeeAttendanceReport</div>
+      
+      {children}
         
 
     </Card>
   )
 }
 
-export default EmployeeAttendanceReport
+export default PageWrapper

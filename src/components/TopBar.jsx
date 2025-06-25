@@ -8,10 +8,11 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { HomeRounded } from '@mui/icons-material';
-import { ThemeContext } from '../contexts/ThemeContextProvider';
+import { useCustomTheme } from '../contexts/ThemeContextProvider';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthProvider';
 
 
 export default function TopBar() {
@@ -19,7 +20,15 @@ export default function TopBar() {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const {darkTheme, toggleTheme } = React.useContext (ThemeContext);
+  const {darkTheme, toggleTheme } = useCustomTheme();
+
+  const { setToken, user } = useAuth();
+  
+    const handleLogout = () => {
+      setToken();
+      navigate("/login", { replace: true });
+    };
+  
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -62,7 +71,7 @@ export default function TopBar() {
           </IconButton>
           <Typography>
             Hello, 
-            <Typography component="span" fontWeight="bold"> Employee Name</Typography>
+            <Typography component="span" fontWeight="bold"> {user.employeeName}</Typography>
           </Typography>
             <div>
               <IconButton
@@ -91,7 +100,7 @@ export default function TopBar() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
         </Toolbar>

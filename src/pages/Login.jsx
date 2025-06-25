@@ -9,27 +9,28 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { login } from "../services/authService";
 
 const Login = () => {
-  const { setToken } = useAuth();
+  const { setToken, setUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await axios
-      .post("http://localhost:9090/auth/login", {
+    login({
         email: e.target[0].value,
         password: e.target[2].value,
       })
       .then((res) => {
-        setToken(res.data.token);
+        setToken(res.data.jwtToken);
+        setUser(res.data);
         navigate("/", { replace: true });
       })
       .catch((a) => {
         setError(true);
-        setErrorMsg(a.response.data.error);
+        setErrorMsg(a.response.data.message);
       });
   };
 

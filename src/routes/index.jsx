@@ -1,14 +1,14 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import { ProtectedRoute } from "./ProtectedRoute";
-import Logout from "../pages/Logout";
 import Login from "../pages/Login";
-import EmployeeDashboard from "../pages/EmployeeDashboard";
-import EmployeeLeave from "../pages/EmployeeLeave";
-import EmployeeAttendanceReport from "../pages/EmployeeAttendanceReport";
+import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
+import EmployeeLeave from "../pages/employee/EmployeeLeave";
+import EmployeeAttendanceReport from "../pages/employee/EmployeeAttendanceReport";
+import ManagerDashboard from "../pages/manager/ManagerDashboard";
 
 const RoutesIndex = () => {
-    const {token} = useAuth();
+    const {token, user} = useAuth();
 
     const routesForPublic = [
       {
@@ -21,7 +21,14 @@ const RoutesIndex = () => {
       }
   ];
   
-  const routesForAuthenticatedOnly = [
+  const routesForNotAuthenticatedOnly = [
+    {
+      path: "/",
+      element: <ProtectedRoute />,
+    }
+  ];
+
+  const routesForEmployeeOnly = [
     {
       path: "/",
       element: <ProtectedRoute />,
@@ -37,25 +44,29 @@ const RoutesIndex = () => {
         {
           path: "/attendanceManagement",
           element: <EmployeeAttendanceReport />,
-        },
+        }
+      ],
+    },
+  ];
+
+  const routesForManagerOnly = [
+    {
+      path: "/",
+      element: <ProtectedRoute />,
+      children: [
         {
-          path: "/logout",
-          element: <Logout />,
+          path: "/",
+          element: <ManagerDashboard />,
         },
       ],
     },
   ];
   
-  const routesForNotAuthenticatedOnly = [
-    {
-      path: "/",
-      element: <div>please login</div>,
-    }
-  ];
-  
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...routesForAuthenticatedOnly
+    ...(!token)?routesForNotAuthenticatedOnly:[],
+    ...(token && user.role=="EMPLOYEE")? routesForEmployeeOnly : [],
+    ...(token && user.role=="MANAGER")? routesForManagerOnly: []
   ]);
   
   return <RouterProvider router={router} />;

@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -33,12 +33,11 @@ const ApplyLeave = ({open, setOpen}) => {
         <Paper sx={style.modal}>
         <Typography>Apply Leave</Typography>
         <form style={style.form}>
-        <FormControl fullWidth>
+        <FormControl sx={{display: "grid", gap:1  }} >
           <InputLabel id="type-leave-label">Leave type</InputLabel>
           <Select
             label="Leave type"
-            labelId="type-leave-label"
-            id="demo-simple-select" 
+            labelId="type-leave-label" 
             onChange={()=>{}}
           >
             <MenuItem value={10}>Ten</MenuItem>
@@ -48,6 +47,16 @@ const ApplyLeave = ({open, setOpen}) => {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker label="Leave from date" />
           </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker label="Leave to date" />
+          </LocalizationProvider>
+          
+          
+        <TextField label="Reason" />
+        <Box sx={{display: "flex", placeContent: "space-around"}}>
+          <Button color='error' variant='outlined'>Cancel</Button>
+          <Button color="success" variant='outlined'>Request</Button>
+        </Box>
         </FormControl>
         </form>
         </Paper>
