@@ -8,7 +8,7 @@ import EmployeeLeave from "../pages/EmployeeLeave";
 import EmployeeAttendanceReport from "../pages/EmployeeAttendanceReport";
 
 const RoutesIndex = () => {
-    const {token} = useAuth();
+    const {token, user} = useAuth();
 
     const routesForPublic = [
       {
@@ -21,7 +21,14 @@ const RoutesIndex = () => {
       }
   ];
   
-  const routesForAuthenticatedOnly = [
+  const routesForNotAuthenticatedOnly = [
+    {
+      path: "/",
+      element: <div>please login</div>,
+    }
+  ];
+
+  const routesForEmployeeOnly = [
     {
       path: "/",
       element: <ProtectedRoute />,
@@ -37,25 +44,28 @@ const RoutesIndex = () => {
         {
           path: "/attendanceManagement",
           element: <EmployeeAttendanceReport />,
-        },
+        }
+      ],
+    },
+  ];
+
+  const routesForManagerOnly = [
+    {
+      path: "/",
+      element: <ProtectedRoute />,
+      children: [
         {
-          path: "/logout",
-          element: <Logout />,
+          path: "/",
+          element: <div>Manager Dashboard</div>,
         },
       ],
     },
   ];
   
-  const routesForNotAuthenticatedOnly = [
-    {
-      path: "/",
-      element: <div>please login</div>,
-    }
-  ];
-  
   const router = createBrowserRouter([
     ...routesForPublic,
-    ...routesForAuthenticatedOnly
+    ...(user.role=="EMPLOYEE")? routesForEmployeeOnly : [],
+    ...(user.role=="MANAGER")? routesForManagerOnly: []
   ]);
   
   return <RouterProvider router={router} />;
