@@ -8,9 +8,15 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { HomeRounded } from '@mui/icons-material';
+import { ThemeContext } from '../contexts/ThemeContextProvider';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+
 
 export default function TopBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const {darkTheme, toggleTheme } = React.useContext (ThemeContext);
 
   const handleChange = (event) => {
     setAuth(event.target.checked);
@@ -25,7 +31,7 @@ export default function TopBar() {
   };
 
   return (
-      <AppBar position="static" sx={{padding: 0}}>
+      <AppBar position="static" sx={{padding: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -33,12 +39,24 @@ export default function TopBar() {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={()=>toggleTheme()}
           >
             <HomeRounded />
           </IconButton>
           <Typography fontWeight="bold" variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ELAMS
           </Typography>
+
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={()=>toggleTheme()}
+          >
+            {darkTheme? <LightModeRoundedIcon />: <DarkModeRoundedIcon />}
+          </IconButton>
           <Typography>
             Hello, 
             <Typography component="span" fontWeight="bold"> Employee Name</Typography>
