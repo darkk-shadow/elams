@@ -4,6 +4,7 @@ import AttendanceReport from './AttendanceReport';
 import AddEmployee from './AddEmployee';
 import { useSnackbar } from 'notistack';
 import useSnackBar from '../../contexts/useSnackBar';
+import AssignShift from './AssignShift';
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -20,15 +21,16 @@ const styles = {
 
 const QuickActions = () => {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
-
+  const [openAssignShift, setOpenAssignShift] = useState(false);
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
+    <AssignShift open={openAssignShift} setOpen={setOpenAssignShift}/>
     <Box sx={styles.layout}>
-      <Button variant='outlined'>
+      <Button variant='outlined' onClick={()=>setOpenAddEmployee(true)}>
         <Typography>Add Employee</Typography>
       </Button>
-      <Button variant='outlined' >
+      <Button variant='outlined' onClick={()=>setOpenAssignShift(true)}>
         <Typography>Assign Shift</Typography>
       </Button>
       <Button variant='outlined'>

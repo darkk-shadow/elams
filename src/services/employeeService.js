@@ -1,7 +1,21 @@
 import axios from "axios"
 
-const baseUrl = "http://localhost:9191/api/employees"
+const employeeAx = axios.create({baseURL: "http://localhost:9191/api/employees"});
+
+const shiftAx = axios.create({baseURL: "http://localhost:9191/api/shifts"});
 
 export const addEmployee = async(employee) => {
-  return axios.post(`${baseUrl}/add-employee`,employee);
+  return employeeAx.post(`add-employee`,employee);
+}
+
+export const getEmployeesByManager = async(managerId) => {
+  return employeeAx.get(`get-employees-by-manager/${managerId}`);
+}
+
+export const getShifts = async() => {
+  return shiftAx.get(`all`);
+}
+
+export const assignShift = async(employeeId, shiftType) => {
+  return employeeAx.put(`${employeeId}/assign-shift/?shiftType=${shiftType}`)
 }

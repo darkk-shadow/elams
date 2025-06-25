@@ -7,10 +7,13 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import React, { useState } from 'react'
 import { addEmployee } from '../../services/employeeService'
 import axios from "axios"
+import useSnackBar from '../../contexts/useSnackBar'
 
 const AddEmployee = ({open, setOpen}) => {
 
   const [role, setRole] = useState("");
+
+  const showSnackBar = useSnackBar();
 
 
   /** @type {import('@mui/system').SxProps} */
@@ -32,14 +35,22 @@ const AddEmployee = ({open, setOpen}) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const employee = {
-      employeeName: e.target[0].value,
-      email: e.target[2].value
-    }
+    const employeeName = e.target[0].value;
+    const email = e.target[2].value;
+    const employee = { employeeName, email }
+
     if(role=="employee"){
       await axios.post(`http://localhost:9191/api/employees/add-employee`,employee)
-        .then((r)=>console.log(r))
-        .catch((e)=>console.log(e))
+        .then((r)=>{
+          const user = r.data;
+          showSnackBar(
+            `${user.employeeName}(${user.id}) with ${user.email} added.`)
+        })
+        .catch((e)=>{
+          console.log(e);
+          showSnackBar(
+            `can't able to add ${email}: ${e.response.data.message}`, "error")
+        })
     }
     setOpen(false);
   }
