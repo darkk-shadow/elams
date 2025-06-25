@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import TopBar from "../components/TopBar";
+import PageWrapper from "../components/PageWrapper";
 
 export const ProtectedRoute = () => {
     const {token} = useAuth();
@@ -9,8 +10,8 @@ export const ProtectedRoute = () => {
         return <Navigate to="/login" />;
     }
 
-    return <>
+    return <PageWrapper>
         <TopBar />
-        <Outlet /> 
-    </>;
+        <Outlet />
+    </PageWrapper>
 }

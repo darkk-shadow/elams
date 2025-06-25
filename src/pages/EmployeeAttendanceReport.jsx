@@ -6,12 +6,10 @@ import PageWrapper from '../components/PageWrapper'
 const EmployeeAttendanceReport = () => {
 
   return (
-    <PageWrapper>
-
+    <>
       {/* start coding here */}
       <div>EmployeeAttendanceReport</div>
-
-    </PageWrapper>
+    </>
 
   )
 }

@@ -41,13 +41,7 @@ export default function MenuAppBar() {
 
   }
 
-  return (
-    <Card sx={{
-          padding: 0, border: "none",
-          borderRadius: 0,
-          bgcolor: darkTheme ? "#303030" : "#eef7fa"
-        }}
-        variant='outlined'>
+  return (<>
       <ApplyLeave open={modalOpen} setOpen={setModalOpen} />
       <Box></Box>
       <Box sx={styles.bodyLayout}>
@@ -63,6 +57,6 @@ export default function MenuAppBar() {
         <AttendanceModule />
         <LeaveRequestModule />
       </Box>
-      </Card>
+      </>
   );
 }
