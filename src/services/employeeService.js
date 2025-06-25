@@ -1,9 +1,7 @@
 import axios from "axios"
 
-const baseUrl = "http://localhost:9090/api/employees"
+const baseUrl = "http://localhost:9191/api/employees"
 
-export const getEmployeeName = () => {
-  return axios.get(baseUrl)
-    .then(r => console.log(r))
-    .catch(e => console.error(e))
+export const addEmployee = async(employee) => {
+  return axios.post(`${baseUrl}/add-employee`,employee);
 }

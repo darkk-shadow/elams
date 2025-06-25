@@ -1,0 +1,81 @@
+import { CheckBox } from '@mui/icons-material'
+import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
+import { Box } from '@mui/system'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
+import React, { useState } from 'react'
+import { addEmployee } from '../../services/employeeService'
+import axios from "axios"
+
+const AddEmployee = ({open, setOpen}) => {
+
+  const [role, setRole] = useState("");
+
+
+  /** @type {import('@mui/system').SxProps} */
+  const style = {
+    modal: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: 400,
+      bgcolor: 'background.paper',
+    },
+    form: {
+      padding: "2em",
+      display: "grid",
+      gap: "1em"
+    }
+  }
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const employee = {
+      employeeName: e.target[0].value,
+      email: e.target[2].value
+    }
+    if(role=="employee"){
+      await axios.post(`http://localhost:9191/api/employees/add-employee`,employee)
+        .then((r)=>console.log(r))
+        .catch((e)=>console.log(e))
+    }
+    setOpen(false);
+  }
+
+  return (
+      <Modal
+        open={open}
+        onClose={()=>setOpen(false)}
+      >
+        <Paper sx={style.modal}>
+        <Typography>Add Employee</Typography>
+        <form style={style.form} onSubmit={submitHandler}> 
+          <TextField label="Employee Name" required />
+          <TextField label="Employee Email" type='email' required/>
+          <FormControl>
+            <InputLabel id="emp-role-label">Employee Role</InputLabel>
+            <Select label="Employee Role" labelId='emp-role-label' onChange={(e)=>setRole(e.target.value)}
+                defaultChecked required>
+              <MenuItem value="employee">Employee</MenuItem>
+              <MenuItem value="manager">Manager</MenuItem>
+            </Select>
+            </FormControl>
+            
+            {role=="employee" && <FormControlLabel 
+              control={<Checkbox />}
+              label="add to your team"
+            />}
+             <Box sx={{display: "flex", placeContent: "space-around"}}>
+                <Button color='error' variant='outlined'
+                  onClick={()=>setOpen(false)}>Cancel</Button>
+                <Button color="success" type="submit" variant='outlined'>Add</Button>
+              </Box>
+        </form>
+        </Paper>
+      </Modal>
+  )
+}
+
+export default AddEmployee

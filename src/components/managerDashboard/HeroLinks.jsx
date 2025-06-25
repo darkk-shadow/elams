@@ -21,7 +21,7 @@ const HeroLinks = () => {
       <Card sx={{padding: 0, height:100, display: "grid", placeContent: "center"}}> 
       <CardActionArea>
         <CardContent sx={{ height: '100%' }}>
-          <Typography variant='h6'>
+          <Typography variant='h6' align='center'>
             No. Pending Leave Requests 12
           </Typography>
         </CardContent>

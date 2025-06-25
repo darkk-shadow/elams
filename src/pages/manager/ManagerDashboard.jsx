@@ -2,12 +2,14 @@ import React from 'react'
 import HeroLinks from '../../components/managerDashboard/heroLinks'
 import { Box, Typography } from '@mui/material'
 import QuickActions from '../../components/managerDashboard/QuickActions'
+import Charts from '../../components/managerDashboard/Charts'
 
 const ManagerDashboard = () => {
-  return (<Box sx={{display: "grid", gap:2}}>
+  return (<Box sx={{display: "grid", gap:4}}>
     <HeroLinks />
-    <Typography align='center' variant='h3'>Quick Actions</Typography>
+    <Typography align='center' variant='h4'>Quick Actions</Typography>
     <QuickActions />
+    <Charts />
   </Box>)
 }
 
