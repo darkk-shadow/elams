@@ -31,3 +31,7 @@ export const getAvailableEmployees = () => {
 export const removeEmployeeFromTeam = (managerId, employeeId) => {
    return employeeAx.put(`${managerId}/remove-employee-from-team/${employeeId}`)
 }
+
+export const getShiftReportByManager = (managerId) => {
+  return employeeAx.get(`get-shift-report-by-manager/${managerId}`);
+}
