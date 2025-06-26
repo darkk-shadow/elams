@@ -233,6 +233,21 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream().map(this::convertToDto).toList();
     }
 
+    @Override
+    public List<EmployeeResponseDto> getAvailableEmployees() {
+        Long managerId = null;
+        return employeeRepository.findByManagerIdAndRole(managerId, Role.EMPLOYEE)
+                .stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public EmployeeResponseDto removeEmployeeFromTeam(Long managerId, Long employeeId) {
+        Employee employee = this.findEmployeeByIdHelper(employeeId);
+        employee.setManager(null);
+        Employee savedEmployee = employeeRepository.save(employee);
+        return convertToDto(savedEmployee);
+    }
+
     private EmployeeResponseDto convertToDto(Employee employee){
         EmployeeResponseDto mappedDto = modelMapper.map(employee, EmployeeResponseDto.class);
         if(employee.getShift()!=null)

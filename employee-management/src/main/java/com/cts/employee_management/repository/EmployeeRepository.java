@@ -2,6 +2,7 @@ package com.cts.employee_management.repository;
 
 import com.cts.employee_management.dto.EmployeeResponseDto;
 import com.cts.employee_management.entity.Employee;
+import com.cts.employee_management.entity.enums.Role;
 import com.cts.employee_management.entity.enums.ShiftType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -16,4 +17,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByEmail(String email);
 
     List<Employee> findByManagerId(Long managerId);
+
+    List<Employee> findByManagerIdAndRole(Long managerId, Role role);
 }

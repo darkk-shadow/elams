@@ -6,6 +6,7 @@ import com.cts.employee_management.dto.EmployeeResponseDto;
 import com.cts.employee_management.entity.enums.ShiftType;
 import com.cts.employee_management.service.EmployeeService;
 import jakarta.validation.Valid;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -100,6 +101,16 @@ public class EmployeeController {
     @GetMapping("get-employees-by-manager/{managerId}")
     public List<EmployeeResponseDto> getEmployeesByManager(@PathVariable Long managerId){
         return employeeService.getEmployeesByManager(managerId);
+    }
+
+    @PutMapping("{managerId}/remove-employee-from-team/{employeeId}")
+    public EmployeeResponseDto removeEmployeeFromTeam(@PathVariable Long managerId, @PathVariable Long employeeId){
+        return employeeService.removeEmployeeFromTeam(managerId, employeeId);
+    }
+
+    @GetMapping("get-available-employees")
+    public List<EmployeeResponseDto> getAvailableEmployees(){
+        return employeeService.getAvailableEmployees();
     }
 
     @GetMapping("{id}/exists")

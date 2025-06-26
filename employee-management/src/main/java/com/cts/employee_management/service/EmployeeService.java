@@ -40,4 +40,8 @@ public interface EmployeeService {
     EmployeeAuthDto loadEmployeeByEmail(String email);
 
     List<EmployeeResponseDto> getEmployeesByManager(Long managerId);
+
+    List<EmployeeResponseDto> getAvailableEmployees();
+
+    EmployeeResponseDto removeEmployeeFromTeam(Long managerId, Long employeeId);
 }
