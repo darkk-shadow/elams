@@ -23,3 +23,7 @@ export const assignShift = async(employeeId, shiftType) => {
 export const addEmployeeToTeam = (managerId, employeeId) => {
   return employeeAx.put(`${employeeId}/assign-manager/${managerId}`)
 }
+
+export const getAvailableEmployees = () => {
+  return employeeAx.get(`get-available-employees`)
+}

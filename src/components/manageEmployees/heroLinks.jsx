@@ -2,6 +2,7 @@ import { Box, Button, Typography } from '@mui/material'
 import { useState } from 'react';
 import AddEmployee from '../managerDashboard/AddEmployee';
 import AssignShift from '../managerDashboard/AssignShift';
+import AddEmployeeToTeam from './AddEmployeeToTeam';
 
 const styles = {
 layout: {
@@ -18,11 +19,14 @@ layout: {
 const HeroLinks = () => {
     const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
     const [openAssignShift, setOpenAssignShift] = useState(false);
+    const [openAddEmployeeToTeam, setOpenAddEmployeeToTeam] = useState(false);
 
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
     <AssignShift open={openAssignShift} setOpen={setOpenAssignShift}/>
+    <AddEmployeeToTeam open={openAddEmployeeToTeam} setOpen={setOpenAddEmployeeToTeam}/>
+    
     <Box sx={styles.layout}>
       <Button variant='outlined' onClick={()=>setOpenAddEmployee(true)}>
         <Typography>Add Employee</Typography>
@@ -30,7 +34,7 @@ const HeroLinks = () => {
       <Button variant='outlined' onClick={()=>setOpenAssignShift(true)}>
         <Typography>Assign Shift</Typography>
       </Button>
-      <Button variant='outlined'>
+      <Button variant='outlined' onClick={()=>setOpenAddEmployeeToTeam(true)}>
         <Typography>Add Employee to team</Typography>
       </Button>
       <Button variant='outlined'>

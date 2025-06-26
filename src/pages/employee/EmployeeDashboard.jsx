@@ -13,10 +13,6 @@ export default function MenuAppBar() {
 
   const [modalOpen, setModalOpen] = useState(false)
 
-  useEffect(()=>{
-    getEmployeeName()
-  })
-
   return (<Box sx={{
       display: "grid",
       gridTemplateColumns: "auto 1fr",
