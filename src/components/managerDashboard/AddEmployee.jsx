@@ -5,15 +5,18 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import React, { useState } from 'react'
-import { addEmployee } from '../../services/employeeService'
+import { addEmployee, addEmployeeToTeam } from '../../services/employeeService'
 import axios from "axios"
 import useSnackBar from '../../contexts/useSnackBar'
+import { useAuth } from '../../contexts/AuthProvider'
 
 const AddEmployee = ({open, setOpen}) => {
 
   const [role, setRole] = useState("");
 
   const showSnackBar = useSnackBar();
+
+  const {user} = useAuth();
 
 
   /** @type {import('@mui/system').SxProps} */
@@ -41,11 +44,17 @@ const AddEmployee = ({open, setOpen}) => {
     const employee = { employeeName, email }
 
     if(role=="employee"){
-      await axios.post(`http://localhost:9191/api/employees/add-employee`,employee)
+      addEmployee(employee)
         .then((r)=>{
-          const user = r.data;
+          const savedUser = r.data;
           showSnackBar(
-            `${user.employeeName}(${user.id}) with ${user.email} added.`)
+            `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added.`);
+
+            if(addToManager){
+              addEmployeeToTeam(user.id, savedUser.id)
+                .then((r)=>showSnackBar(`${savedUser.employeeName} added to your team`))
+                .catch(e=>showSnackBar(e.response.data))
+            }
         })
         .catch((e)=>{
           console.log(e);
