@@ -3,6 +3,7 @@ package com.cts.employee_management.controller;
 import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
+import com.cts.employee_management.dto.ShiftReportByManagerDto;
 import com.cts.employee_management.entity.enums.ShiftType;
 import com.cts.employee_management.service.EmployeeService;
 import jakarta.validation.Valid;
@@ -116,5 +117,10 @@ public class EmployeeController {
     @GetMapping("{id}/exists")
     public boolean checkEmployeeExists(@PathVariable Long id){
         return employeeService.checkEmployeeExists(id);
+    }
+
+    @GetMapping("get-shift-report-by-manager/{managerId}")
+    public ShiftReportByManagerDto getShiftReportByManager(@PathVariable Long managerId){
+        return employeeService.getShiftReportByManager(managerId);
     }
 }

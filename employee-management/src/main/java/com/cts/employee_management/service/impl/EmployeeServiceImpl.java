@@ -4,6 +4,7 @@ import com.cts.employee_management.client.ApiGatewayClient;
 import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
+import com.cts.employee_management.dto.ShiftReportByManagerDto;
 import com.cts.employee_management.entity.Employee;
 import com.cts.employee_management.entity.Shift;
 import com.cts.employee_management.entity.enums.Role;
@@ -246,6 +247,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setManager(null);
         Employee savedEmployee = employeeRepository.save(employee);
         return convertToDto(savedEmployee);
+    }
+
+    @Override
+    public ShiftReportByManagerDto getShiftReportByManager(Long managerId) {
+        ShiftReportByManagerDto dto = new ShiftReportByManagerDto();
+        dto.setGeneral(employeeRepository.countByManagerIdAndShiftType(managerId, ShiftType.GENERAL));
+        dto.setMorning(employeeRepository.countByManagerIdAndShiftType(managerId, ShiftType.MORNING));
+        dto.setEvening(employeeRepository.countByManagerIdAndShiftType(managerId, ShiftType.EVENING));
+        dto.setNight(employeeRepository.countByManagerIdAndShiftType(managerId, ShiftType.NIGHT));
+        return dto;
     }
 
     private EmployeeResponseDto convertToDto(Employee employee){

@@ -3,6 +3,7 @@ package com.cts.employee_management.service;
 import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
+import com.cts.employee_management.dto.ShiftReportByManagerDto;
 import com.cts.employee_management.entity.enums.ShiftType;
 
 import java.util.List;
@@ -44,4 +45,7 @@ public interface EmployeeService {
     List<EmployeeResponseDto> getAvailableEmployees();
 
     EmployeeResponseDto removeEmployeeFromTeam(Long managerId, Long employeeId);
+
+    ShiftReportByManagerDto getShiftReportByManager(Long managerId);
+
 }
