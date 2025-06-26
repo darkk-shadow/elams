@@ -6,6 +6,7 @@ import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
 import EmployeeLeave from "../pages/employee/EmployeeLeave";
 import EmployeeAttendanceReport from "../pages/employee/EmployeeAttendanceReport";
 import ManagerDashboard from "../pages/manager/ManagerDashboard";
+import ManageEmployee from "../pages/manager/ManageEmployee";
 
 const RoutesIndex = () => {
     const {token, user} = useAuth();
@@ -57,6 +58,10 @@ const RoutesIndex = () => {
         {
           path: "/",
           element: <ManagerDashboard />,
+        },
+        {
+          path: "/manage-employee",
+          element: <ManageEmployee />,
         },
       ],
     },

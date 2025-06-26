@@ -8,7 +8,6 @@ import LeaveBalanceModule from '../../components/employeeDashboard/LeaveBalanceM
 import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestModule';
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
-import { getEmployeeName } from '../../services/employeeService';
 
 export default function MenuAppBar() {
 
