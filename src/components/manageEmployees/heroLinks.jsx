@@ -15,7 +15,7 @@ layout: {
 }
 }
 
-const heroLinks = () => {
+const HeroLinks = () => {
     const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
     const [openAssignShift, setOpenAssignShift] = useState(false);
 
@@ -43,4 +43,4 @@ const heroLinks = () => {
     </>)
 }
 
-export default heroLinks
+export default HeroLinks

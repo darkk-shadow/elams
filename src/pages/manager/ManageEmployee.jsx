@@ -1,10 +1,12 @@
 import React from 'react'
-import HeroLinks from '../../components/manageEmployees/heroLinks'
+import HeroLinks from '../../components/manageEmployees/HeroLinks'
+import EmployeeList from '../../components/manageEmployees/EmployeeList'
 
 const ManageEmployee = () => {
-  return (
+  return (<>
     <HeroLinks />
-  )
+    <EmployeeList />
+    </>)
 }
 
 export default ManageEmployee
