@@ -37,6 +37,7 @@ const AddEmployee = ({open, setOpen}) => {
     e.preventDefault();
     const employeeName = e.target[0].value;
     const email = e.target[2].value;
+    const addToManager = e.target[6].checked;
     const employee = { employeeName, email }
 
     if(role=="employee"){
@@ -52,6 +53,7 @@ const AddEmployee = ({open, setOpen}) => {
             `can't able to add ${email}: ${e.response.data.message}`, "error")
         })
     }
+
     setOpen(false);
   }
 
