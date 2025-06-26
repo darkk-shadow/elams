@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/attendance")
+@RequestMapping("api/attendances")
+@CrossOrigin
 public class AttendanceController {
 
     @Autowired

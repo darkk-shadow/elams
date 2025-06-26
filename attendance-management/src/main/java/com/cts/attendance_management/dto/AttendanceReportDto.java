@@ -1,6 +1,5 @@
 package com.cts.attendance_management.dto;
 
-import com.cts.attendance_management.entity.Employee;
 import com.cts.attendance_management.entity.enums.AttendanceReportType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +16,7 @@ public class AttendanceReportDto {
     private LocalDate endDate;
     private int totalPresent;
     private int totalAbsent;
+    private int totalWorkingDays;
     private AttendanceReportType type;
     private Long employeeId;
 }

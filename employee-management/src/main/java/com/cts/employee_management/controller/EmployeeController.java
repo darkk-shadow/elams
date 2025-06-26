@@ -1,5 +1,6 @@
 package com.cts.employee_management.controller;
 
+import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
 import com.cts.employee_management.entity.enums.ShiftType;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/employees")
+@CrossOrigin
 public class EmployeeController {
 
     @Autowired
@@ -52,6 +54,11 @@ public class EmployeeController {
         return employeeService.findEmployeeById(id);
     }
 
+    @GetMapping("load-employee-by-email/{email}")
+    public EmployeeAuthDto loadEmployeeByEmail(@PathVariable String email){
+        return employeeService.loadEmployeeByEmail(email);
+    }
+
     @PutMapping("{id}/promote")
     public EmployeeResponseDto promoteEmployee(@PathVariable Long id){
         return employeeService.promoteEmployee(id);
@@ -62,7 +69,7 @@ public class EmployeeController {
         return employeeService.demoteEmployee(id);
     }
 
-    @PostMapping("{id}/delete")
+    @DeleteMapping("{id}/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable Long id){
         employeeService.deleteEmployee(id);
@@ -88,5 +95,15 @@ public class EmployeeController {
     public EmployeeResponseDto assignShiftToEmployee(@PathVariable Long employeeId,
                                                      @RequestParam ShiftType shiftType){
         return employeeService.assignShiftToEmployee(employeeId, shiftType);
+    }
+
+    @GetMapping("get-employees-by-manager/{managerId}")
+    public List<EmployeeResponseDto> getEmployeesByManager(@PathVariable Long managerId){
+        return employeeService.getEmployeesByManager(managerId);
+    }
+
+    @GetMapping("{id}/exists")
+    public boolean checkEmployeeExists(@PathVariable Long id){
+        return employeeService.checkEmployeeExists(id);
     }
 }

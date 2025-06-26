@@ -1,5 +1,7 @@
 package com.cts.employee_management.service.impl;
 
+import com.cts.employee_management.client.ApiGatewayClient;
+import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
 import com.cts.employee_management.entity.Employee;
@@ -16,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,15 +34,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     ModelMapper modelMapper;
 
+    @Autowired
+    ApiGatewayClient apiGatewayClient;
+
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Override
+    @Transactional
     public EmployeeResponseDto addEmployee(EmployeeRequestDto employeeDto) {
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
         newEmployee.setRole(Role.EMPLOYEE);
+        Shift shift = shiftRepository.findByType(ShiftType.GENERAL)
+                .orElseThrow(() -> new ResourceNotFoundException("Shift type: " + ShiftType.GENERAL + " not found"));
+        newEmployee.setShift(shift);
         Employee savedEmployee = employeeRepository.save(newEmployee);
+        this.createAuth(savedEmployee.getId(), savedEmployee.getEmail());
         logger.info("New employee added with ID: " + savedEmployee.getId());
-        return convertToDto(savedEmployee);
+        EmployeeResponseDto res = convertToDto(savedEmployee);
+        res.setShiftId(savedEmployee.getShift().getId());
+        return res;
     }
 
     @Override
@@ -47,6 +60,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
         newEmployee.setRole(Role.MANAGER);
         Employee savedEmployee = employeeRepository.save(newEmployee);
+        this.createAuth(savedEmployee.getId(), savedEmployee.getEmail());
         logger.info("New manager added with ID: " + savedEmployee.getId());
         return convertToDto(savedEmployee);
     }
@@ -56,6 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee newEmployee = modelMapper.map(employeeDto, Employee.class);
         newEmployee.setRole(Role.ADMIN);
         Employee savedEmployee = employeeRepository.save(newEmployee);
+        this.createAuth(savedEmployee.getId(), savedEmployee.getEmail());
         logger.info("New admin added with ID: " + savedEmployee.getId());
         return convertToDto(savedEmployee);
     }
@@ -199,6 +214,25 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .toList();
     }
 
+    @Override
+    public boolean checkEmployeeExists(Long id) {
+        this.findEmployeeByIdHelper(id);
+        return true;
+    }
+
+    @Override
+    public EmployeeAuthDto loadEmployeeByEmail(String email) {
+        Employee employee = employeeRepository.findByEmail(email)
+                .orElseThrow(()->new ResourceNotFoundException("user is not found!"));
+        return modelMapper.map(employee, EmployeeAuthDto.class);
+    }
+
+    @Override
+    public List<EmployeeResponseDto> getEmployeesByManager(Long managerId) {
+        return employeeRepository.findByManagerId(managerId)
+                .stream().map(this::convertToDto).toList();
+    }
+
     private EmployeeResponseDto convertToDto(Employee employee){
         EmployeeResponseDto mappedDto = modelMapper.map(employee, EmployeeResponseDto.class);
         if(employee.getShift()!=null)
@@ -206,6 +240,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         if(employee.getManager()!=null)
             mappedDto.setManagerId(employee.getManager().getId());
         return mappedDto;
+    }
+
+    private void createAuth(Long employeeId, String email){
+        apiGatewayClient.createAuth(employeeId, email);
     }
 
     private Employee findEmployeeByIdHelper(Long id){
