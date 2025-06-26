@@ -1,9 +1,10 @@
-import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
+import { Autocomplete, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { assignShift, getEmployeesByManager, getShifts } from '../../services/employeeService';
+
 
 const AssignShift = ({open, setOpen}) => {
 
@@ -44,12 +45,12 @@ const AssignShift = ({open, setOpen}) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const employeeId = e.target[0].value;
-    const shiftType = e.target[2].value;
+    const employeeId = e.target[0].value.split(" ")[0];
+    const shiftType = e.target[4].value;
     const employeeName = employees.find((e)=>e.id==employeeId).employeeName;
     assignShift(employeeId, shiftType)
-      .then(showSnackBar(`${shiftType} shift assigned to ${employeeId}: ${employeeName}`))
-      .catch(showSnackBar("Failed to assign shift","error"))
+      .then((r)=>showSnackBar(`${shiftType} shift assigned to ${employeeId}: ${employeeName}`))
+      .catch((e)=>showSnackBar("Failed to assign shift","error"))
     setOpen(false);
   }
 
@@ -61,32 +62,30 @@ const AssignShift = ({open, setOpen}) => {
         <Paper sx={style.modal}>
         <Typography>Assign Shift</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
-          <FormControl>
-            <InputLabel id="employee-list-label">Team Members</InputLabel>
-            <Select label="Team Members" labelId='employee-list-label' required>
-                {employees.map(e=>(
-                  <MenuItem value={e.id}>{`${e.id}: ${e.employeeName}`}</MenuItem>
-                ))}
-            </Select>
-            </FormControl>
+
+        <Autocomplete
+          disablePortal
+          options={employees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
+          sx={{ width: 300 }}
+          renderInput={(params) => {
+          console.log(params)
+          return <TextField {...params} label="Employee" />}}
+        />  
+
+        <Autocomplete
+          disablePortal
+          options={shifts.map(s=>({label:`${s.type}`}))}
+          sx={{ width: 300 }}
+          renderInput={(params) => {
+          console.log(params)
+          return <TextField {...params} label="Shift" />}}
+        /> 
             
-            <FormControl>
-            <InputLabel id="shifts-list-label">Shift</InputLabel>
-            <Select label="Shift" labelId='shifts-list-label' required>
-                {shifts.map(s=>(
-                  <MenuItem value={s.type} sx={{display: "flex", justifyContent: "space-between"}}>
-                    <Typography>{`${s.type}`}</Typography>
-                    <Typography variant='subtitle2'>{`${s.startTime} - ${s.endTime}`}</Typography>
-                  </MenuItem>
-                ))}
-            </Select>
-            </FormControl>
-            
-             <Box sx={{display: "flex", placeContent: "space-around"}}>
-                <Button color='error' variant='outlined'
-                  onClick={()=>setOpen(false)}>Cancel</Button>
-                <Button color="success" type="submit" variant='outlined'>Assign</Button>
-              </Box>
+        <Box sx={{display: "flex", placeContent: "space-around"}}>
+          <Button color='error' variant='outlined'
+            onClick={()=>setOpen(false)}>Cancel</Button>
+          <Button color="success" type="submit" variant='outlined'>Assign</Button>
+        </Box>
         </form>
         </Paper>
       </Modal>
