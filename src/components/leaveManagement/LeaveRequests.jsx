@@ -1,4 +1,5 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import React from 'react';
 
 const leaveRequests = [
@@ -8,51 +9,42 @@ const leaveRequests = [
   { type: 'Sick Leave', from: '12 Jul 2024', to: '15 Jul 2024', status: 'Pending', comment: 'NIL' },
 ];
 
-const style = {
-  container: {
-    borderRadius: 2,
-    border: '1px solid #888',
-    padding: 2,
-    width: 'fit-content',
-    marginTop: 2,
-  },
-  table: {
-    minWidth: 600,
-  },
-  header: {
-    fontWeight: 600,
-    fontSize: 16,
-  },
-};
-
-const LeaveRequests = () => (
-  <>
-    <Typography sx={{ mb: 1, fontSize: 18 }}>Leave Requests</Typography>
-    <TableContainer component={Paper} sx={style.container}>
-      <Table sx={style.table} size="small" aria-label="leave requests table" border={1}>
+const LeaveRequests = () => {
+  const theme = useTheme();
+  return (
+    <TableContainer component={Paper} sx={{
+      borderRadius: 2,
+      border: `1px solid ${theme.palette.divider}`,
+      padding: 2,
+      width: 'fit-content',
+      marginTop: 2,
+      background: theme.palette.background.default,
+    }}>
+      <Typography sx={{ mb: 1, fontSize: 18, color: theme.palette.text.primary }}>Leave Requests:</Typography>
+      <Table sx={{ minWidth: 600 }} size="small" aria-label="leave requests table" border={0}>
         <TableHead>
-          <TableRow sx={{ background: '#f5f5f5' }}>
-            <TableCell sx={style.header} align="left" style={{ border: '1px solid #bbb' }}>Type</TableCell>
-            <TableCell sx={style.header} align="left" style={{ border: '1px solid #bbb' }}>From</TableCell>
-            <TableCell sx={style.header} align="left" style={{ border: '1px solid #bbb' }}>To</TableCell>
-            <TableCell sx={style.header} align="left" style={{ border: '1px solid #bbb' }}>Status</TableCell>
-            <TableCell sx={style.header} align="left" style={{ border: '1px solid #bbb' }}>Comment</TableCell>
+          <TableRow sx={{ background: theme.palette.action.hover }}>
+            <TableCell sx={{ fontWeight: 600, fontSize: 16, color: theme.palette.text.primary, border: `1px solid ${theme.palette.divider}` }} align="left">Type</TableCell>
+            <TableCell sx={{ fontWeight: 600, fontSize: 16, color: theme.palette.text.primary, border: `1px solid ${theme.palette.divider}` }} align="left">From</TableCell>
+            <TableCell sx={{ fontWeight: 600, fontSize: 16, color: theme.palette.text.primary, border: `1px solid ${theme.palette.divider}` }} align="left">To</TableCell>
+            <TableCell sx={{ fontWeight: 600, fontSize: 16, color: theme.palette.text.primary, border: `1px solid ${theme.palette.divider}` }} align="left">Status</TableCell>
+            <TableCell sx={{ fontWeight: 600, fontSize: 16, color: theme.palette.text.primary, border: `1px solid ${theme.palette.divider}` }} align="left">Comment</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {leaveRequests.map((row, idx) => (
             <TableRow key={idx}>
-              <TableCell align="left" style={{ border: '1px solid #ddd' }}>{row.type}</TableCell>
-              <TableCell align="left" style={{ border: '1px solid #ddd' }}>{row.from}</TableCell>
-              <TableCell align="left" style={{ border: '1px solid #ddd' }}>{row.to}</TableCell>
-              <TableCell align="left" style={{ border: '1px solid #ddd' }}>{row.status}</TableCell>
-              <TableCell align="left" style={{ border: '1px solid #ddd' }}>{row.comment}</TableCell>
+              <TableCell align="left" sx={{ border: `1px solid ${theme.palette.divider}`, color: theme.palette.text.primary }}>{row.type}</TableCell>
+              <TableCell align="left" sx={{ border: `1px solid ${theme.palette.divider}`, color: theme.palette.text.primary }}>{row.from}</TableCell>
+              <TableCell align="left" sx={{ border: `1px solid ${theme.palette.divider}`, color: theme.palette.text.primary }}>{row.to}</TableCell>
+              <TableCell align="left" sx={{ border: `1px solid ${theme.palette.divider}`, color: theme.palette.text.primary }}>{row.status}</TableCell>
+              <TableCell align="left" sx={{ border: `1px solid ${theme.palette.divider}`, color: theme.palette.text.primary }}>{row.comment}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
-  </>
-);
+  );
+};
 
 export default LeaveRequests;

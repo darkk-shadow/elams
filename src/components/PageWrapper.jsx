@@ -12,7 +12,7 @@ const PageWrapper = ({children}) => {
       padding: 0, border: "none",
       borderRadius: 0,
       bgcolor: darkTheme ? "#303030" : "#eef7fa",
-      height: "100%"
+      minHeight: "100%"
     }}
     variant='outlined'>
       
