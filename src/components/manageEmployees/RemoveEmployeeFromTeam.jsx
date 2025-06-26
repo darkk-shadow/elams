@@ -3,9 +3,9 @@ import { Box } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
-import { addEmployeeToTeam, assignShift, getAvailableEmployees, getEmployeesByManager, getShifts } from '../../services/employeeService';
+import { addEmployeeToTeam, getAvailableEmployees, getEmployeesByManager, removeEmployeeFromTeam } from '../../services/employeeService';
 
-const AddEmployeeToTeam = ({open, setOpen}) => {
+const RemoveEmployeeFromTeam = ({open, setOpen}) => {
 
   const [employees, setEmployees] = useState([]);
 
@@ -14,9 +14,9 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
   const {user} = useAuth();
 
   useEffect(()=>{
-    getAvailableEmployees()
+    getEmployeesByManager(user.id)
       .then((r) => setEmployees(r.data))
-      .catch(e => console.error(e));
+      .catch(e =>console.log(e));
   },[])
 
   /** @type {import('@mui/system').SxProps} */
@@ -40,9 +40,9 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
     e.preventDefault();
     const employeeId = e.target[0].value.split(" ")[0];
     const employeeName = employees.find((e)=>e.id==employeeId).employeeName;
-    addEmployeeToTeam(user.id, employeeId)
-      .then((r)=>showSnackBar(`${employeeName} Added to your team`))
-      .catch((e)=>showSnackBar("Failed to add employee","error"))
+    removeEmployeeFromTeam(user.id, employeeId)
+      .then((r)=>showSnackBar(`${r.data.employeeName} removed from your team`, "warning"))
+      .catch((e)=>showSnackBar(`Failed to remove ${r.data.employeeName} from your team`, "error"))
     setOpen(false);
   }
 
@@ -52,7 +52,7 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
         onClose={()=>setOpen(false)}
       >
         <Paper sx={style.modal}>
-        <Typography>Add Employee to the team</Typography>
+        <Typography>Remove Employee from the team</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
 
         <Autocomplete
@@ -66,7 +66,7 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
         <Box sx={{display: "flex", placeContent: "space-around"}}>
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>
-          <Button color="success" type="submit" variant='outlined'>Add</Button>
+          <Button color="warning" type="submit" variant='outlined'>Remove</Button>
         </Box>
         </form>
         </Paper>
@@ -74,4 +74,4 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
   )
 }
 
-export default AddEmployeeToTeam;
+export default RemoveEmployeeFromTeam;

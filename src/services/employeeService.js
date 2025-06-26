@@ -27,3 +27,7 @@ export const addEmployeeToTeam = (managerId, employeeId) => {
 export const getAvailableEmployees = () => {
   return employeeAx.get(`get-available-employees`)
 }
+
+export const removeEmployeeFromTeam = (managerId, employeeId) => {
+   return employeeAx.put(`${managerId}/remove-employee-from-team/${employeeId}`)
+}

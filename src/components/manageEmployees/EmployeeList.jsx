@@ -6,7 +6,7 @@ import { useAuth } from "../../contexts/AuthProvider";
 
 
 
-export default function DataGridDemo() {
+export default function EmployeeList() {
   const [employees, setEmployees] = useState([]);
   const { user } = useAuth();
   const [shifts, setShifts] = useState([]);
@@ -19,6 +19,8 @@ export default function DataGridDemo() {
     getEmployeesByManager(user.id)
       .then((r) => setEmployees(r.data))
       .catch((e) => console.error(e));
+
+    console.log("--refresh--");
 
   }, []);
 

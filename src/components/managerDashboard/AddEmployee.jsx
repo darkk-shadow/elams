@@ -18,6 +18,9 @@ const AddEmployee = ({open, setOpen}) => {
 
   const {user} = useAuth();
 
+  const [employeeName, setEmployeeName] = useState("");
+  const [email, setEmail] = useState("");
+
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -79,7 +82,7 @@ const AddEmployee = ({open, setOpen}) => {
           <FormControl>
             <InputLabel id="emp-role-label">Employee Role</InputLabel>
             <Select label="Employee Role" labelId='emp-role-label' onChange={(e)=>setRole(e.target.value)}
-                defaultChecked required>
+                defaultChecked="employee" required>
               <MenuItem value="employee">Employee</MenuItem>
               <MenuItem value="manager">Manager</MenuItem>
             </Select>
