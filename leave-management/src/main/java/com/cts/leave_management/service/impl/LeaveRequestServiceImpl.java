@@ -1,6 +1,7 @@
 package com.cts.leave_management.service.impl;
 
 import com.cts.leave_management.client.EmployeeClient;
+import com.cts.leave_management.dto.EmployeeResponseDto;
 import com.cts.leave_management.dto.LeaveRequestDto;
 import com.cts.leave_management.dto.LeaveRequestResponseDto;
 import com.cts.leave_management.entity.LeaveRequest;
@@ -170,6 +171,17 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
             );
         }
         leaveRequestRepository.deleteById(leaveId);
+    }
+
+    @Override
+    public List<LeaveRequestResponseDto> getByManager(Long managerId) {
+        List<EmployeeResponseDto> teamMembers = employeeClient.getEmployeesByManager(managerId);
+        List<LeaveRequest> requests = leaveRequestRepository.findByEmployeeIdIn(teamMembers
+                .stream().map(EmployeeResponseDto::getId).toList());
+
+        return requests.stream()
+                .map(this::convertToResponseDto)
+                .collect(Collectors.toList());
     }
 
     private LeaveRequestDto convertToDto(LeaveRequest leaveRequest) {

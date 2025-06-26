@@ -15,4 +15,6 @@ public interface LeaveRequestService {
     List<LeaveRequestResponseDto> getLeaveRequestsByStatusAndEmployee(LeaveRequestStatus status, Long employeeId);
     List<LeaveRequestResponseDto> getLeaveRequestsByEmployee(Long employeeId);
     void deleteLeaveRequest(Long leaveId);
+
+    List<LeaveRequestResponseDto> getByManager(Long managerId);
 }

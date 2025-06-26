@@ -67,4 +67,9 @@ public class LeaveRequestController {
         leaveRequestService.deleteLeaveRequest(leaveId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("by-manager/{managerId}")
+    public List<LeaveRequestResponseDto> getByManager(@PathVariable Long managerId){
+        return leaveRequestService.getByManager(managerId);
+    }
 }

@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name="employee-management")
+@FeignClient(name="employee-management", path = "api/employees")
 public interface EmployeeClient {
-    @GetMapping("api/employees/{id}/exists")
+    @GetMapping("{id}/exists")
     boolean checkEmployeeExists(@PathVariable Long id);
 
     @GetMapping("get-employees-by-manager/{managerId}")
