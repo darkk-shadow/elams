@@ -1,6 +1,8 @@
-import * as React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Paper, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { getLeaveRequestsBtManager } from '../../services/leaveService';
+import { useAuth } from '../../contexts/AuthProvider';
 
 const data1 = [
   { label: 'Group A', value: 400 },
@@ -24,6 +26,16 @@ const data2 = [
 ];
 
 export default function LeaveDistribution() {
+
+  const [leaveRequests, setLeaveRequests] = useState([]);
+  const {user} = useAuth();
+
+  useEffect(()=>{
+    getLeaveRequestsBtManager(user.id)
+      .then(r => setLeaveRequests(r.data))
+      .catch(e => console.error(e));
+  },[])
+
   return (
     <Paper>
       <Typography>Leave Distribution</Typography>
