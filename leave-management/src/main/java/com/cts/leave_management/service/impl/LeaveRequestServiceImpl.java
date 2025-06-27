@@ -1,6 +1,7 @@
 package com.cts.leave_management.service.impl;
 
 import com.cts.leave_management.client.EmployeeClient;
+import com.cts.leave_management.dto.EmployeeDto;
 import com.cts.leave_management.dto.LeaveRequestDto;
 import com.cts.leave_management.dto.LeaveRequestResponseDto;
 import com.cts.leave_management.entity.LeaveRequest;
@@ -114,9 +115,9 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
     }
 
     @Override
-    public List<LeaveRequestResponseDto> getAllLeaveRequests() {
+    public List<LeaveRequestResponseDto> getAllLeaveRequests() { //add name field to dto
         return leaveRequestRepository.findAll().stream()
-                .map(this::convertToResponseDto)
+                .map(this::convertToResponseDto) // get employee from feign, map the name to the dto
                 .collect(Collectors.toList());
     }
 
@@ -179,6 +180,8 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
     private LeaveRequestResponseDto convertToResponseDto(LeaveRequest leaveRequest) {
         LeaveRequestResponseDto responseDto = modelMapper.map(leaveRequest, LeaveRequestResponseDto.class);
+        EmployeeDto employee = employeeClient.getEmployeeById(leaveRequest.getEmployeeId());
+        responseDto.setEmployeeName(employee.getEmployeeName());
         return responseDto;
     }
 }
