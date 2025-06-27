@@ -179,8 +179,11 @@ const ManageLeave = () => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-        <Box sx={{ flex: 1 }} />
+      <Box sx={{ display: 'flex', justifyContent: "space-between", mb: 2 }}>
+        {/* <Box sx={{display: "flex", placeContent: "space-between" }} /> */}
+        <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+          Manage Leave Requests
+        </Typography>
         <Button
           variant="contained"
           color="primary"
