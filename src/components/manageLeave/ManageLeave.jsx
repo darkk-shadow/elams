@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton, Collapse } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+
 
 const API_BASE = 'http://localhost:9192/api/leave-requests'; // Change if your backend URL is different
 
@@ -13,6 +16,7 @@ const ManageLeave = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [reasonText, setReasonText] = useState('');
   const [showOnLeaveDialog, setShowOnLeaveDialog] = useState(false);
+  const [showReqs, setShowReqs] = useState(true); // Toggle for showing requests
 
   // Fetch leave requests from backend on component mount and after approve/reject
   const fetchLeaves = () => {
@@ -182,31 +186,36 @@ const ManageLeave = () => {
       <Box sx={{ display: 'flex', justifyContent: "space-between", mb: 2 }}>
         {/* <Box sx={{display: "flex", placeContent: "space-between" }} /> */}
         <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
-          Manage Leave Requests
+          <IconButton onClick={()=> setShowReqs(p=>!p)}>
+            {showReqs? <ArrowDropDownIcon />: <ArrowRightIcon  />}
+          </IconButton>
+          Manage Leave Requests 
         </Typography>
         <Button
           variant="contained"
-          color="primary"
           sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 200 }}
           onClick={() => employeesOnLeaveToday.length > 0 && setShowOnLeaveDialog(true)}
         >
-          <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5, color: 'white' }}>
+          <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 0.5 }}>
             Pending Leave Requests: {pendingCount}
           </Typography>
-          <Typography variant="subtitle1" fontWeight="bold" sx={{ color: 'white' }}>
+          <Typography variant="subtitle1" fontWeight="bold">
             On Leave Today: {uniqueEmployeesOnLeaveToday.length}
           </Typography>
         </Button>
       </Box>
-      <DataGrid
+      <Collapse in={showReqs}> <DataGrid
         rows={leaveRequests}
         columns={pendingColumns}
         getRowId={(row) => row.id}
         autoHeight
         pageSizeOptions={[5, 10, 20]}
         disableRowSelectionOnClick
-        sx={{ mb: 4, background: 'white' }}
-      />
+        sx={{ mb: 4 }}
+      /></Collapse>
+      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1, mt: 3 }}>
+        History
+      </Typography>
       <DataGrid
         rows={[...approvedLeaves, ...leaveRequests.filter(lr => lr.status === 'REJECTED')]}
         columns={historyColumns}
@@ -214,7 +223,6 @@ const ManageLeave = () => {
         autoHeight
         pageSizeOptions={[5, 10, 20]}
         disableRowSelectionOnClick
-        sx={{ background: 'white' }}
       />
       {dialogAction === 'reject' && (
         <Dialog open={dialogOpen} onClose={handleDialogClose}>
