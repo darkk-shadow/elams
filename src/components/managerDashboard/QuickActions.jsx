@@ -36,7 +36,7 @@ const QuickActions = () => {
       <Button variant='outlined' onClick={()=>setOpenAssignShift(true)}>
         <Typography>Assign Shift</Typography>
       </Button>
-      <Button variant='outlined'>
+      <Button variant='outlined' onClick={()=>navigate('/manage-leave')}>
         <Typography>Manage Leave</Typography>
       </Button>
       <Button variant='outlined'>
