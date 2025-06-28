@@ -5,7 +5,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
 import React, { useState } from 'react'
-import { addEmployee, addEmployeeToTeam } from '../../services/employeeService'
+import { addEmployee, addEmployeeToTeam, addManager } from '../../services/employeeService'
 import axios from "axios"
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from '../../contexts/AuthProvider'
@@ -64,6 +64,17 @@ const AddEmployee = ({open, setOpen}) => {
           showSnackBar(
             `can't able to add ${email}: ${e.response.data.message}`, "error")
         })
+    }else if(role == "manager"){
+      addManager(employee)
+      .then((r)=>{
+        const savedUser = r.data;
+        showSnackBar(
+          `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added as manager.`);
+      }).catch((e)=>{
+        console.log(e);
+        showSnackBar(
+          `can't able to add ${email}: ${e.response.data.message}`, "error")
+      })
     }
 
     setOpen(false);

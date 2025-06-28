@@ -8,6 +8,10 @@ export const addEmployee = async(employee) => {
   return await employeeAx.post(`add-employee`,employee);
 }
 
+export const addManager = async(manager) => {
+  return await employeeAx.post(`add-manager`, manager);
+}
+
 export const getEmployeesByManager = async(managerId) => {
   return await employeeAx.get(`get-employees-by-manager/${managerId}`);
 }
