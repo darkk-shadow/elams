@@ -3,6 +3,7 @@ import React from 'react'
 
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useNavigate } from 'react-router-dom';
+import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
@@ -13,28 +14,34 @@ const style = {
 	leaves: {
 		paddingX: 10,
 		display: "grid",
-		gridAutoFlow: "column",
-		height: "100px",
-		justifyContent: "space-between",
-		"& > div": {
-			height: "100%",
-			display: "grid",
-			gridTemplateRows: "1fr auto",
-			gap: 1,
-			"& > div": {
-				display: "grid",
-				placeContent: "center"
-			}
-		}
+		gridAutoFlow: "column",	
+		placeItems: "space-between",
+		gap: 1
 	},
 	leave: {
-
+		display: "grid",
+		gridTemplateRows: "1fr 1fr",
+		textAlign: "center",
+		maxWidth: "100px",
+		minWidth: "min-content"
 	}
 }
 
 const LeaveBalanceModule = () => {
 
 	const navigate = useNavigate();
+	const {leaveBalances} = useEmployeeLeave();
+
+	const toTitleCase = (str) => {
+		if (!str) return '';
+		return str
+			.toLowerCase() 
+			.split(' ')    
+			.map(word => {
+				return word.charAt(0).toUpperCase() + word.slice(1);
+			})
+			.join(' ');   
+	}
 
 	return (
 		<Paper sx={style.layout}>
@@ -43,14 +50,16 @@ const LeaveBalanceModule = () => {
 				onClick={()=>navigate("/leaveManagement")}
 				sx={{ gap: 1, justifySelf: "start" }}
 			>Leave Balances<LaunchIcon fontSize='small' /></Button>
+
+
 			<Box sx={style.leaves}>
 
-				{Array.from({ length: 5 }).map(e => (
-					<Box >
+				{leaveBalances.map(lb => (
+					<Box sx={style.leave} >
 						<Button variant='outlined' >
-							<Typography>23</Typography>
+							<Typography>{lb.balance}</Typography>
 						</Button>
-						<Typography>Total Leaves</Typography>
+						<Typography>{toTitleCase(lb.leaveType.replaceAll("_", " "))}</Typography>
 					</Box>
 				))}
 
