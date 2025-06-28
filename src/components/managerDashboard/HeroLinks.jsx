@@ -1,5 +1,9 @@
 import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useManagerLeave } from '../../contexts/ManagerLeaveProvider'
+import { useNavigate } from 'react-router-dom'
+import { getCustomEmployeesAttendanceSummary } from '../../services/attendanceService'
+import { useAuth } from '../../contexts/AuthProvider'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -13,24 +17,68 @@ const styles = {
 
 const HeroLinks = () => {
 
+  const {leaveStatusDistribution} = useManagerLeave();
+  const [noTappedIn, setNoTappedIn] = useState(0);
+  const {user} = useAuth();
+  const [noPendingLeave, setNoPendingLeave] = useState(0);
+  const [teamMembersSize, setTeamMembersSize] = useState(0);
+
+  useEffect(()=>{
+    let date = new Date();
+    let fDate = date.toISOString().slice(0,10);
+
+    getCustomEmployeesAttendanceSummary(user.id, fDate, fDate)
+      .then(r=>{
+        console.log("No data => ", r.data)
+        setNoTappedIn(r.data[0].totalPresents)
+      })
+      .catch(e=>console.error(e))
+
+    console.log(leaveStatusDistribution)
+  },[])
+
+  useEffect(()=>{
+    setNoPendingLeave(
+      leaveStatusDistribution.find(l=>l.label=="PENDING")?.value
+    )
+  })
+
+  const links = [
+    {
+      text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+    },
+    {
+      text: `No. Emplyees tapped in ${noTappedIn}`,
+    },
+    {
+     text: `Employees in your team: ${ noPendingLeave}`,
+    },
+    {
+     text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+    },
+    {
+     text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+    }
+  ]
+
   return (
 
     <Box sx={styles.layout}>
 
       
-    {Array.from({length:5}).map(e => (
+    {links.map(e => (
       <Card sx={{padding: 0, height:100, display: "grid", placeContent: "center"}}> 
-      <CardActionArea>
+      <CardActionArea onClick={()=>navigate("")}>
         <CardContent sx={{ height: '100%' }}>
           <Typography variant='h6' align='center'>
-            No. Pending Leave Requests 12
+            {e.text}
           </Typography>
         </CardContent>
       </CardActionArea>
     </Card>
 ))}
 
-    </Box>  
+    </Box>
   )
 }
 
