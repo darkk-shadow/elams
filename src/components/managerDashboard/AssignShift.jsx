@@ -68,7 +68,6 @@ const AssignShift = ({open, setOpen}) => {
           options={employees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
           sx={{ width: 300 }}
           renderInput={(params) => {
-          console.log(params)
           return <TextField {...params} label="Employee" />}}
         />  
 
