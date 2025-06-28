@@ -39,3 +39,7 @@ export const removeEmployeeFromTeam = async(managerId, employeeId) => {
 export const getShiftReportByManager = async(managerId) => {
   return employeeAx.get(`get-shift-report-by-manager/${managerId}`);
 }
+
+export const getTeamMembetsCount = async(managerId) => {
+  return employeeAx.get(`${managerId}/get-team-members-count`);
+}

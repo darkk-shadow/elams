@@ -4,6 +4,7 @@ import { useManagerLeave } from '../../contexts/ManagerLeaveProvider'
 import { useNavigate } from 'react-router-dom'
 import { getCustomEmployeesAttendanceSummary } from '../../services/attendanceService'
 import { useAuth } from '../../contexts/AuthProvider'
+import { getTeamMembetsCount } from '../../services/employeeService'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -21,7 +22,8 @@ const HeroLinks = () => {
   const [noTappedIn, setNoTappedIn] = useState(0);
   const {user} = useAuth();
   const [noPendingLeave, setNoPendingLeave] = useState(0);
-  const [teamMembersSize, setTeamMembersSize] = useState(0);
+  const [teamMembersCount, setTeamMembersCount] = useState(0);
+  const [onLeave, setOnLeaveCount] = useState(0);
 
   useEffect(()=>{
     let date = new Date();
@@ -38,10 +40,16 @@ const HeroLinks = () => {
   },[])
 
   useEffect(()=>{
+    getTeamMembetsCount(user.id)
+      .then(r => setTeamMembersCount(r.data))
+      .catch(e => console.error(e));
+  },[])
+
+  useEffect(()=>{
     setNoPendingLeave(
       leaveStatusDistribution.find(l=>l.label=="PENDING")?.value
     )
-  })
+  },[leaveStatusDistribution])
 
   const links = [
     {
@@ -51,10 +59,10 @@ const HeroLinks = () => {
       text: `No. Emplyees tapped in ${noTappedIn}`,
     },
     {
-     text: `Employees in your team: ${ noPendingLeave}`,
+     text: `Employees in your team: ${ teamMembersCount}`,
     },
     {
-     text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+     text: `No. Employees on leave: ${ noPendingLeave}`,
     },
     {
      text: `No. Pending Leave Requests: ${ noPendingLeave}`,
