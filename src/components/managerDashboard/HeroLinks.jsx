@@ -18,7 +18,7 @@ const styles = {
 
 const HeroLinks = () => {
 
-  const {leaveStatusDistribution} = useManagerLeave();
+  const {leaveStatusDistribution, leaveRequests} = useManagerLeave();
   const [noTappedIn, setNoTappedIn] = useState(0);
   const {user} = useAuth();
   const [noPendingLeave, setNoPendingLeave] = useState(0);
@@ -51,6 +51,21 @@ const HeroLinks = () => {
     )
   },[leaveStatusDistribution])
 
+  useEffect(()=>{
+    let today = new Date()
+    today.setHours(0, 0, 0, 0);
+    let todayAbsentees = leaveRequests
+        .filter(l => {
+          const start = new Date(l.startDate);
+          const end = new Date(l.endDate);
+          start.setHours(0, 0, 0, 0);
+          end.setHours(0, 0, 0, 0); 
+          return start <= today && end >= today;
+        })
+        .filter(l => l.status == "APPROVED")
+      setOnLeaveCount(todayAbsentees.length);
+  },[leaveRequests])
+
   const links = [
     {
       text: `No. Pending Leave Requests: ${ noPendingLeave}`,
@@ -62,7 +77,7 @@ const HeroLinks = () => {
      text: `Employees in your team: ${ teamMembersCount}`,
     },
     {
-     text: `No. Employees on leave: ${ noPendingLeave}`,
+     text: `No. Employees on leave: ${ onLeave}`,
     },
     {
      text: `No. Pending Leave Requests: ${ noPendingLeave}`,

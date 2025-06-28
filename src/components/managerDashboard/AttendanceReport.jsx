@@ -19,7 +19,6 @@ export default function AttendanceReport() {
     setLoading(true);
     getCustomEmployeesAttendanceSummary(user.id, fromDate, toDate)
       .then(r => {
-        console.log(r.data)
         let d = r.data.map(report => (report.totalPresents/report.totalEmployees)*100);
         setValues(d);
         setLoading(false);
