@@ -1,5 +1,5 @@
 import { Box, Button, Paper, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TimelapseRoundedIcon from '@mui/icons-material/TimelapseRounded';
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded"
 
@@ -13,11 +13,12 @@ const style = {
 }
 
 const ClockInModule = () => {
+
   return (
     <Paper sx={style.layout}>
           <Box sx={{display: "flex", gap: 1}}>
             <TimelapseRoundedIcon />
-            <Typography>08:45:55</Typography>
+            <Typography>09:23:22</Typography>
           </Box>
           <Button size='small' variant="outlined" sx={{gap: 1}}>
             <LoginRoundedIcon />
