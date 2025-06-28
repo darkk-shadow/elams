@@ -9,6 +9,7 @@ import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestM
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
 
+
 export default function MenuAppBar() {
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -30,6 +31,7 @@ export default function MenuAppBar() {
         <LeaveBalanceModule />
         <AttendanceModule />
         <LeaveRequestModule />
+        
       </Box>
   );
 }

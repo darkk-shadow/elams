@@ -24,6 +24,7 @@ function App() {
       </SnackbarProvider>
       </AuthProvider>
       </ThemeContextProvider>
+      
     </div>
   )
 }
