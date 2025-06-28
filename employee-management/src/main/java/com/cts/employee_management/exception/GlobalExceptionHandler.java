@@ -74,6 +74,35 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseEntity> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex,
+            WebRequest request
+    ) {
+        HttpStatus status = HttpStatus.CONFLICT; // Use CONFLICT for duplicate entries
+        String errorMessage = "A resource with the same unique identifier (e.g., email) already exists.";
+
+        // You can try to parse the actual cause to get more specific messages
+        if (ex.getCause() != null && ex.getCause().getMessage() != null) {
+            String causeMessage = ex.getCause().getMessage().toLowerCase();
+            if (causeMessage.contains("duplicate entry") || causeMessage.contains("unique constraint")) {
+                errorMessage = "The provided email address already exists. Please use a different email.";
+            } else {
+                errorMessage = ex.getCause().getMessage(); // Fallback to the cause message
+            }
+        }
+
+        ErrorResponseEntity errorResponse = new ErrorResponseEntity(
+                LocalTime.now(),
+                status.value(),
+                status.getReasonPhrase(),
+                errorMessage,
+                request.getDescription(false).replace("uri=", ""),
+                ex.getClass().getSimpleName()
+        );
+        return new ResponseEntity<>(errorResponse, status);
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseEntity> exceptionHandler(
