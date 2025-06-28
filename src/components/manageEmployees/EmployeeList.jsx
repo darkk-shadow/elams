@@ -13,14 +13,12 @@ export default function EmployeeList() {
 
   useEffect(() => {
     getShifts()
-          .then((r) => setShifts(r.data))
-          .catch(e => console.error(e));
+      .then((r) => setShifts(r.data))
+      .catch(e => console.error(e));
 
     getEmployeesByManager(user.id)
       .then((r) => setEmployees(r.data))
       .catch((e) => console.error(e));
-
-    console.log("--refresh--");
 
   }, []);
 
@@ -41,17 +39,8 @@ export default function EmployeeList() {
       field: "shiftId",
       headerName: "Shift",
       width: 400,
-      valueGetter: (value, row) => `${shifts.find((s)=>s.id==value).type}`
+      valueGetter: (value) => `${shifts.find((s)=>s.id==value).type}`
     },
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    // editable: true,
-    //   valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
-    // },
   ];
 
   return (
@@ -59,7 +48,6 @@ export default function EmployeeList() {
       <DataGrid
         rows={employees}
         columns={columns}
-        rowSpanning
         initialState={{
           pagination: {
             paginationModel: {
@@ -68,8 +56,8 @@ export default function EmployeeList() {
           },
         }}
         pageSizeOptions={[5]}
-        checkboxSelection
-        disableRowSelectionOnClick
+        // checkboxSelection
+        // disableRowSelectionOnClick
       />
     </Box>
   );
