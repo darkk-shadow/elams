@@ -123,4 +123,9 @@ public class EmployeeController {
     public ShiftReportByManagerDto getShiftReportByManager(@PathVariable Long managerId){
         return employeeService.getShiftReportByManager(managerId);
     }
+
+    @GetMapping("{managerId}/get-team-members-count")
+    public Long getTeamMembersCount(@PathVariable Long managerId){
+        return employeeService.getTeamMembersCount(managerId);
+    }
 }

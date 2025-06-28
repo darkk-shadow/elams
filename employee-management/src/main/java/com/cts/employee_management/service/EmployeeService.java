@@ -48,4 +48,5 @@ public interface EmployeeService {
 
     ShiftReportByManagerDto getShiftReportByManager(Long managerId);
 
+    Long getTeamMembersCount(Long managerId);
 }

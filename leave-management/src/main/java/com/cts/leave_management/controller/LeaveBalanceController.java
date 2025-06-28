@@ -3,6 +3,7 @@ package com.cts.leave_management.controller;
 import com.cts.leave_management.dto.LeaveBalanceRequestDto;
 import com.cts.leave_management.dto.LeaveBalanceResponseDto;
 import com.cts.leave_management.entity.enums.LeaveType;
+import com.cts.leave_management.entity.enums.ShiftType;
 import com.cts.leave_management.service.LeaveBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,5 +69,10 @@ public class LeaveBalanceController {
     @ResponseStatus(HttpStatus.OK)
     public void initializeLeaveBalancesForNewEmployee(@PathVariable Long employeeId) {
         leaveBalanceService.initializeLeaveBalancesForNewEmployee(employeeId);
+    }
+
+    @GetMapping("get-leave-types")
+    public List<LeaveType> getLeaveTypes(){
+        return leaveBalanceService.getLeaveTypes();
     }
 }

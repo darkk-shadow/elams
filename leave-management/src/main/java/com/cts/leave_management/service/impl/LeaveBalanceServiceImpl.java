@@ -218,6 +218,11 @@ public class LeaveBalanceServiceImpl implements LeaveBalanceService {
         logger.info("Sufficient leave balance found for employee ID: {} for leave type {}. Available: {}", employeeId, leaveType, leaveBalance.getBalance());
     }
 
+    @Override
+    public List<LeaveType> getLeaveTypes() {
+        return Arrays.asList(LeaveType.values());
+    }
+
     private LeaveBalanceResponseDto mapToResponseDto(LeaveBalance leaveBalance) {
         LeaveBalanceResponseDto dto = modelMapper.map(leaveBalance, LeaveBalanceResponseDto.class);
         return dto;

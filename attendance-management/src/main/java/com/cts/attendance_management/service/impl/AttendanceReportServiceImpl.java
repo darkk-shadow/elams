@@ -113,8 +113,6 @@ public class AttendanceReportServiceImpl implements AttendanceReportService {
         List<EmployeeDto> employees = employeeClient.getEmployeesByManager(managerId);
         List<Long> emploeyeeIds = employees.stream().map(e->e.getId()).toList();
 
-        Long test = attendanceRepository.countByDateAndEmployeeIdIn(date, emploeyeeIds);
-        List<Attendance> test1 = attendanceRepository.findByDateAndEmployeeIdIn(date, emploeyeeIds);
         Long totalAbsent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.ABSENT);
         Long totalPresent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.PRESENT);
 

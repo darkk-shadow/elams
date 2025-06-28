@@ -259,6 +259,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         return dto;
     }
 
+    @Override
+    public Long getTeamMembersCount(Long managerId) {
+        return employeeRepository.countByManager_Id(managerId);
+    }
+
     private EmployeeResponseDto convertToDto(Employee employee){
         EmployeeResponseDto mappedDto = modelMapper.map(employee, EmployeeResponseDto.class);
         if(employee.getShift()!=null)

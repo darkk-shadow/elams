@@ -1,7 +1,6 @@
 package com.cts.attendance_management.service.impl;
 
 import com.cts.attendance_management.client.EmployeeClient;
-import com.cts.attendance_management.dto.AttendanceClockInRequestDto;
 import com.cts.attendance_management.dto.AttendanceClockOutRequestDto;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
 import com.cts.attendance_management.entity.Attendance;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Optional;
@@ -37,21 +37,25 @@ public class AttendanceServiceImpl implements AttendanceService {
     ModelMapper modelMapper;
 
     @Override
-    public AttendanceResponseDto clockIn(AttendanceClockInRequestDto attendanceClockInRequestDto) {
+    public AttendanceResponseDto clockIn(Long employeeId) {
         Optional<Attendance> checkAttendance = attendanceRepository.findByEmployeeIdAndDate(
-                attendanceClockInRequestDto.getEmployeeId(),
-                attendanceClockInRequestDto.getDate());
+                employeeId,
+                LocalDate.now());
         if(checkAttendance.isPresent()){
-            String msg = "Employee with id "+ checkAttendance.get().getId()
-                    + " has already clocked in at "+ attendanceClockInRequestDto.getClockInTime();
+            String msg = "Employee with id "+ employeeId
+                    + " has already clocked in at "+ LocalTime.now();
             logger.error(msg);
             throw new AttendanceRegisterException(msg);
         }
-        employeeClient.checkEmployeeExists(attendanceClockInRequestDto.getEmployeeId());
-        Attendance attendance = modelMapper.map(attendanceClockInRequestDto, Attendance.class);
+        employeeClient.checkEmployeeExists(employeeId);
+        Attendance attendance = new Attendance();
+        attendance.setEmployeeId(employeeId);
+        attendance.setClockInTime(LocalTime.now());
+        attendance.setDate(LocalDate.now());
+
         Attendance savedAttendance = attendanceRepository.save(attendance);
-        String msg = "Employee with id "+ attendanceClockInRequestDto.getEmployeeId()
-                +" has clocked in at " + attendanceClockInRequestDto.getClockInTime();
+        String msg = "Employee with id "+ employeeId
+                +" has clocked in at " + savedAttendance.getClockInTime();
         logger.info(msg);
         AttendanceResponseDto mappedDto =  modelMapper.map(savedAttendance, AttendanceResponseDto.class);
         return mappedDto;
@@ -124,6 +128,34 @@ public class AttendanceServiceImpl implements AttendanceService {
         return attendances
                 .stream().map((a) -> modelMapper.map(a, AttendanceResponseDto.class))
                 .toList();
+    }
+
+    @Override
+    public boolean isClockedIn(Long employeeId) {
+        Optional<Attendance> attendance = attendanceRepository.findByEmployeeId(employeeId);
+        return attendance.isPresent();
+    }
+
+    @Override
+    public boolean isClockedOut(Long employeeId) {
+        Optional<Attendance> attendance = attendanceRepository.findByEmployeeId(employeeId);
+        return attendance.isPresent() && attendance.get().getClockOutTime() != null;
+    }
+
+    @Override
+    public AttendanceResponseDto deleteByEmployee(Long employeeId, LocalDate date) {
+        Attendance attendance = attendanceRepository.findAttendanceByEmployeeIdAndDate(employeeId, date)
+                .orElseThrow(()->new ResourceNotFoundException("Attendance Not found for "+employeeId+" on "+date));
+        attendanceRepository.deleteById(attendance.getId());
+        return modelMapper.map(attendance, AttendanceResponseDto.class);
+    }
+
+    @Override
+    public AttendanceResponseDto deleteByEmployeeToday(Long employeeId) {
+        Attendance attendance = attendanceRepository.findAttendanceByEmployeeIdAndDate(employeeId, LocalDate.now())
+                .orElseThrow(()->new ResourceNotFoundException("Attendance Not found for "+employeeId+" on "+LocalDate.now()));
+        attendanceRepository.deleteById(attendance.getId());
+        return modelMapper.map(attendance, AttendanceResponseDto.class);
     }
 
     private double calculateWorkHours(Temporal clockInTime, Temporal clockOutTime){

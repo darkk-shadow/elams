@@ -16,4 +16,6 @@ public interface LeaveBalanceService {
     void deleteLeaveBalance(Long id);
     void initializeLeaveBalancesForNewEmployee(Long employeeId);
     void checkSufficientLeaveBalance(Long employeeId, LeaveType leaveType, int days);
+
+    List<LeaveType> getLeaveTypes();
 }
