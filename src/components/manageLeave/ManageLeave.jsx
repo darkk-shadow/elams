@@ -4,11 +4,13 @@ import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import { useAuth } from '../../contexts/AuthProvider';
 
 
 const API_BASE = 'http://localhost:9192/api/leave-requests'; // Change if your backend URL is different
 
 const ManageLeave = () => {
+  const { user } = useAuth();
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [approvedLeaves, setApprovedLeaves] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -18,13 +20,15 @@ const ManageLeave = () => {
   const [showOnLeaveDialog, setShowOnLeaveDialog] = useState(false);
   const [showReqs, setShowReqs] = useState(true); // Toggle for showing requests
 
-  // Fetch leave requests from backend on component mount and after approve/reject
+  // Fetch leave requests for employees under this manager
   const fetchLeaves = () => {
-    axios.get(API_BASE)
+    if (!user?.id) return;
+    axios.get(`${API_BASE}/by-manager/${user.id}`)
       .then(res => {
         const all = res.data || [];
         setLeaveRequests(all.filter(lr => lr.status === 'PENDING'));
-        setApprovedLeaves(all.filter(lr => lr.status === 'APPROVED' || lr.status === 'REJECTED'));
+        let temp = all.filter(lr => lr.status === 'APPROVED' || lr.status === 'REJECTED');
+        setApprovedLeaves(temp.sort((a, b) => b.id - a.id));
       })
       .catch(err => console.error(err));
   };
@@ -115,6 +119,22 @@ const ManageLeave = () => {
           const label = days === 1 ? '1 day' : `${days} days`;
           return (
             <span>{label}</span>
+          );
+        }
+        return '-';
+      }
+    },
+    {
+      field: 'dateRange',
+      headerName: 'From - To',
+      width: 200,
+      renderCell: (params) => {
+        const { startDate, endDate } = params.row;
+        if (startDate && endDate) {
+          return (
+            <span>
+              {new Date(startDate).toLocaleDateString('en-GB')} - {new Date(endDate).toLocaleDateString('en-GB')}
+            </span>
           );
         }
         return '-';
