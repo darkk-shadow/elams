@@ -2,6 +2,7 @@ package com.cts.leave_management.service.impl;
 
 import com.cts.leave_management.client.EmployeeClient;
 import com.cts.leave_management.dto.EmployeeResponseDto;
+import com.cts.leave_management.dto.EmployeeDto;
 import com.cts.leave_management.dto.LeaveRequestDto;
 import com.cts.leave_management.dto.LeaveRequestResponseDto;
 import com.cts.leave_management.entity.LeaveRequest;
@@ -191,6 +192,8 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
 
     private LeaveRequestResponseDto convertToResponseDto(LeaveRequest leaveRequest) {
         LeaveRequestResponseDto responseDto = modelMapper.map(leaveRequest, LeaveRequestResponseDto.class);
+        EmployeeDto employee = employeeClient.getEmployeeById(leaveRequest.getEmployeeId());
+        responseDto.setEmployeeName(employee.getEmployeeName());
         return responseDto;
     }
 }

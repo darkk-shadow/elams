@@ -1,5 +1,6 @@
 package com.cts.leave_management.client;
 
+import com.cts.leave_management.dto.EmployeeDto;
 import com.cts.leave_management.dto.EmployeeResponseDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,4 +15,7 @@ public interface EmployeeClient {
 
     @GetMapping("get-employees-by-manager/{managerId}")
     List<EmployeeResponseDto> getEmployeesByManager(@PathVariable Long managerId);
+
+    @GetMapping("api/employees/{id}")
+    EmployeeDto getEmployeeById(@PathVariable Long id);
 }
