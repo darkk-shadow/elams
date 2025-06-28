@@ -10,3 +10,7 @@ export const getLeaveRequestsByManager = async(managerId)=>{
 export const getLeaveTypes = async() => {
   return await leaveBalanceAx.get(`get-leave-types`)
 }
+
+export const createLeaveRequest = async(request) => {
+  return await leaveRequestAx.post("", request)
+}

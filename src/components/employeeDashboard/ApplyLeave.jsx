@@ -5,15 +5,18 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React, { useState } from 'react'
 import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider'
 import { useAuth } from '../../contexts/AuthProvider'
+import { createLeaveRequest } from '../../services/leaveService'
+import useSnackBar from '../../contexts/useSnackBar'
 
 const ApplyLeave = ({open, setOpen}) => {
 
   const {leaveTypes} = useEmployeeLeave();
   const {user} = useAuth();
+  const showSnackBar = useSnackBar();
 
   const [leaveType, setLeaveType] = useState();
-  const [fromDate, setFromDate] = useState();
-  const [toDate, setToDate] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [reason, setReason] = useState("");
 
 
@@ -34,7 +37,17 @@ const ApplyLeave = ({open, setOpen}) => {
     }
   }
 
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const request = {
+      employeeId: user.id,
+      leaveType, startDate, endDate, reason
+    }
+    createLeaveRequest(request)
+      .then(r => showSnackBar("Leave request submitted"))
+      .catch(e => showSnackBar("Failed to request leave: "+e.response.data.message, "error"));
+    setOpen(false)
+  }
 
   return (
       <Modal
@@ -43,7 +56,7 @@ const ApplyLeave = ({open, setOpen}) => {
       >
         <Paper sx={style.modal}>
         <Typography>Apply Leave</Typography>
-        <form style={style.form}>
+        <form style={style.form} onSubmit={handleSubmit}>
           <Autocomplete
             onChange={(e,v) => setLeaveType(v.label)}
             disablePortal
@@ -53,10 +66,10 @@ const ApplyLeave = ({open, setOpen}) => {
             return <TextField {...params} label="Leave Type" />}}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Leave from date" onChange={(e) => setFromDate(e.format("YYYY-MM-DD"))} />
+              <DatePicker format='DD-MM-YYYY' label="Leave from date" onChange={(e) => setStartDate(e.format("YYYY-MM-DD"))} />
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker label="Leave to date" onChange={(e) => setToDate(e.format("YYYY-MM-DD"))} />
+              <DatePicker format='DD-MM-YYYY' label="Leave to date" onChange={(e) => setEndDate(e.format("YYYY-MM-DD"))} />
           </LocalizationProvider>
           
           
