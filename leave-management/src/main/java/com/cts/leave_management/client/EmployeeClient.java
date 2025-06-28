@@ -16,6 +16,6 @@ public interface EmployeeClient {
     @GetMapping("get-employees-by-manager/{managerId}")
     List<EmployeeResponseDto> getEmployeesByManager(@PathVariable Long managerId);
 
-    @GetMapping("api/employees/{id}")
+    @GetMapping("{id}")
     EmployeeDto getEmployeeById(@PathVariable Long id);
 }
