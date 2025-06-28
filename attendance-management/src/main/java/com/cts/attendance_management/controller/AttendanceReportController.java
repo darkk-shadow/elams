@@ -1,6 +1,7 @@
 package com.cts.attendance_management.controller;
 
 import com.cts.attendance_management.dto.AttendanceReportDto;
+import com.cts.attendance_management.dto.EmployeesAttendanceDailyReportDto;
 import com.cts.attendance_management.exception.ResourceNotFoundException; // Import for ResourceNotFoundException
 import com.cts.attendance_management.service.AttendanceReportService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,14 @@ public class AttendanceReportController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, // Added @DateTimeFormat
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) { // Added @DateTimeFormat
         return ResponseEntity.ok(attendanceReportService.getCustomReportByEmployee(employeeId, startDate, endDate));
+    }
+
+    @GetMapping("/manager/{managerId}/custom/")
+    public List<EmployeesAttendanceDailyReportDto> getCustomEmployeesAttendanceSummary(
+            @PathVariable Long managerId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ){
+        return attendanceReportService.getCustomEmployeesAttendanceSummary(managerId, startDate, endDate);
     }
 }

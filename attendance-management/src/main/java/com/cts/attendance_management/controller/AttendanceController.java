@@ -5,9 +5,11 @@ import com.cts.attendance_management.dto.AttendanceClockOutRequestDto;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
 import com.cts.attendance_management.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,5 +45,13 @@ public class AttendanceController {
     @GetMapping("{id}")
     public AttendanceResponseDto getById(@PathVariable Long id){
         return attendanceService.findAttendanceById(id);
+    }
+
+    @GetMapping("{employeeId}/range/")
+    public List<AttendanceResponseDto> getByEmployeeDateRange(@PathVariable Long employeeId,
+                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                    @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+                    ){
+        return attendanceService.getByEmployeeDateRange(employeeId, startDate, endDate);
     }
 }

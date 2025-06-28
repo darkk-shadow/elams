@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Optional;
@@ -112,6 +113,15 @@ public class AttendanceServiceImpl implements AttendanceService {
     public List<AttendanceResponseDto> findAllAttendance() {
         logger.info("Fetching all attendances");
         return attendanceRepository.findAll()
+                .stream().map((a) -> modelMapper.map(a, AttendanceResponseDto.class))
+                .toList();
+    }
+
+    @Override
+    public List<AttendanceResponseDto> getByEmployeeDateRange(Long employeeId, LocalDate startDate, LocalDate endDate) {
+        List<Attendance> attendances
+                = attendanceRepository.findAttendanceByEmployeeIdAndDateBetween(employeeId, startDate, endDate);
+        return attendances
                 .stream().map((a) -> modelMapper.map(a, AttendanceResponseDto.class))
                 .toList();
     }

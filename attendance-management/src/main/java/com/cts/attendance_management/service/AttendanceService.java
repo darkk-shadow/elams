@@ -4,6 +4,7 @@ import com.cts.attendance_management.dto.AttendanceClockInRequestDto;
 import com.cts.attendance_management.dto.AttendanceClockOutRequestDto;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface AttendanceService {
@@ -16,4 +17,6 @@ public interface AttendanceService {
     AttendanceResponseDto findAttendanceById(Long id);
 
     List<AttendanceResponseDto> findAllAttendance();
+
+    List<AttendanceResponseDto> getByEmployeeDateRange(Long employeeId, LocalDate startDate, LocalDate endDate);
 }

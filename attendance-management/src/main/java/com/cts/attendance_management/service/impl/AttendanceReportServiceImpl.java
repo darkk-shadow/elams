@@ -2,6 +2,8 @@ package com.cts.attendance_management.service.impl;
 
 import com.cts.attendance_management.client.EmployeeClient;
 import com.cts.attendance_management.dto.AttendanceReportDto;
+import com.cts.attendance_management.dto.EmployeeDto;
+import com.cts.attendance_management.dto.EmployeesAttendanceDailyReportDto;
 import com.cts.attendance_management.entity.Attendance;
 import com.cts.attendance_management.entity.enums.AttendanceReportType;
 import com.cts.attendance_management.entity.enums.AttendanceStatus;
@@ -9,6 +11,7 @@ import com.cts.attendance_management.exception.ResourceNotFoundException;
 import com.cts.attendance_management.repository.AttendanceRepository;
 import com.cts.attendance_management.service.AttendanceReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -88,6 +92,34 @@ public class AttendanceReportServiceImpl implements AttendanceReportService {
         // For now, setting it to a default or null if not directly in enum and not critical for DTO.
         // If your DTO requires it to be non-null and CUSTOM is not in enum, you might need to adjust.
         return calculateReport(attendances, employeeId, startDate, endDate, AttendanceReportType.CUSTOM, currentReportId);
+    }
+
+    @Override
+    public List<EmployeesAttendanceDailyReportDto> getCustomEmployeesAttendanceSummary(Long managerId, LocalDate startDate, LocalDate endDate) {
+
+        List<EmployeesAttendanceDailyReportDto> report = new LinkedList<>();
+        LocalDate date = startDate;
+        while(true){
+            report.add(getEmployeesAttendanceSummaryByDate(managerId, date));
+            date = date.plusDays(1);
+
+            if(date.compareTo(endDate)>0) break;
+        }
+
+        return report;
+    }
+
+    public EmployeesAttendanceDailyReportDto getEmployeesAttendanceSummaryByDate(Long managerId, LocalDate date){
+        List<EmployeeDto> employees = employeeClient.getEmployeesByManager(managerId);
+        List<Long> emploeyeeIds = employees.stream().map(e->e.getId()).toList();
+
+        Long test = attendanceRepository.countByDateAndEmployeeIdIn(date, emploeyeeIds);
+        List<Attendance> test1 = attendanceRepository.findByDateAndEmployeeIdIn(date, emploeyeeIds);
+        Long totalAbsent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.ABSENT);
+        Long totalPresent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.PRESENT);
+
+
+        return new EmployeesAttendanceDailyReportDto(totalPresent+totalAbsent, totalPresent, totalAbsent, date);
     }
 
     private List<AttendanceReportDto> generateReportsForEmployee(Long employeeId, List<Attendance> allEmployeeAttendances, AtomicLong currentReportId) {
