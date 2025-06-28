@@ -26,3 +26,7 @@ export const isClockedOut= async(employeeId) => {
 export const getAttendanceByEmployeeToday = async(employeeId) => {
   return await attendanceAx.get(`by-employee/${employeeId}/today`);
 }
+
+export const getLastAttendanceByEmployee = async(employeeId) => {
+  return await attendanceAx.get(`last-attendance/${employeeId}`)
+}

@@ -4,7 +4,7 @@ import TimelapseRoundedIcon from '@mui/icons-material/TimelapseRounded';
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded"
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useAuth } from '../../contexts/AuthProvider';
-import { clockIn, clockOut, getAttendanceByEmployeeToday, isClockedIn, isClockedOut } from '../../services/attendanceService';
+import { clockIn, clockOut, getAttendanceByEmployeeToday, getLastAttendanceByEmployee, isClockedIn, isClockedOut } from '../../services/attendanceService';
 import useSnackBar from '../../contexts/useSnackBar';
 
 /** @type {import('@mui/system').SxProps} */
@@ -22,7 +22,7 @@ const ClockInModule = () => {
   const [clockedOut, setClockedOut] = useState(false);
   const [clockedInTime, setClockedInTime] = useState("00:00:00")
   const [clockedOutTime, setClockedOutTime] = useState("00:00:00")
-  csont [lastClockedDate, setLastClokedDate] = useState("Today")
+  const [lastClockedDate, setLastClokedDate] = useState("Today")
 
   const {user} = useAuth()
   const showSnackBar = useSnackBar();
@@ -59,7 +59,18 @@ const ClockInModule = () => {
 
   useEffect(()=>{
     if(!clockedIn && !clockedIn){
-      
+      getLastAttendanceByEmployee(user.id)
+        .then(r =>{
+          setLastClokedDate(r.data.date)
+          if(r.data.clockOutTime) setClockedOutTime(r.data.clockOutTime)
+          else setClockedInTime(r.data.clockInTime)
+        })
+        .catch(e => {
+          console.log(e);
+          setLastClokedDate("--/--/--")
+        })
+    }else{
+      setLastClokedDate("Today")
     }
   })
 
@@ -106,7 +117,7 @@ const ClockInModule = () => {
             Last Clocked in at {clockedInTime},
         </Typography>
           }
-          <Typography>{lastClockedDate}</Typography>
+          <Typography>on {lastClockedDate}</Typography>
         </Paper>
   )
 }
