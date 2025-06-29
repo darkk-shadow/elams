@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -221,6 +222,50 @@ public class LeaveBalanceServiceImpl implements LeaveBalanceService {
     @Override
     public List<LeaveType> getLeaveTypes() {
         return Arrays.asList(LeaveType.values());
+    }
+
+    @Override
+    public List<LeaveBalanceResponseDto> getAllocatedLeave() {
+        List<LeaveType> leaveTypes = Arrays.asList(LeaveType.values());
+        List<LeaveBalanceResponseDto> dtos = new ArrayList<>();
+
+        int initialCasualLeave = 12;
+        int initialSickLeave = 7;
+        int initialVacationLeave = 15;
+        int initialPaternityLeave = 5;
+        int initialCompOff = 0;
+        int initialLossOfPay = 0;
+
+        for (LeaveType type : leaveTypes) {
+            LeaveBalanceResponseDto newBalance = new LeaveBalanceResponseDto();
+            newBalance.setLeaveType(type);
+            switch (type) {
+                case CASUAL_LEAVE:
+                    newBalance.setBalance(initialCasualLeave);
+                    break;
+                case SICK_LEAVE:
+                    newBalance.setBalance(initialSickLeave);
+                    break;
+                case VACATION_LEAVE:
+                    newBalance.setBalance(initialVacationLeave);
+                    break;
+                case PATERNITY_LEAVE:
+                    newBalance.setBalance(initialPaternityLeave);
+                    break;
+                case COMPENSATORY_OFF:
+                    newBalance.setBalance(initialCompOff);
+                    break;
+                case LOSS_OF_PAY:
+                    newBalance.setBalance(initialLossOfPay);
+                    break;
+                default:
+                    newBalance.setBalance(0);
+                    break;
+            }
+            dtos.add(newBalance);
+        }
+
+        return dtos;
     }
 
     private LeaveBalanceResponseDto mapToResponseDto(LeaveBalance leaveBalance) {

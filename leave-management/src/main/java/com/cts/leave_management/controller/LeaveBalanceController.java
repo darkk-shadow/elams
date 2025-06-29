@@ -74,4 +74,9 @@ public class LeaveBalanceController {
     public List<LeaveType> getLeaveTypes(){
         return leaveBalanceService.getLeaveTypes();
     }
+
+    @GetMapping("get-allocated-leaves")
+    public List<LeaveBalanceResponseDto> getAllocatedLeave(){
+        return leaveBalanceService.getAllocatedLeave();
+    }
 }

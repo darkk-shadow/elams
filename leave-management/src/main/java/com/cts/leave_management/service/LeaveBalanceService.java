@@ -18,4 +18,6 @@ public interface LeaveBalanceService {
     void checkSufficientLeaveBalance(Long employeeId, LeaveType leaveType, int days);
 
     List<LeaveType> getLeaveTypes();
+
+    List<LeaveBalanceResponseDto> getAllocatedLeave();
 }
