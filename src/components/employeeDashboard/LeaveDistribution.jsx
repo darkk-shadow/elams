@@ -1,8 +1,10 @@
 import { PieChart } from '@mui/x-charts/PieChart';
-import { Paper, Typography } from '@mui/material';
+import { Button, Paper, Typography } from '@mui/material';
 import { useManagerLeave } from '../../contexts/ManagerLeaveProvider';
 import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider';
 import { useEffect, useState } from 'react';
+import LaunchIcon from '@mui/icons-material/Launch';
+import { useNavigate } from 'react-router-dom';
 
 const data1 = [
   { label: 'Group A', value: 400 },
@@ -30,6 +32,7 @@ export default function LeaveDistribution() {
   const {leaveRequests} = useEmployeeLeave();
   const [leaveStatusDistribution, setLeaveStatusDistribution] = useState([]);
   const [leaveTypeDistribution, setLeaveTypeDistribution] = useState([]);
+  const navigate = useNavigate()
 
   useEffect(()=>{
       let lsd={};
@@ -65,7 +68,9 @@ export default function LeaveDistribution() {
 
   return (
     <Paper>
-      <Typography>Leave Distribution</Typography>
+      <Button sx={{ gap: 1, justifySelf: "start"}} onClick={() => navigate("/leaveManagement")}>
+        Leave Distribution <LaunchIcon fontSize='small' />
+      </Button>
     <PieChart
       series={[
         {
