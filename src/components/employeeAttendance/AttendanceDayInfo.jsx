@@ -14,12 +14,12 @@ const AttendanceDayInfo = ({attendance, isAbsent, isWeekEnd}) => {
     )
   }
 
+  if(!attendance) return <Typography>No Data</Typography>
+
   return (
     <Paper> 
       <Typography variant='h6' textAlign="center">{enumToString(attendance.status)}</Typography>
       { 
-        !attendance? <>No data</>
-        :
         Object.keys(attendance)
         .filter(k=>k!="id" && k!="employeeId")
         .map(key=><Box sx={{

@@ -8,15 +8,16 @@ import { Paper, Button, Box } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
 import AttendanceDay from '../employeeAttendance/AttendanceDay';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function AttendanceModule() {
   const [value, setValue] = React.useState(dayjs());
-
+  const navigate = useNavigate();
 
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-      <Button sx={{ gap: 1 }} onClick={() => console.log("Navigate to attendance management")}>
+      <Button sx={{ gap: 1 }} onClick={() => navigate("/attendanceManagement")}>
         Attendance Report <LaunchIcon fontSize='small' />
       </Button>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
