@@ -7,13 +7,14 @@ import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { useEmployee } from '../../contexts/EmployeeProvider';
+import { enumToString } from '../../util/helpers';
 
 
 const EmployeeProfile = () => {
   const {user} = useAuth();
   const navigate = useNavigate();
   const theme = useTheme();
-  const {manager, setManager} = useEmployee();
+  const {manager, setManager, shift} = useEmployee();
 
   useEmployee(()=>{
     setManager(manager)
@@ -44,7 +45,7 @@ const EmployeeProfile = () => {
                   <Typography >Employee id: EMP{user.id}</Typography>
                 </Box>
                 <Typography variant='h6'>email: {user.email}</Typography>
-                <Typography variant='h6'>shift: {user.email}</Typography>
+                <Typography variant='h6'>shift: {enumToString(shift.type)}</Typography>
                 <Box sx={{display: "flex", gap: 2}}>
                   <Button variant='outlined' color='warning'>Change password</Button>
                   <Button variant='outlined'>Update profile</Button>

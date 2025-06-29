@@ -98,7 +98,10 @@ const ClockInModule = () => {
     <Paper sx={style.layout}>
           <Box sx={{display: "flex", gap: 1}}>
             <TimelapseRoundedIcon />
-            <Typography>Shift: {shift.type}</Typography>
+            <Box>
+              <Typography>Shift: {shift.type}</Typography>
+              <Typography variant='subtitle2'>{shift.startTime} - {shift.endTime}</Typography>
+            </Box>
           </Box>
           { (!clockedIn) ?
           <Button size='small' variant="outlined" sx={{gap: 1}} onClick={clockInHandler}>
