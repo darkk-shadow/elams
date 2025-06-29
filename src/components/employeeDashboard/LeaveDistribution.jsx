@@ -80,7 +80,15 @@ export default function LeaveDistribution() {
         },
       ]}
       height={300}
-    
+      slotProps={{
+        legend: {
+          direction: 'horizontal',
+          position: { 
+            vertical: 'bottom',
+            horizontal: 'center'
+          }
+        }
+      }}
     /></Paper>
   );
 }
