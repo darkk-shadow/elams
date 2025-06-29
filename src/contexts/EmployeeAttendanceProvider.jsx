@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getAttendancesByEmployee } from "../services/attendanceService";
 import { useAuth } from "./AuthProvider";
+import generateAllAttendanceReports from "../util/generateAllAttendanceReports";
 
 const EmployeeAttendanceContext = createContext();
 
@@ -9,6 +10,7 @@ const EmployeeAttendanceProvider = ({children}) => {
   const {user} = useAuth();
 
   const [attendances, setAttendances] = useState([]);
+  const [attendanceReport, setAttendanceReport] = useState(null);
 
   useEffect(()=>{
     getAttendancesByEmployee(user.id)
@@ -16,9 +18,16 @@ const EmployeeAttendanceProvider = ({children}) => {
       .catch(e => console.error(e));
   },[])
 
+  useEffect(()=>{
+    const report = generateAllAttendanceReports(attendances);
+    console.log(report)
+    setAttendanceReport(report)
+  }, [attendances])
+
   return (
     <EmployeeAttendanceContext.Provider value={{
-      attendances, setAttendances
+      attendances, setAttendances,
+      attendanceReport, setAttendanceReport
     }}>
       {children}
     </EmployeeAttendanceContext.Provider>

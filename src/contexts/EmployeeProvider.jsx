@@ -21,7 +21,6 @@ const EmployeeProvier = ({children}) => {
 
   useEffect(()=>{
     if(!employee) return;
-    console.log(employee)
     getEmployeeById(employee.managerId)
       .then(r=>setManager(r.data))
       .catch(e => console.error(e))
