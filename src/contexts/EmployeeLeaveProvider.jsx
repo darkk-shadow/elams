@@ -21,7 +21,7 @@ const EmployeeLeaveProvider = ({children}) => {
     getLeaveBalanceByEmployee(user.id)
       .then(r => setLeaveBalances(r.data))
       .catch(e => console.error(e));
-  })
+  },[])
 
   return(
     <EmployeeLeaveContext.Provider value={{
