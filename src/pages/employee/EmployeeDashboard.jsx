@@ -8,6 +8,7 @@ import LeaveBalanceModule from '../../components/employeeDashboard/LeaveBalanceM
 import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestModule';
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
+import LeaveSummary from '../../components/employeeDashboard/LeaveSummary';
 
 
 export default function EmployeeDashboard() {
@@ -28,7 +29,7 @@ export default function EmployeeDashboard() {
         </Button>
         <Quotes />
         <ClockInModule />
-        <LeaveBalanceModule />
+        <LeaveSummary />
         <AttendanceModule />
         <LeaveRequestModule />
         

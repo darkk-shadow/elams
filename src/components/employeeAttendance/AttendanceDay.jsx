@@ -13,9 +13,6 @@ const AttendanceDay = (props) => {
 
   const {attendances} = useEmployeeAttendance();
 
-  console.log(day.format("YYYY-MM-DD"))
-  // console.log(attendances.find(a => a.date==day.toISOString().slice(0,10)))
-
   const isWeekEnd = day.format("ddd") == "Sat" || day.format("ddd") == "Sun";
   const isOutOfBound = day.isBefore(new Date("2025-01-01")) || day.isAfter(new Date());
   

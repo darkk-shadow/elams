@@ -34,16 +34,10 @@ const LeaveBalanceModule = () => {
 	const {leaveBalances} = useEmployeeLeave();
 
 	return (
-		<Paper sx={style.layout}>
-
-			<Button
-				onClick={()=>navigate("/leaveManagement")}
-				sx={{ gap: 1, justifySelf: "start" }}
-			>Leave Balances<LaunchIcon fontSize='small' /></Button>
-
-
-			<Box sx={style.leaves}>
-
+		<Paper>
+			<Box sx={{display: "grid", gap:2}}>
+			<Typography variant="h6">Leave Balances</Typography>
+			<Box sx={{display: "grid", gridAutoFlow: "column", placeContent:"space-around"}}>
 				{leaveBalances.map(lb => (
 					<Box sx={style.leave} >
 						<Button variant='outlined' >
@@ -52,6 +46,7 @@ const LeaveBalanceModule = () => {
 						<Typography>{enumToString(lb.leaveType)}</Typography>
 					</Box>
 				))}
+			</Box>
 
 			</Box>
 		</Paper>
