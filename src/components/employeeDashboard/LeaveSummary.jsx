@@ -16,15 +16,14 @@ const style = {
 		paddingX: 10,
 		display: "grid",
 		gridAutoFlow: "column",	
-		placeItems: "space-between",
-		gap: 1
+		placeContent: "space-evenly",
+		gap: 4,
+		gridTemplateColumns: "repeat(5, 1fr)"	
 	},
 	leave: {
 		display: "grid",
-		gridTemplateRows: "1fr 1fr",
 		textAlign: "center",
-		maxWidth: "100px",
-		minWidth: "min-content"
+		placeItems: "center",
 	}
 }
 
@@ -45,12 +44,11 @@ const LeaveSummary = () => {
 			<Box sx={style.leaves}>
 
 				{leaveData.map(d => (
-					<Box sx={style.leave} >
-						<Button variant='outlined' >
-							<Typography>{d.value}</Typography>
-						</Button>
-						<Typography>{d.label}</Typography>
-					</Box>
+					<Paper variant='outlined' sx={style.leave} >
+						<d.icon sx={{color: d.color}} />
+						<Typography sx={{color: d.color}} >{d.label}</Typography>
+						<Typography sx={{color: d.color}} >{d.value}</Typography>
+					</Paper>
 				))}
 
 			</Box>

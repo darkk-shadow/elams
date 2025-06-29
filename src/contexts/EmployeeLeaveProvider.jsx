@@ -1,6 +1,12 @@
 import { createContext, Suspense, useContext, useEffect, useState } from "react";
 import { getAllocatedLeaves, getLeaveBalanceByEmployee, getLeaveRequestByEmployee, getLeaveTypes } from "../services/leaveService";
 import { useAuth } from "./AuthProvider";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import GroupIcon from '@mui/icons-material/Group';
+import { MoreHoriz } from "@mui/icons-material";
 
 const EmployeeLeaveContext = createContext()
 
@@ -50,23 +56,33 @@ const EmployeeLeaveProvider = ({children}) => {
       setLeaveData([
         {
           label: "Total Balance",
-          value: totalBalance
+          value: totalBalance,
+          icon: GroupIcon,
+          color: "blue"
         },
         {
           label: "Used Leaves",
-          value: usedLeave
+          value: usedLeave,
+          icon: CheckCircleIcon,
+          color: "green"
         },
         {
           label: "Approved Leaves",
-          value: approvedLeave
+          value: approvedLeave,
+          icon: CancelIcon,
+          color: "red"
         },
         {
           label: "Rejected Leaves",
-          value: rejectedLeave
+          value: rejectedLeave,
+          icon: EventAvailableIcon,
+          color: "orange"
         },
         {
           label: "More",
-          value: "..."
+          value: "...",
+          icon: MoreHoriz,
+          color: "blue"
         }
       ])
     },[allocatedLeaves, leaveBalances])
