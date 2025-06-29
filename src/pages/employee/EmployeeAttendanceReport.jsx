@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import AttendanceCalendar from '../../components/employeeAttendance/AttendanceCalendar'
 import { Box, Card, Paper, Typography } from '@mui/material'
 import CalendarLegend from '../../components/employeeAttendance/CalenderLegend'
+import AttendanceReportInfo from '../../components/employeeAttendance/AttendanceReportInfo'
 
 const markLabels = {
   PRESENT: 'Present',
@@ -20,15 +21,13 @@ const markColors = {
 const EmployeeAttendanceReport = () => {
 
   return (
-    <Box sx={{display: "grid", gridTemplateColumns: "1fr 3fr"}}>
+    <Box sx={{display: "grid", gridTemplateColumns: "1fr 3fr", gap: 4}}>
       <Paper>
         <Typography variant='h5' textAlign="center">Attendance Report Calendar</Typography>
         <AttendanceCalendar />
         <CalendarLegend markColors={markColors} markLabels={markLabels} />
       </Paper>
-      <Box>
-        
-      </Box>
+      <AttendanceReportInfo />
     </Box>
 
   )

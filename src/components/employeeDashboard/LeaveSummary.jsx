@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useNavigate } from 'react-router-dom';
 import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider';
-import { enumToString } from '../../util/helpers';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
