@@ -15,7 +15,6 @@ const ManagerLeaveProvider = ({children}) => {
     getLeaveRequestsByManager(user.id)
       .then(r => setLeaveRequests(r.data))
       .catch(e => console.error(e));
-
   },[])
 
   useEffect(()=>{

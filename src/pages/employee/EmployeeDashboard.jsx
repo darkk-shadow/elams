@@ -9,6 +9,8 @@ import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestM
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
 import LeaveSummary from '../../components/employeeDashboard/LeaveSummary';
+import AttendanceSummary from '../../components/employeeDashboard/AttendanceSummary';
+import LeaveDistribution from '../../components/employeeDashboard/LeaveDistribution';
 
 
 export default function EmployeeDashboard() {
@@ -31,7 +33,10 @@ export default function EmployeeDashboard() {
         <ClockInModule />
         <LeaveSummary />
         <AttendanceModule />
-        <LeaveRequestModule />
+        <Box sx={{display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4}}>
+          <AttendanceSummary />
+          <LeaveDistribution />
+        </Box>
         
       </Box>
   );
