@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 // Plugins for advanced date manipulation (e.g., start of week relative to locale)
 import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore"; // Ensure this is imported
 
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
-dayjs.extend(isSameOrBefore)
+dayjs.extend(isSameOrBefore); // Extend the plugin
 
 // --- Configuration ---
 // As per the prompt, current date is Sunday, June 29, 2025
@@ -41,7 +41,6 @@ function getMondayOfRelevantWeek(date) {
 
 /**
  * Generates attendance data and summary for a specified period.
- * (This function remains largely the same, as the date range logic is handled upstream)
  * @param {Object.<string, Object>} attendancesMap - A map of attendance records, keyed by date string (YYYY-MM-DD).
  * @param {dayjs.Dayjs} fromDate - The start date of the period (inclusive).
  * @param {dayjs.Dayjs} toDate - The end date of the period (inclusive).
@@ -112,12 +111,12 @@ function generatePeriodData(attendancesMap, fromDate, toDate) {
     };
 }
 
-// --- Main Report Generation Function ---
 
 /**
- * Generates weekly, monthly, and yearly attendance reports and their summaries based on past days.
+ * Generates various predefined attendance reports and their summaries.
+ * Includes reports for the current week/month (up to yesterday), last full week, last full month, and yearly.
  * @param {Array<Object>} rawAttendances - An array of raw attendance objects.
- * @returns {Object} - An object containing weeklyReport, monthlyReport, yearlyReport, and attendanceReportSummary.
+ * @returns {Object} - An object containing attendance data and summaries for each report type.
  */
 export default function generateAllAttendanceReports(rawAttendances) {
     const attendancesMap = rawAttendances.reduce((acc, att) => {
@@ -128,98 +127,90 @@ export default function generateAllAttendanceReports(rawAttendances) {
     const today = CURRENT_DATE_REF; // Our fixed "current date" (Sunday, June 29, 2025)
     const companyStartDate = COMPANY_START_DATE;
 
-    // The universal end date for all reports is always yesterday
+    // The universal end date for all "up to yesterday" reports
     const reportEndDate = today.subtract(1, 'day'); // For '2025-06-29' (Sunday), this is '2025-06-28' (Saturday)
 
-    // --- Weekly Report Period ---
-    let weeklyReportFrom;
-    let weeklyReportTo;
+    // --- Reports for the period ending yesterday (or last full period if today is a boundary) ---
 
-    const isTodayWeekend = (today.day() === 0 || today.day() === 6); // 0=Sunday, 6=Saturday
+    // Current Weekly Report Period (current week up to yesterday, or last full week if today is a weekend)
+    let currentWeeklyReportFrom;
+    let currentWeeklyReportTo;
+    const isTodayWeekend = (today.day() === 0 || today.day() === 6);
 
     if (isTodayWeekend) {
         // If today is a weekend, report on the *entire last full Monday-Sunday week*
-        // Get Monday of the week *before* the current one
-        weeklyReportFrom = getMondayOfRelevantWeek(today.subtract(7, 'day'));
-        // Get Sunday of the week *before* the current one
-        weeklyReportTo = dayjs(weeklyReportFrom).add(6, 'day');
-
+        currentWeeklyReportFrom = getMondayOfRelevantWeek(today.subtract(7, 'day'));
+        currentWeeklyReportTo = dayjs(currentWeeklyReportFrom).add(6, 'day'); // Sunday of last week
     } else {
         // If today is a weekday (Mon-Fri), report on the *current week up to yesterday*
-        weeklyReportFrom = getMondayOfRelevantWeek(today); // Monday of the current week
-        weeklyReportTo = reportEndDate; // Yesterday
+        currentWeeklyReportFrom = getMondayOfRelevantWeek(today); // Monday of current week
+        currentWeeklyReportTo = reportEndDate; // Yesterday
     }
-    const weeklyData = generatePeriodData(attendancesMap, weeklyReportFrom, weeklyReportTo);
+    const currentWeeklyData = generatePeriodData(attendancesMap, currentWeeklyReportFrom, currentWeeklyReportTo);
 
-
-    // --- Monthly Report Period ---
-    let monthlyReportFrom;
-    let monthlyReportTo;
+    // Current Monthly Report Period (current month up to yesterday, or last full month if today is 1st)
+    let currentMonthlyReportFrom;
+    let currentMonthlyReportTo;
 
     if (today.date() === 1) { // If today is the 1st of the month
         // Report on the *entire last month*
-        monthlyReportFrom = dayjs(today).subtract(1, 'month').startOf('month');
-        monthlyReportTo = dayjs(monthlyReportFrom).endOf('month'); // Last day of last month
+        currentMonthlyReportFrom = dayjs(today).subtract(1, 'month').startOf('month');
+        currentMonthlyReportTo = dayjs(currentMonthlyReportFrom).endOf('month'); // Last day of last month
     } else {
         // Report current month from the 1st up to yesterday
-        monthlyReportFrom = dayjs(today).startOf('month');
-        monthlyReportTo = reportEndDate;
+        currentMonthlyReportFrom = dayjs(today).startOf('month');
+        currentMonthlyReportTo = reportEndDate;
     }
-    const monthlyData = generatePeriodData(attendancesMap, monthlyReportFrom, monthlyReportTo);
+    const currentMonthlyData = generatePeriodData(attendancesMap, currentMonthlyReportFrom, currentMonthlyReportTo);
 
-
-    // --- Yearly Report Period ---
-    // From company start date up to yesterday
+    // Yearly Report Period (from company start date up to yesterday)
     const yearlyReportFrom = companyStartDate;
     const yearlyReportTo = reportEndDate;
     const yearlyData = generatePeriodData(attendancesMap, yearlyReportFrom, yearlyReportTo);
 
+    // --- Explicit Last Full Period Reports (independent of today's date) ---
 
-    // Ensure valid date ranges before including in reports (e.g., if company just started yesterday)
-    const hasWeeklyData = weeklyReportFrom.isSameOrBefore(weeklyReportTo);
-    const hasMonthlyData = monthlyReportFrom.isSameOrBefore(monthlyReportTo);
+    // Last Full Week (Monday-Sunday of the week immediately preceding the current week)
+    const lastFullWeekMonday = getMondayOfRelevantWeek(today).subtract(7, 'day');
+    const lastFullWeekSunday = lastFullWeekMonday.add(6, 'day');
+    const lastFullWeekData = generatePeriodData(attendancesMap, lastFullWeekMonday, lastFullWeekSunday);
+
+    // Last Full Month
+    const lastMonthEnd = dayjs(today).subtract(1, 'month').endOf('month');
+    const lastMonthStart = lastMonthEnd.startOf('month');
+    const lastFullMonthData = generatePeriodData(attendancesMap, lastMonthStart, lastMonthEnd);
+
+    // --- Check Validity and Compile Summaries ---
+    const hasCurrentWeeklyData = currentWeeklyReportFrom.isSameOrBefore(currentWeeklyReportTo);
+    const hasCurrentMonthlyData = currentMonthlyReportFrom.isSameOrBefore(currentMonthlyReportTo);
     const hasYearlyData = yearlyReportFrom.isSameOrBefore(yearlyReportTo);
+    const hasLastFullWeekData = lastFullWeekMonday.isSameOrBefore(lastFullWeekSunday);
+    const hasLastFullMonthData = lastMonthStart.isSameOrBefore(lastMonthEnd);
+
+    const allSummaries = [];
+
+    if (hasCurrentWeeklyData) {
+        allSummaries.push({ type: 'CURRENT_WEEKLY', ...currentWeeklyData.summary });
+    }
+    if (hasCurrentMonthlyData) {
+        allSummaries.push({ type: 'CURRENT_MONTHLY', ...currentMonthlyData.summary });
+    }
+    if (hasLastFullWeekData) {
+        allSummaries.push({ type: 'LAST_FULL_WEEK', ...lastFullWeekData.summary });
+    }
+    if (hasLastFullMonthData) {
+        allSummaries.push({ type: 'LAST_FULL_MONTH', ...lastFullMonthData.summary });
+    }
+    if (hasYearlyData) {
+        allSummaries.push({ type: 'YEARLY', ...yearlyData.summary });
+    }
 
     return {
-        weeklyReport: hasWeeklyData ? weeklyData.attendances : [],
-        monthlyReport: hasMonthlyData ? monthlyData.attendances : [],
+        currentWeeklyReport: hasCurrentWeeklyData ? currentWeeklyData.attendances : [],
+        currentMonthlyReport: hasCurrentMonthlyData ? currentMonthlyData.attendances : [],
         yearlyReport: hasYearlyData ? yearlyData.attendances : [],
-        attendanceReportSummary: [
-            hasWeeklyData ? { type: 'WEEKLY', ...weeklyData.summary } : null,
-            hasMonthlyData ? { type: 'MONTHLY', ...monthlyData.summary } : null,
-            hasYearlyData ? { type: 'YEARLY', ...yearlyData.summary } : null,
-        ].filter(Boolean) // Filter out any null entries if a report period is invalid
+        lastFullWeeklyReport: hasLastFullWeekData ? lastFullWeekData.attendances : [],
+        lastFullMonthlyReport: hasLastFullMonthData ? lastFullMonthData.attendances : [],
+        attendanceReportSummary: allSummaries,
     };
 }
-
-// --- Example Usage ---
-
-// Your example raw attendances data
-const exampleAttendances = [
-    { "id": 1, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-23", "status": "PRESENT", "employeeId": 101 }, // Mon, Jun 23
-    { "id": 2, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-24", "status": "PRESENT", "employeeId": 101 }, // Tue, Jun 24
-    { "id": 3, "clockInTime": "09:00", "clockOutTime": "13:00", "workHours": 4, "date": "2025-06-25", "status": "HALF_DAY", "employeeId": 101 }, // Wed, Jun 25
-    { "id": 4, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-27", "status": "PRESENT", "employeeId": 101 }, // Fri, Jun 27
-    // NO RECORD for 2025-06-26 (Thursday) -> Will be counted as ABSENT by logic
-    // 2025-06-28 (Saturday) - Weekend, will be excluded from working days
-    // 2025-06-29 (Sunday) - Weekend, will be excluded from working days
-
-    // Monthly data (June 2025 - current month)
-    { "id": 5, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-02", "status": "PRESENT", "employeeId": 101 }, // Mon, Jun 2
-    { "id": 6, "clockInTime": "00:00", "clockOutTime": "00:00", "workHours": 0, "date": "2025-06-03", "status": "ABSENT", "employeeId": 101 }, // Tue, Jun 3 (explicitly absent)
-    { "id": 7, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 7.5, "date": "2025-06-10", "status": "PRESENT", "employeeId": 101 },
-    { "id": 8, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8.0, "date": "2025-06-11", "status": "PRESENT", "employeeId": 101 },
-    // Missing: 2025-06-04 (Wed), 2025-06-12 (Thu) -> will be ABSENT
-
-    // Yearly data (from 2025-01-01)
-    { "id": 9, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-01-01", "status": "PRESENT", "employeeId": 101 }, // Company start date
-    { "id": 10, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-01-02", "status": "PRESENT", "employeeId": 101 },
-    { "id": 11, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-05-20", "status": "PRESENT", "employeeId": 101 },
-    { "id": 12, "clockInTime": "00:00", "clockOutTime": "00:00", "workHours": 0, "date": "2025-05-21", "status": "ABSENT", "employeeId": 101 }, // Explicitly absent in May
-
-    // Data for last full week (June 16-22) to test weekend logic:
-    { "id": 13, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-16", "status": "PRESENT", "employeeId": 101 }, // Mon, Jun 16
-    { "id": 14, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-17", "status": "PRESENT", "employeeId": 101 }, // Tue, Jun 17
-    // Missing Jun 18, 19, 20
-    { "id": 15, "clockInTime": "09:00", "clockOutTime": "17:00", "workHours": 8, "date": "2025-06-22", "status": "PRESENT", "employeeId": 101 }, // Sun, Jun 22 (This will be correctly ignored as a weekend)
-];

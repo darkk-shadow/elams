@@ -11,7 +11,7 @@ const AttendanceSummary = () => {
   const [weeklyReport, setWeeklyReport] = useState({});
   const [monthlyReport, setMonthlyReport] = useState({});
   const [yearlyReport, setYearlyReport] = useState({})
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -20,9 +20,10 @@ const AttendanceSummary = () => {
   },[attendanceReport])
 
   useEffect(()=>{
+    if(!attendanceReport) return;
     setWeeklyReport(summary[0])
     setMonthlyReport(summary[1])
-    setYearlyReport(summary[2])
+    setYearlyReport(summary[4])
   },[summary])
 
   useEffect(()=>{

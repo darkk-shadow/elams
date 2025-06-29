@@ -20,7 +20,7 @@ const EmployeeAttendanceProvider = ({children}) => {
 
   useEffect(()=>{
     const report = generateAllAttendanceReports(attendances);
-    console.log(attendances)
+    console.log(report)
     setAttendanceReport(report)
   }, [attendances])
 
