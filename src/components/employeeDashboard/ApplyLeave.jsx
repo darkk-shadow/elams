@@ -63,17 +63,29 @@ const ApplyLeave = ({open, setOpen}) => {
             options={leaveTypes.map(l=>({label: l}))}
             sx={{ width: 300 }}
             renderInput={(params) => {
-            return <TextField {...params} label="Leave Type" />}}
+            return <TextField {...params} label="Leave Type"  required/>}}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker format='DD-MM-YYYY' label="Leave from date" onChange={(e) => setStartDate(e.format("YYYY-MM-DD"))} />
+              <DatePicker format='DD-MM-YYYY' label="Leave from date"
+              slotProps={{
+                textField: {
+                  required: true,
+                },
+              }}
+              onChange={(e) => setStartDate(e.format("YYYY-MM-DD"))} />
           </LocalizationProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker format='DD-MM-YYYY' label="Leave to date" onChange={(e) => setEndDate(e.format("YYYY-MM-DD"))} />
+              <DatePicker format='DD-MM-YYYY' label="Leave to date"
+              slotProps={{
+                textField: {
+                  required: true,
+                },
+              }}
+              onChange={(e) => setEndDate(e.format("YYYY-MM-DD"))} />
           </LocalizationProvider>
           
           
-        <TextField label="Reason" onChange={e => setReason(e.target.value)} />
+        <TextField required label="Reason" onChange={e => setReason(e.target.value)} />
         <Box sx={{display: "flex", placeContent: "space-around"}}>
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>

@@ -10,7 +10,7 @@ import AttendanceModule from '../../components/employeeDashboard/AttendanceModul
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
 
 
-export default function MenuAppBar() {
+export default function EmployeeDashboard() {
 
   const [modalOpen, setModalOpen] = useState(false)
 

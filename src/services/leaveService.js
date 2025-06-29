@@ -18,3 +18,7 @@ export const createLeaveRequest = async(request) => {
 export const getLeaveBalanceByEmployee = async(employeeId) => {
   return await leaveBalanceAx.get(`/employee/${employeeId}`);
 }
+
+export const getLeaveRequestByEmployee = async(employeeId) => {
+  return await leaveRequestAx.get(`by-employee?employeeId=${employeeId}`)
+}

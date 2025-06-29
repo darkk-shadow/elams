@@ -1,46 +1,33 @@
-import React from 'react'
-import { Box } from '@mui/material'
-import LeaveBalances from '../../components/leaveManagement/LeaveBalances'
-import LeaveRequests from '../../components/leaveManagement/LeaveRequests'
-import LeaveStats from '../../components/leaveManagement/LeaveStats'
-import ApplyLeaveButton from '../../components/leaveManagement/ApplyLeaveButton'
-import LeaveRequestDrafts from '../../components/leaveManagement/LeaveRequestDrafts'
+import  {useEffect, useContext, useState} from 'react';
+import Box from '@mui/material/Box';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { Button, Card, Typography, useTheme } from '@mui/material';
+import Quotes from '../../components/employeeDashboard/Quotes';
+import ClockInModule from '../../components/employeeDashboard/ClockInModule';
+import LeaveBalanceModule from '../../components/employeeDashboard/LeaveBalanceModule';
+import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestModule';
+import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
+import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
 
-const EmployeeLeave = () => {
-  return (
-    <Box sx={{ p: 2, maxWidth: 1100, mx: 'auto' }}>
-      <Box sx={{
-        display: 'grid',
-        gridTemplateColumns: '2.5fr 1fr',
-        gap: 6,
-        alignItems: 'start',
-      }}>
-        {/* Left group: LeaveBalances, LeaveRequests, and LeaveRequestDrafts stacked, left-aligned */}
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-          gap: 3,
-          width: '100%',
-        }}>
-          <LeaveBalances />
-          <LeaveRequests />
-          <LeaveRequestDrafts />
-        </Box>
-        {/* Right group: ApplyLeaveButton on top, LeaveStats below, right-aligned */}
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-end',
-          gap: 3,
-          width: '100%',
-        }}>
-          <ApplyLeaveButton />
-          <LeaveStats />
-        </Box>
+
+export default function EmployeeLeave() {
+
+  const [modalOpen, setModalOpen] = useState(false)
+
+  return (<Box sx={{
+      display: "grid",
+      gap: "2em",
+    }}>
+      {/* <ApplyLeave open={modalOpen} setOpen={setModalOpen} />
+        <Button variant='outlined' sx={{ gap: 1, justifySelf: "start" }}
+          onClick={()=>setModalOpen(true)}
+        >
+          <EditNoteIcon />
+          <Typography>{"Apply Leave"} </Typography>
+        </Button> */}
+        <LeaveBalanceModule />
+        <LeaveRequestModule />
+        
       </Box>
-    </Box>
-  )
+  );
 }
-
-export default EmployeeLeave

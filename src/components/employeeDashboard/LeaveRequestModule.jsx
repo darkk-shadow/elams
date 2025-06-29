@@ -1,54 +1,72 @@
-import { Box, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import React from 'react'
-import LaunchIcon from '@mui/icons-material/Launch';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import { DataGrid } from "@mui/x-data-grid";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import { useEmployeeLeave } from "../../contexts/EmployeeLeaveProvider";
+import { Button, Paper, Typography } from "@mui/material";
+import ApplyLeave from "./ApplyLeave";
 
+export default function LeaveRequests() {
+  const { leaveRequests } = useEmployeeLeave();
+  const [modalOpen, setModalOpen] = useState(false);
 
-/** @type {import('@mui/system').SxProps} */
-const style = {
-    layout: {
-        display: "grid",
-        gap: 1,
-        gridTemplateRows: "auto 1fr"
+  const columns = [
+    { field: "id", headerName: "Leave Id" },
+    {
+      field: "leaveType",
+      headerName: "Leave type",
+      flex: 0.7
     },
-}
-const LeaveRequestModule = () => {
+    {
+      field: "startDate",
+      headerName: "From Date",
+      flex: 0.5
+    },
+    {
+      field: "endDate",
+      headerName: "To Date",
+      flex: 0.5
+    },
+    {
+      field: "reason",
+      headerName: "Reason",
+      flex: 1
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.5
+    },
+  ];
 
-    const navigate = useNavigate();
-
-    return (
-        <Paper sx={style.layout}>
-
-            <Button sx={{ gap: 1, justifySelf: "start" }}
-                onClick={()=>navigate("leaveManagement")}
+  return (
+    <Paper >
+      <Box sx={{display: "grid", gap:2}}>
+        <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Typography variant="h6">Leave Requests</Typography>
+          
+            <ApplyLeave open={modalOpen} setOpen={setModalOpen} />
+            <Button variant='outlined' sx={{ gap: 1, justifySelf: "start" }}
+              onClick={()=>setModalOpen(true)}
             >
-                Leave Requests<LaunchIcon fontSize='small' />
+              <EditNoteIcon />
+              <Typography>{"Apply Leave"} </Typography>
             </Button>
-            <TableContainer sx={{ justifySelf: "start" }} >
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="left">Type</TableCell>
-                            <TableCell align="left">From</TableCell>
-                            <TableCell align="left">To</TableCell>
-                            <TableCell align="left">Status</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {Array.from({ length: 5 }).map(e => (
-                            <TableRow>
-                                <TableCell align="left">Sick Leave</TableCell>
-                                <TableCell align="left">12 Jul 2025</TableCell>
-                                <TableCell align="left">15 Jul 2025</TableCell>
-                                <TableCell align="left">Pending</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
 
-        </Paper>
-    )
+        </Box>
+      <DataGrid 
+        rows={leaveRequests}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
+      />
+      </Box>
+    </Paper>
+  );
 }
-
-export default LeaveRequestModule

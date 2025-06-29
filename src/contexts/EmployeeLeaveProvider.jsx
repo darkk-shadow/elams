@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getLeaveBalanceByEmployee, getLeaveTypes } from "../services/leaveService";
+import { getLeaveBalanceByEmployee, getLeaveRequestByEmployee, getLeaveTypes } from "../services/leaveService";
 import { useAuth } from "./AuthProvider";
 
 const EmployeeLeaveContext = createContext()
@@ -8,6 +8,7 @@ const EmployeeLeaveProvider = ({children}) => {
 
   const [leaveTypes, setLeaveTypes] = useState([]);
   const [leaveBalances, setLeaveBalances] = useState([]);
+  const [leaveRequests, setLeaveRequests] = useState([])
 
   const {user} = useAuth();
 
@@ -23,10 +24,17 @@ const EmployeeLeaveProvider = ({children}) => {
       .catch(e => console.error(e));
   },[])
 
+  useEffect(()=>{
+    getLeaveRequestByEmployee(user.id)
+      .then(r => setLeaveRequests(r.data))
+      .catch(e => console.error(e))
+  },[])
+
   return(
     <EmployeeLeaveContext.Provider value={{
       leaveTypes, setLeaveTypes,
       leaveBalances, setLeaveBalances,
+      leaveRequests, setLeaveRequests
     }}>
       {children}
     </EmployeeLeaveContext.Provider>
