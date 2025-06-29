@@ -29,4 +29,6 @@ public interface AttendanceService {
     AttendanceResponseDto getAttendanceByEmployeeToday(Long employeeId);
 
     AttendanceResponseDto getLastAttendanceByEmployee(Long employeeId);
+
+    List<AttendanceResponseDto> getAttendancesByEmployee(Long employeeId);
 }

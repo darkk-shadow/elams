@@ -85,4 +85,9 @@ public class AttendanceController {
     public AttendanceResponseDto deleteByEmployeeToday(@PathVariable Long employeeId){
         return attendanceService.deleteByEmployeeToday(employeeId);
     }
+
+    @GetMapping("by-employee/{employeeId}")
+    public List<AttendanceResponseDto> getAttendancesByEmployee(@PathVariable Long employeeId){
+        return  attendanceService.getAttendancesByEmployee(employeeId);
+    }
 }

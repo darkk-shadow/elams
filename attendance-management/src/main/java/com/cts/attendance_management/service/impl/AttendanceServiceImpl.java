@@ -175,6 +175,14 @@ public class AttendanceServiceImpl implements AttendanceService {
         return modelMapper.map(attendance, AttendanceResponseDto.class);
     }
 
+    @Override
+    public List<AttendanceResponseDto> getAttendancesByEmployee(Long employeeId) {
+        List<Attendance> attendances = attendanceRepository.findByEmployeeId(employeeId);
+        return attendances.stream()
+                .map((a)->modelMapper.map(a, AttendanceResponseDto.class))
+                .toList();
+    }
+
     private double calculateWorkHours(Temporal clockInTime, Temporal clockOutTime){
         logger.debug("Calculating working hours of "+clockInTime+" and "+clockOutTime);
         Duration duration = Duration.between(clockInTime, clockOutTime);
