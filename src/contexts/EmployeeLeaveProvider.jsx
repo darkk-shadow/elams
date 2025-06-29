@@ -10,6 +10,7 @@ const EmployeeLeaveProvider = ({children}) => {
   const [leaveBalances, setLeaveBalances] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([])
   const [allocatedLeaves, setAllocatedLeaves] = useState([])
+  const [leaveData, setLeaveData] = useState([]);
 
   const {user} = useAuth();
 
@@ -37,12 +38,46 @@ const EmployeeLeaveProvider = ({children}) => {
       .catch(e => console.log(e))
   },[])
 
+  useEffect(()=>{
+      if(!allocatedLeaves || !leaveBalances) return;
+      if(allocatedLeaves.length <1 && leaveBalances.length < 1) return;
+      const totalBalance = leaveBalances.reduce((a, b)=>a+b.balance,0)
+      const allLvs =  allocatedLeaves.reduce((a, b)=>a+b.balance,0)
+      const usedLeave = allLvs - totalBalance
+      const approvedLeave = usedLeave / 2;
+      const rejectedLeave = usedLeave - approvedLeave;
+  
+      setLeaveData([
+        {
+          label: "Total Balance",
+          value: totalBalance
+        },
+        {
+          label: "Used Leaves",
+          value: usedLeave
+        },
+        {
+          label: "Approved Leaves",
+          value: approvedLeave
+        },
+        {
+          label: "Rejected Leaves",
+          value: rejectedLeave
+        },
+        {
+          label: "More",
+          value: "..."
+        }
+      ])
+    },[allocatedLeaves, leaveBalances])
+
   return(
     <EmployeeLeaveContext.Provider value={{
       leaveTypes, setLeaveTypes,
       leaveBalances, setLeaveBalances,
       leaveRequests, setLeaveRequests,
-      allocatedLeaves, setAllocatedLeaves
+      allocatedLeaves, setAllocatedLeaves,
+      leaveData, setLeaveData,
     }}>
       <Suspense fallback={<div>hey </div>}>
         {children}

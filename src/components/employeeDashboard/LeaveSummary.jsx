@@ -30,42 +30,8 @@ const style = {
 
 const LeaveSummary = () => {
 
-  const {allocatedLeaves, leaveBalances} = useEmployeeLeave();
+  const {leaveData} = useEmployeeLeave();
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
-
-  useEffect(()=>{
-    if(!allocatedLeaves || !leaveBalances) return;
-    if(allocatedLeaves.length <1 && leaveBalances.length < 1) return;
-    const totalBalance = leaveBalances.reduce((a, b)=>a+b.balance,0)
-    const allLvs =  allocatedLeaves.reduce((a, b)=>a+b.balance,0)
-    const usedLeave = allLvs - totalBalance
-    const approvedLeave = usedLeave / 2;
-    const rejectedLeave = usedLeave - approvedLeave;
-
-    setData([
-      {
-        label: "Total Balance",
-        value: totalBalance
-      },
-      {
-        label: "Used Leaves",
-        value: usedLeave
-      },
-      {
-        label: "Approved Leaves",
-        value: approvedLeave
-      },
-      {
-        label: "Rejected Leaves",
-        value: rejectedLeave
-      },
-      {
-        label: "More",
-        value: "..."
-      }
-    ])
-  },[allocatedLeaves, leaveBalances])
 
   return (
     <Paper sx={style.layout}>
@@ -78,7 +44,7 @@ const LeaveSummary = () => {
 
 			<Box sx={style.leaves}>
 
-				{data.map(d => (
+				{leaveData.map(d => (
 					<Box sx={style.leave} >
 						<Button variant='outlined' >
 							<Typography>{d.value}</Typography>

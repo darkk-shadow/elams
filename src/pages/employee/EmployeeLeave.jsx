@@ -8,6 +8,7 @@ import LeaveBalanceModule from '../../components/employeeDashboard/LeaveBalanceM
 import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestModule';
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
+import LeaveBalanceInfo from '../../components/leaveManagement/LeaveBalanceInfo';
 
 
 export default function EmployeeLeave() {
@@ -18,14 +19,10 @@ export default function EmployeeLeave() {
       display: "grid",
       gap: "2em",
     }}>
-      {/* <ApplyLeave open={modalOpen} setOpen={setModalOpen} />
-        <Button variant='outlined' sx={{ gap: 1, justifySelf: "start" }}
-          onClick={()=>setModalOpen(true)}
-        >
-          <EditNoteIcon />
-          <Typography>{"Apply Leave"} </Typography>
-        </Button> */}
-        <LeaveBalanceModule />
+        <Box  sx={{display: "grid", gridTemplateColumns:"1fr auto", gap: 4}}>
+          <LeaveBalanceModule />
+          <LeaveBalanceInfo />
+        </Box>
         <LeaveRequestModule />
         
       </Box>
