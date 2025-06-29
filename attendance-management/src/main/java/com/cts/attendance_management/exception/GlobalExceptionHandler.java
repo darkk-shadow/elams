@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value=ResourceNotFoundException.class)
+    @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<ErrorResponseEntity> ResourceNotFound(
             ResourceNotFoundException ex,
             WebRequest request
@@ -29,9 +29,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, status);
     }
 
-    @ExceptionHandler(value=InvalidRoleException.class)
+
+    @ExceptionHandler(value = {InvalidRoleException.class, AttendanceRegisterException.class})
     public ResponseEntity<ErrorResponseEntity> ResourceNotFound(
-            InvalidRoleException ex,
+            Exception ex,
             WebRequest request
     ){
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;

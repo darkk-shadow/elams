@@ -1,7 +1,6 @@
 package com.cts.attendance_management.service.impl;
 
 import com.cts.attendance_management.client.EmployeeClient;
-import com.cts.attendance_management.dto.AttendanceClockOutRequestDto;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
 import com.cts.attendance_management.entity.Attendance;
 import com.cts.attendance_management.entity.enums.AttendanceStatus;
@@ -62,36 +61,37 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public AttendanceResponseDto clockOut(AttendanceClockOutRequestDto attendanceClockOutRequestDto) {
+    public AttendanceResponseDto clockOut(Long employeeId) {
         logger.debug("Fetching employee from the database.");
+        LocalTime now = LocalTime.now();
         Optional<Attendance> checkAttendance = attendanceRepository.findByEmployeeIdAndDate(
-                attendanceClockOutRequestDto.getEmployeeId(),
-                attendanceClockOutRequestDto.getDate());
+                employeeId,
+                LocalDate.now());
 
         if(checkAttendance.isEmpty()){
-            String msg = "Employee with id "+ attendanceClockOutRequestDto.getEmployeeId()
+            String msg = "Employee with id "+ employeeId
                     + " has to be clocked in inorder to clock out";
             logger.error(msg);
             throw new AttendanceRegisterException(msg);
         }
 
         if(checkAttendance.get().getClockOutTime()!=null){
-            String msg = "Employee with id "+ checkAttendance.get().getId()
+            String msg = "Employee with id "+ employeeId
                     + " has already clocked out at "+ checkAttendance.get().getClockOutTime();
             logger.error(msg);
             throw new AttendanceRegisterException(msg);
         }
         Attendance attendance = checkAttendance.get();
-        attendance.setClockOutTime(attendanceClockOutRequestDto.getClockOutTime());
+        attendance.setClockOutTime(now);
         attendance.setWorkHours(calculateWorkHours(attendance.getClockInTime(),
-                attendanceClockOutRequestDto.getClockOutTime()));
+                now));
         attendance.setStatus(determineAttendanceStatus(attendance.getWorkHours()));
         Attendance savedAttendance = attendanceRepository.save(attendance);
-        String msg = "Employee with id "+ attendanceClockOutRequestDto.getEmployeeId()
-                +" has clocked out at " + attendanceClockOutRequestDto.getClockOutTime();
+        String msg = "Employee with id "+ employeeId
+                +" has clocked out at " + now;
         logger.info(msg);
         AttendanceResponseDto mappedDto =  modelMapper.map(savedAttendance, AttendanceResponseDto.class);
-        mappedDto.setEmployeeId(attendanceClockOutRequestDto.getEmployeeId());
+        mappedDto.setEmployeeId(employeeId);
         return mappedDto;
     }
 
@@ -132,13 +132,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     @Override
     public boolean isClockedIn(Long employeeId) {
-        Optional<Attendance> attendance = attendanceRepository.findByEmployeeId(employeeId);
+        Optional<Attendance> attendance = attendanceRepository.findByEmployeeIdAndDate(employeeId, LocalDate.now());
         return attendance.isPresent();
     }
 
     @Override
     public boolean isClockedOut(Long employeeId) {
-        Optional<Attendance> attendance = attendanceRepository.findByEmployeeId(employeeId);
+        Optional<Attendance> attendance = attendanceRepository.findByEmployeeIdAndDate(employeeId, LocalDate.now());
         return attendance.isPresent() && attendance.get().getClockOutTime() != null;
     }
 
@@ -155,6 +155,23 @@ public class AttendanceServiceImpl implements AttendanceService {
         Attendance attendance = attendanceRepository.findAttendanceByEmployeeIdAndDate(employeeId, LocalDate.now())
                 .orElseThrow(()->new ResourceNotFoundException("Attendance Not found for "+employeeId+" on "+LocalDate.now()));
         attendanceRepository.deleteById(attendance.getId());
+        return modelMapper.map(attendance, AttendanceResponseDto.class);
+    }
+
+    @Override
+    public AttendanceResponseDto getAttendanceByEmployeeToday(Long employeeId) {
+        Attendance attendance = attendanceRepository.findAttendanceByEmployeeIdAndDate(employeeId, LocalDate.now())
+                .orElseThrow(()->new ResourceNotFoundException("Attendance Not found for "+employeeId+" on "+LocalDate.now()));
+
+        return modelMapper.map(attendance, AttendanceResponseDto.class);
+    }
+
+    @Override
+    public AttendanceResponseDto getLastAttendanceByEmployee(Long employeeId) {
+        Attendance attendance = attendanceRepository.findFirstByEmployeeIdOrderByDateDesc(employeeId)
+                .orElseThrow(()->new ResourceNotFoundException(
+                        "Last Attendance for employee with id "+employeeId+" not found!"
+                ));
         return modelMapper.map(attendance, AttendanceResponseDto.class);
     }
 

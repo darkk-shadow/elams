@@ -32,10 +32,10 @@ public class AttendanceController {
         return attendanceService.clockIn(employeeId);
     }
 
-    @PostMapping("clock-out/")
+    @PostMapping("clock-out/{employeeId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public AttendanceResponseDto clockOut(@RequestBody AttendanceClockOutRequestDto attendanceClockOutRequestDto){
-        return attendanceService.clockOut(attendanceClockOutRequestDto);
+    public AttendanceResponseDto clockOut(@PathVariable Long employeeId){
+        return attendanceService.clockOut(employeeId);
     }
 
     @DeleteMapping("{id}/delete")
@@ -56,9 +56,19 @@ public class AttendanceController {
         return attendanceService.getByEmployeeDateRange(employeeId, startDate, endDate);
     }
 
+    @GetMapping("by-employee/{employeeId}/today")
+    public AttendanceResponseDto getAttendanceByEmployeeToday(@PathVariable Long employeeId){
+        return attendanceService.getAttendanceByEmployeeToday(employeeId);
+    }
+
     @GetMapping("is-clocked-in/{employeeId}")
     public boolean isClockedIn(@PathVariable Long employeeId){
         return attendanceService.isClockedIn(employeeId);
+    }
+
+    @GetMapping("last-attendance/{employeeId}")
+    public AttendanceResponseDto getLastAttendanceByEmployee(@PathVariable Long employeeId){
+        return attendanceService.getLastAttendanceByEmployee(employeeId);
     }
 
     @GetMapping("is-clocked-out/{employeeId}")

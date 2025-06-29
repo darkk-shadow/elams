@@ -48,6 +48,7 @@ public class AttendanceControllerTest {
     private AttendanceClockOutRequestDto clockOutRequestDto;
     private AttendanceResponseDto attendanceResponseDtoClockIn;
     private AttendanceResponseDto attendanceResponseDtoClockOut;
+    private Long employeeId;
 
     @BeforeEach
     void setup() {
@@ -55,7 +56,7 @@ public class AttendanceControllerTest {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         LocalDate today = LocalDate.now();
-        Long employeeId = 1L;
+        employeeId = 1L;
 
         clockInRequestDto = new AttendanceClockInRequestDto(LocalTime.of(9, 0), today, employeeId);
         clockOutRequestDto = new AttendanceClockOutRequestDto(LocalTime.of(17, 0), today, employeeId);
@@ -98,7 +99,7 @@ public class AttendanceControllerTest {
 
     @Test
     void clockIn_shouldReturnCreatedAttendanceResponse_whenValidInput() throws Exception {
-        when(attendanceService.clockIn(clockInRequestDto)).thenReturn(attendanceResponseDtoClockIn);
+        when(attendanceService.clockIn(employeeId)).thenReturn(attendanceResponseDtoClockIn);
 
         MvcResult mvcResult = mockMvc.perform(post("/api/attendance/clock-in")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +116,7 @@ public class AttendanceControllerTest {
 
     @Test
     void clockOut_shouldReturnUpdatedAttendanceResponse_whenValidInput() throws Exception {
-        when(attendanceService.clockOut(clockOutRequestDto)).thenReturn(attendanceResponseDtoClockOut);
+        when(attendanceService.clockOut(employeeId)).thenReturn(attendanceResponseDtoClockOut);
 
         MvcResult mvcResult = mockMvc.perform(post("/api/attendance/clock-out")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -42,7 +42,6 @@ public class LeaveBalanceController {
         return leaveBalanceService.findLeaveBalancesByEmployeeId(employeeId);
     }
 
-
     @PutMapping("{id}")
     public LeaveBalanceResponseDto updateLeaveBalance(@PathVariable Long id, @RequestBody LeaveBalanceRequestDto leaveBalanceRequestDto) {
         return leaveBalanceService.updateLeaveBalance(id, leaveBalanceRequestDto);
