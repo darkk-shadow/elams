@@ -9,10 +9,10 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
 import AttendanceDay from '../employeeAttendance/AttendanceDay';
 import { useNavigate } from 'react-router-dom';
+import AttendanceCalendar from '../employeeAttendance/AttendanceCalendar';
 
 
 export default function AttendanceModule() {
-  const [value, setValue] = React.useState(dayjs());
   const navigate = useNavigate();
 
   return (
@@ -20,16 +20,7 @@ export default function AttendanceModule() {
       <Button sx={{ gap: 1 }} onClick={() => navigate("/attendanceManagement")}>
         Attendance Report <LaunchIcon fontSize='small' />
       </Button>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
-          
-          slots={{
-            day: AttendanceDay,
-          }}
-        />
-      </LocalizationProvider>
+      <AttendanceCalendar/>
     </Paper>
   );
 }
