@@ -15,6 +15,22 @@ const AttendanceDay = (props) => {
 
   const isWeekEnd = day.format("ddd") == "Sat" || day.format("ddd") == "Sun";
   const isOutOfBound = day.isBefore(new Date("2025-01-01")) || day.isAfter(new Date());
+
+  const markLabels = {
+    PRESENT: 'Present',
+    ABSENT: 'Absent',
+    HALF_DAY: 'Half Day',
+    HOLIDAY: 'Holiday',
+    ABNORMAL: "Abnormal"
+  }
+
+  const markColors = {
+    PRESENT: 'lightgreen',
+    ABSENT: 'lightcoral',
+    HALF_DAY: 'yellow',
+    HOLIDAY: 'Holiday',
+    ABNORMAL: "salmon"
+  }
   
 
   React.useEffect(()=>{
@@ -47,7 +63,7 @@ const AttendanceDay = (props) => {
     setStyles({
       pickerDays: {
         ...(attendance.status == "ABNORMAL" && {
-          backgroundColor: 'salmon',
+          backgroundColor: 'secondary.main',
           color: 'white',
           '&:hover': {
             backgroundColor: 'darkred',
