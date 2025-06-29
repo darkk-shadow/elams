@@ -20,6 +20,10 @@ export const getShifts = async() => {
   return shiftAx.get(`all`);
 }
 
+export const getShiftById = async(id) => {
+  return shiftAx.get(`${id}`)
+}
+
 export const assignShift = async(employeeId, shiftType) => {
   return employeeAx.put(`${employeeId}/assign-shift/?shiftType=${shiftType}`)
 }
@@ -42,4 +46,8 @@ export const getShiftReportByManager = async(managerId) => {
 
 export const getTeamMembetsCount = async(managerId) => {
   return employeeAx.get(`${managerId}/get-team-members-count`);
+}
+
+export const getEmployeeById = async(employeeId) => {
+  return employeeAx.get(`${employeeId}`);
 }

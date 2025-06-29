@@ -6,6 +6,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { useAuth } from '../../contexts/AuthProvider';
 import { clockIn, clockOut, getAttendanceByEmployeeToday, getLastAttendanceByEmployee, isClockedIn, isClockedOut } from '../../services/attendanceService';
 import useSnackBar from '../../contexts/useSnackBar';
+import { useEmployee } from '../../contexts/EmployeeProvider';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
@@ -26,6 +27,7 @@ const ClockInModule = () => {
 
   const {user} = useAuth()
   const showSnackBar = useSnackBar();
+  const {shift} = useEmployee();
 
   useEffect(()=>{
     isClockedIn(user.id)
@@ -96,7 +98,7 @@ const ClockInModule = () => {
     <Paper sx={style.layout}>
           <Box sx={{display: "flex", gap: 1}}>
             <TimelapseRoundedIcon />
-            <Typography>09:23:22</Typography>
+            <Typography>Shift: {shift.type}</Typography>
           </Box>
           { (!clockedIn) ?
           <Button size='small' variant="outlined" sx={{gap: 1}} onClick={clockInHandler}>

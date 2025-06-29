@@ -10,6 +10,8 @@ import ManageEmployee from "../pages/manager/ManageEmployee";
 import ManageLeavePage from '../pages/manager/ManageLeave';
 import EmployeeLeaveProvider from "../contexts/EmployeeLeaveProvider";
 import EmployeeAttendanceProvider from "../contexts/EmployeeAttendanceProvider";
+import EmployeeProfile from "../pages/employee/EmployeeProfile";
+import EmployeeProvier from "../contexts/EmployeeProvider";
 
 const RoutesIndex = () => {
     const {token, user} = useAuth();
@@ -36,11 +38,13 @@ const RoutesIndex = () => {
     {
       path: "/",
       element:
+      <EmployeeProvier>
       <EmployeeAttendanceProvider>
       <EmployeeLeaveProvider>
         <ProtectedRoute />
       </EmployeeLeaveProvider>
-      </EmployeeAttendanceProvider>,
+      </EmployeeAttendanceProvider>
+      </EmployeeProvier>,
       children: [
         {
           path: "/",
@@ -53,6 +57,10 @@ const RoutesIndex = () => {
         {
           path: "/attendanceManagement",
           element: <EmployeeAttendanceReport />,
+        },
+        {
+          path: "/profile",
+          element: <EmployeeProfile />
         }
       ],
     },
