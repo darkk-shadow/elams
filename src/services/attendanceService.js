@@ -30,3 +30,7 @@ export const getAttendanceByEmployeeToday = async(employeeId) => {
 export const getLastAttendanceByEmployee = async(employeeId) => {
   return await attendanceAx.get(`last-attendance/${employeeId}`)
 }
+
+export const getAttendancesByEmployee = async(employeeId) => {
+  return await attendanceAx.get(`by-employee/${employeeId}`)
+}
