@@ -7,6 +7,7 @@ import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import { Paper, Button, Box } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
+import AttendanceDay from '../employeeAttendance/AttendanceDay';
 
 const highlightDates = {
   holidays: [1, 3, 4, 6, 7],
@@ -15,59 +16,12 @@ const highlightDates = {
 };
 
 
-const CustomDay = (props) => {
-  const { day, outsideCurrentMonth, highlightData, ...other } = props;
 
-  const dayNumber = day.date();
-  const month = day.month(); 
-  const year = day.year();
 
-  const isHoliday = !outsideCurrentMonth && highlightData.holidays.includes(dayNumber);
-  const isPresent = !outsideCurrentMonth && highlightData.presents.includes(dayNumber);
-  const isAbsent = !outsideCurrentMonth && highlightData.absent.includes(dayNumber);
-
-  const styles = {
-    pickerDays: {
-      ...(isHoliday && {
-        backgroundColor: 'salmon',
-        color: 'white',
-        '&:hover': {
-          backgroundColor: 'darkred',
-        },
-      }),
-      ...(isPresent && {
-        backgroundColor: 'lightgreen', 
-        color: 'black',
-        '&:hover': {
-          backgroundColor: 'darkgreen',
-          color: 'white',
-        },
-      }),
-      ...(isAbsent && {
-        backgroundColor: 'lightcoral',
-        color: 'black',
-        '&:hover': {
-          backgroundColor: 'firebrick',
-          color: 'white',
-        },
-      }),
-    }
-  }
-
-  return (
-    <PickersDay
-      {...other}
-      day={day}
-      outsideCurrentMonth={outsideCurrentMonth}
-      sx={styles.pickerDays}
-    />
-  );
-};
-
-export default function CalendarWithHighlights() {
+export default function AttendanceModule() {
   const [value, setValue] = React.useState(dayjs());
 
-  const {attendances} = useEmployeeAttendance();
+  
 
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
@@ -80,13 +34,7 @@ export default function CalendarWithHighlights() {
           onChange={(newValue) => setValue(newValue)}
           
           slots={{
-            day: CustomDay,
-          }}
-          
-          slotProps={{
-            day: (ownerState) => ({
-              highlightData: highlightDates,
-            }),
+            day: AttendanceDay,
           }}
         />
       </LocalizationProvider>
