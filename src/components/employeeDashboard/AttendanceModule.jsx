@@ -9,19 +9,10 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
 import AttendanceDay from '../employeeAttendance/AttendanceDay';
 
-const highlightDates = {
-  holidays: [1, 3, 4, 6, 7],
-  presents: [12, 13, 24],
-  absent: [15, 17],
-};
-
-
-
 
 export default function AttendanceModule() {
   const [value, setValue] = React.useState(dayjs());
 
-  
 
   return (
     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>

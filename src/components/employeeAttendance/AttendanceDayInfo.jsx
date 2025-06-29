@@ -1,5 +1,6 @@
 import { Box, Paper, Typography } from '@mui/material'
 import React from 'react'
+import { enumToString } from '../../util/helpers'
 
 const AttendanceDayInfo = ({attendance, isAbsent, isWeekEnd}) => {
 
@@ -15,7 +16,7 @@ const AttendanceDayInfo = ({attendance, isAbsent, isWeekEnd}) => {
 
   return (
     <Paper> 
-      <Typography variant='h6' textAlign="center">{attendance.status}</Typography>
+      <Typography variant='h6' textAlign="center">{enumToString(attendance.status)}</Typography>
       { 
         !attendance? <>No data</>
         :
