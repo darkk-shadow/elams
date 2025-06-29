@@ -40,10 +40,11 @@ const AttendanceReportInfo = () => {
       gridTemplateRows: "1fr auto",
       gap: 4
     }}>
+      {console.log(summary)}
       <AttendanceWeeklyReport label="This Week Report" report={currentWeeklyReport}/>
-      <AttendanceWeeklyReport label ="Last Week Report" report={lastFullMonthlyReport} />
-      <AttendanceMonthlyReport label ="This Month Report" report={currentMonthlyReport}/>
-      <AttendanceMonthlyReport label ="Last Month Report" report={lastFullMonthlyReport} />
+      <AttendanceWeeklyReport label ="Last Week Report" report={lastFullWeeklyReport} />
+      <AttendanceMonthlyReport label ="This Month Report" report={summary[0]}/>
+      <AttendanceMonthlyReport label ="Last Month Report" report={summary[2]} />
     </Paper>
   )
 }

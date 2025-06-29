@@ -2,15 +2,16 @@ import dayjs from 'dayjs';
 // Plugins for advanced date manipulation (e.g., start of week relative to locale)
 import weekday from 'dayjs/plugin/weekday';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore"; // Ensure this is imported
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
-dayjs.extend(isSameOrBefore); // Extend the plugin
+dayjs.extend(isSameOrBefore);
 
 // --- Configuration ---
-// As per the prompt, current date is Sunday, June 29, 2025
-const CURRENT_DATE_REF = dayjs('2025-06-29'); // This is your "today" for calculation purposes
+// NOTE: CURRENT_DATE_REF is now ONLY for testing/demonstration.
+// For production, `today` will be `dayjs()`.
+const CURRENT_DATE_REF = dayjs('2025-06-29'); // Example: Sunday, June 29, 2025
 const COMPANY_START_DATE = dayjs('2025-01-01');
 
 // --- Helper Functions ---
@@ -27,12 +28,12 @@ function isWeekend(date) {
 
 /**
  * Helper to get Monday of the week for a given dayjs object, assuming a Mon-Sun week.
- * This handles dayjs's default startOf('week') being Sunday.
+ * This handles dayjs's default startOf('week') being Sunday (day 0).
  * @param {dayjs.Dayjs} date - Any dayjs object within the desired week.
  * @returns {dayjs.Dayjs} - A dayjs object representing the Monday of that week.
  */
 function getMondayOfRelevantWeek(date) {
-    let monday = dayjs(date).startOf('week'); // This usually gives Sunday
+    let monday = dayjs(date).startOf('week'); // This usually gives Sunday if week starts Sunday
     if (monday.day() === 0) { // If it's Sunday, add 1 day to make it Monday
         monday = monday.add(1, 'day');
     }
@@ -52,7 +53,6 @@ function generatePeriodData(attendancesMap, fromDate, toDate) {
     let totalWorkHours = 0;
     const periodAttendances = [];
 
-    // Ensure fromDate is not after toDate, handle invalid ranges
     if (fromDate.isAfter(toDate)) {
         return {
             attendances: [],
@@ -65,7 +65,7 @@ function generatePeriodData(attendancesMap, fromDate, toDate) {
     }
 
     let currentDate = dayjs(fromDate);
-    while (currentDate.isBefore(toDate) || currentDate.isSame(toDate, 'day')) {
+    while (currentDate.isSameOrBefore(toDate, 'day')) { // Use isSameOrBefore for safety
         const dateStr = currentDate.format('YYYY-MM-DD');
 
         if (!isWeekend(currentDate)) { // Only process workdays
@@ -81,13 +81,11 @@ function generatePeriodData(attendancesMap, fromDate, toDate) {
                     totalAbsent++;
                 }
             } else {
-                // No attendance record for a workday implies Absent
                 totalAbsent++;
                 periodAttendances.push({
                     date: dateStr,
                     status: 'ABSENT',
                     workHours: 0,
-                    // Optionally add default employeeId if available from context
                 });
             }
         }
@@ -124,38 +122,58 @@ export default function generateAllAttendanceReports(rawAttendances) {
         return acc;
     }, {});
 
-    const today = CURRENT_DATE_REF; // Our fixed "current date" (Sunday, June 29, 2025)
+    // Use the actual current date for calculations
+    const today = dayjs(); // IMPORTANT: This is the primary change!
+    // For testing with the fixed date provided:
+    // const today = CURRENT_DATE_REF; 
     const companyStartDate = COMPANY_START_DATE;
 
-    // The universal end date for all "up to yesterday" reports
-    const reportEndDate = today.subtract(1, 'day'); // For '2025-06-29' (Sunday), this is '2025-06-28' (Saturday)
+    const reportEndDate = today.subtract(1, 'day'); // Always yesterday
 
-    // --- Reports for the period ending yesterday (or last full period if today is a boundary) ---
+    // Get the Monday of the current *calendar* week (Mon-Sun)
+    const mondayOfCurrentCalendarWeek = getMondayOfRelevantWeek(today);
 
-    // Current Weekly Report Period (current week up to yesterday, or last full week if today is a weekend)
+    // --- CURRENT WEEKLY REPORT ---
     let currentWeeklyReportFrom;
     let currentWeeklyReportTo;
-    const isTodayWeekend = (today.day() === 0 || today.day() === 6);
 
-    if (isTodayWeekend) {
-        // If today is a weekend, report on the *entire last full Monday-Sunday week*
-        currentWeeklyReportFrom = getMondayOfRelevantWeek(today.subtract(7, 'day'));
-        currentWeeklyReportTo = dayjs(currentWeeklyReportFrom).add(6, 'day'); // Sunday of last week
+    if (isWeekend(today)) {
+        // If today is a weekend, Current Week is the full Mon-Sun of the *previous* calendar week
+        currentWeeklyReportFrom = mondayOfCurrentCalendarWeek.subtract(7, 'day');
+        currentWeeklyReportTo = currentWeeklyReportFrom.add(6, 'day'); // Sunday of that same previous week
     } else {
-        // If today is a weekday (Mon-Fri), report on the *current week up to yesterday*
-        currentWeeklyReportFrom = getMondayOfRelevantWeek(today); // Monday of current week
-        currentWeeklyReportTo = reportEndDate; // Yesterday
+        // If today is a weekday, Current Week is Mon of *this* week up to yesterday
+        currentWeeklyReportFrom = mondayOfCurrentCalendarWeek;
+        currentWeeklyReportTo = reportEndDate;
     }
     const currentWeeklyData = generatePeriodData(attendancesMap, currentWeeklyReportFrom, currentWeeklyReportTo);
 
-    // Current Monthly Report Period (current month up to yesterday, or last full month if today is 1st)
+
+    // --- LAST FULL WEEKLY REPORT ---
+    // This should always be the week before the "Current Weekly" report.
+    let lastFullWeekMonday;
+    let lastFullWeekSunday;
+
+    if (isWeekend(today)) {
+        // If today is a weekend, Current Weekly is (Last Week), so Last Full Weekly is (Two Weeks Ago)
+        lastFullWeekMonday = mondayOfCurrentCalendarWeek.subtract(14, 'day');
+        lastFullWeekSunday = lastFullWeekMonday.add(6, 'day');
+    } else {
+        // If today is a weekday, Current Weekly is (This Week), so Last Full Weekly is (Last Week)
+        lastFullWeekMonday = mondayOfCurrentCalendarWeek.subtract(7, 'day');
+        lastFullWeekSunday = lastFullWeekMonday.add(6, 'day');
+    }
+    const lastFullWeekData = generatePeriodData(attendancesMap, lastFullWeekMonday, lastFullWeekSunday);
+
+
+    // --- CURRENT MONTHLY REPORT ---
     let currentMonthlyReportFrom;
     let currentMonthlyReportTo;
 
     if (today.date() === 1) { // If today is the 1st of the month
         // Report on the *entire last month*
         currentMonthlyReportFrom = dayjs(today).subtract(1, 'month').startOf('month');
-        currentMonthlyReportTo = dayjs(currentMonthlyReportFrom).endOf('month'); // Last day of last month
+        currentMonthlyReportTo = dayjs(currentMonthlyReportFrom).endOf('month');
     } else {
         // Report current month from the 1st up to yesterday
         currentMonthlyReportFrom = dayjs(today).startOf('month');
@@ -163,29 +181,25 @@ export default function generateAllAttendanceReports(rawAttendances) {
     }
     const currentMonthlyData = generatePeriodData(attendancesMap, currentMonthlyReportFrom, currentMonthlyReportTo);
 
-    // Yearly Report Period (from company start date up to yesterday)
+    // --- LAST FULL MONTHLY REPORT ---
+    // This should always be the full calendar month immediately preceding the current calendar month.
+    const lastFullMonthEnd = dayjs(today).subtract(1, 'month').endOf('month');
+    const lastFullMonthStart = dayjs(lastFullMonthEnd).startOf('month');
+    const lastFullMonthData = generatePeriodData(attendancesMap, lastFullMonthStart, lastFullMonthEnd);
+
+
+    // --- YEARLY REPORT ---
     const yearlyReportFrom = companyStartDate;
     const yearlyReportTo = reportEndDate;
     const yearlyData = generatePeriodData(attendancesMap, yearlyReportFrom, yearlyReportTo);
 
-    // --- Explicit Last Full Period Reports (independent of today's date) ---
 
-    // Last Full Week (Monday-Sunday of the week immediately preceding the current week)
-    const lastFullWeekMonday = getMondayOfRelevantWeek(today).subtract(7, 'day');
-    const lastFullWeekSunday = lastFullWeekMonday.add(6, 'day');
-    const lastFullWeekData = generatePeriodData(attendancesMap, lastFullWeekMonday, lastFullWeekSunday);
-
-    // Last Full Month
-    const lastMonthEnd = dayjs(today).subtract(1, 'month').endOf('month');
-    const lastMonthStart = lastMonthEnd.startOf('month');
-    const lastFullMonthData = generatePeriodData(attendancesMap, lastMonthStart, lastMonthEnd);
-
-    // --- Check Validity and Compile Summaries ---
+    // --- Compile Summaries ---
     const hasCurrentWeeklyData = currentWeeklyReportFrom.isSameOrBefore(currentWeeklyReportTo);
     const hasCurrentMonthlyData = currentMonthlyReportFrom.isSameOrBefore(currentMonthlyReportTo);
     const hasYearlyData = yearlyReportFrom.isSameOrBefore(yearlyReportTo);
     const hasLastFullWeekData = lastFullWeekMonday.isSameOrBefore(lastFullWeekSunday);
-    const hasLastFullMonthData = lastMonthStart.isSameOrBefore(lastMonthEnd);
+    const hasLastFullMonthData = lastFullMonthStart.isSameOrBefore(lastFullMonthEnd);
 
     const allSummaries = [];
 
