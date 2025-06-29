@@ -1,12 +1,11 @@
 import { createContext, Suspense, useContext, useEffect, useState } from "react";
 import { getAllocatedLeaves, getLeaveBalanceByEmployee, getLeaveRequestByEmployee, getLeaveTypes } from "../services/leaveService";
 import { useAuth } from "./AuthProvider";
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import HistoryIcon from '@mui/icons-material/History';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import GroupIcon from '@mui/icons-material/Group';
-import { MoreHoriz } from "@mui/icons-material";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 const EmployeeLeaveContext = createContext()
 
@@ -57,32 +56,32 @@ const EmployeeLeaveProvider = ({children}) => {
         {
           label: "Total Balance",
           value: totalBalance,
-          icon: GroupIcon,
+          icon: EventAvailableIcon,
           color: "blue"
         },
         {
           label: "Used Leaves",
           value: usedLeave,
-          icon: CheckCircleIcon,
-          color: "green"
+          icon: HistoryIcon,
+          color: "orange"
         },
         {
           label: "Approved Leaves",
           value: approvedLeave,
-          icon: CancelIcon,
-          color: "red"
+          icon: CheckCircleIcon,
+          color: "green"
         },
         {
           label: "Rejected Leaves",
           value: rejectedLeave,
-          icon: EventAvailableIcon,
-          color: "orange"
+          icon: CancelIcon,
+          color: "red"
         },
         {
           label: "More",
           value: "...",
-          icon: MoreHoriz,
-          color: "blue"
+          icon: MoreHorizIcon,
+          color: "gray"
         }
       ])
     },[allocatedLeaves, leaveBalances])

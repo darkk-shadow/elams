@@ -4,6 +4,11 @@ import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useNavigate } from 'react-router-dom';
 
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import TimelineIcon from '@mui/icons-material/Timeline';
+
 const AttendanceSummary = () => {
 
   const {attendanceReport} = useEmployeeAttendance();
@@ -23,7 +28,7 @@ const AttendanceSummary = () => {
     if(!attendanceReport) return;
     setWeeklyReport(summary[0])
     setMonthlyReport(summary[1])
-    setYearlyReport(summary[4])
+    setYearlyReport(summary[3])
   },[summary])
 
   useEffect(()=>{
@@ -31,18 +36,26 @@ const AttendanceSummary = () => {
       {
         label: `Weekly Attendance Percentage`,
         value: weeklyReport?.percentage,
+        icon: CalendarMonthIcon,
+        color: "Teal"
       },
       {
         label: `Monthlu Attendance Percentage`,
         value: monthlyReport?.percentage,
+        icon: CalendarTodayIcon,
+        color: "CadetBlue"
       },
       {
         label: `Yearly Attendance Percentage`,
         value: yearlyReport?.percentage,
+        icon: AssessmentIcon,
+        color: "ForestGreen"
       },
       {
         label: `Weekly Average Workhour`,
         value: weeklyReport?.averageWorkHour,
+        icon: TimelineIcon,
+        color: "DarkSlateBlue"
       },
     ])
   },[yearlyReport])
@@ -57,10 +70,11 @@ const AttendanceSummary = () => {
       gridTemplateRows: "1fr 1fr", gap: 4
     }}>
       {data.map(d => (
-        <Card variant='outlined'>
-          <Typography>{d.label}</Typography>
-          <Typography>{d.value}</Typography>
-      </Card>
+        <Paper variant='outlined' sx={{borderColor: d.color}}>
+          <d.icon sx={{color: d.color}} />
+          <Typography sx={{color: d.color}} >{d.label}</Typography>
+          <Typography variant='h6' sx={{color: d.color}} >{d.value}</Typography>
+      </Paper>
       ))}
     </Box>
     </Paper>

@@ -43,10 +43,13 @@ const LeaveSummary = () => {
 			<Box sx={style.leaves}>
 
 				{leaveData.map(d => (
-					<Paper variant='outlined' sx={style.leave} >
+					<Paper variant='outlined' sx={{...style.leave, borderColor: d.color}} >
 						<d.icon sx={{color: d.color}} />
 						<Typography sx={{color: d.color}} >{d.label}</Typography>
-						<Typography sx={{color: d.color}} >{d.value}</Typography>
+						{
+							d.label != "More" &&
+							<Typography variant='h6' sx={{color: d.color}} >{d.value}</Typography>
+						}
 					</Paper>
 				))}
 
