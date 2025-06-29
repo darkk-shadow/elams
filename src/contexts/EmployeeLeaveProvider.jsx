@@ -79,9 +79,7 @@ const EmployeeLeaveProvider = ({children}) => {
       allocatedLeaves, setAllocatedLeaves,
       leaveData, setLeaveData,
     }}>
-      <Suspense fallback={<div>hey </div>}>
         {children}
-      </Suspense>
     </EmployeeLeaveContext.Provider>
   )
 }

@@ -1,6 +1,8 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Paper, Typography } from '@mui/material';
 import { useManagerLeave } from '../../contexts/ManagerLeaveProvider';
+import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider';
+import { useEffect, useState } from 'react';
 
 const data1 = [
   { label: 'Group A', value: 400 },
@@ -25,6 +27,42 @@ const data2 = [
 
 export default function LeaveDistribution() {
 
+  const {leaveRequests} = useEmployeeLeave();
+  const [leaveStatusDistribution, setLeaveStatusDistribution] = useState([]);
+  const [leaveTypeDistribution, setLeaveTypeDistribution] = useState([]);
+
+  useEffect(()=>{
+      let lsd={};
+      leaveRequests.forEach(l => {
+        if(lsd[l.status]) lsd[l.status]++
+        else lsd[l.status]=1
+      })
+  
+      let lsdData = [];
+      for(let v in lsd){
+        lsdData.push({
+          label: v,
+          value: lsd[v]
+        })
+      }
+      setLeaveStatusDistribution(lsdData)
+  
+      let ltd={};
+      leaveRequests.forEach(l => {
+        if(ltd[l.leaveType]) ltd[l.leaveType]++
+        else ltd[l.leaveType]=1
+      })
+  
+      let ltdData = [];
+      for(let v in ltd){
+        ltdData.push({
+          label: v,
+          value: ltd[v]
+        })
+      }
+      setLeaveTypeDistribution(ltdData)
+    },[leaveRequests])
+
   return (
     <Paper>
       <Typography>Leave Distribution</Typography>
@@ -33,16 +71,16 @@ export default function LeaveDistribution() {
         {
           innerRadius: 0,
           outerRadius: 80,
-          data: data1,
+          data: leaveStatusDistribution,
         },
         {
           innerRadius: 100,
           outerRadius: 120,
-          data: data2,
+          data: leaveTypeDistribution ,
         },
       ]}
       height={300}
-      hideLegend
+    
     /></Paper>
   );
 }
