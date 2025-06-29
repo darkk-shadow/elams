@@ -11,6 +11,7 @@ const AttendanceSummary = () => {
   const [weeklyReport, setWeeklyReport] = useState({});
   const [monthlyReport, setMonthlyReport] = useState({});
   const [yearlyReport, setYearlyReport] = useState({})
+  const [data, setData] = useState([]);
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -24,6 +25,27 @@ const AttendanceSummary = () => {
     setYearlyReport(summary[2])
   },[summary])
 
+  useEffect(()=>{
+    setData([
+      {
+        label: `Weekly Attendance Percentage`,
+        value: weeklyReport?.percentage,
+      },
+      {
+        label: `Monthlu Attendance Percentage`,
+        value: monthlyReport?.percentage,
+      },
+      {
+        label: `Yearly Attendance Percentage`,
+        value: yearlyReport?.percentage,
+      },
+      {
+        label: `Weekly Average Workhour`,
+        value: weeklyReport?.averageWorkHour,
+      },
+    ])
+  },[yearlyReport])
+
   return (
     <Paper sx={{display: "grid", gridTemplateRows: "auto 1fr", gap: 4}}>
       <Button sx={{ gap: 1, justifySelf: "start"}} onClick={() => navigate("/attendanceManagement")}>
@@ -33,22 +55,12 @@ const AttendanceSummary = () => {
       display: "grid", gridTemplateColumns: "1fr 1fr",
       gridTemplateRows: "1fr 1fr", gap: 4
     }}>
-      <Card variant='outlined'>
-        <Typography>Weekly Attendance Percentage</Typography>
-        <Typography>{weeklyReport?.percentage}</Typography>
+      {data.map(d => (
+        <Card variant='outlined'>
+          <Typography>{d.label}</Typography>
+          <Typography>{d.value}</Typography>
       </Card>
-      <Card variant='outlined'>
-        <Typography>Weekly Attendance Percentage</Typography>
-        <Typography>{monthlyReport?.percentage}</Typography>
-      </Card>
-      <Card variant='outlined'>
-        <Typography>Weekly Attendance Percentage</Typography>
-        <Typography>{yearlyReport?.percentage}</Typography>
-      </Card>
-      <Card variant='outlined'>
-        <Typography>Weekly Average Workhour</Typography>
-        <Typography>{weeklyReport?.averageWorkHour}</Typography>
-      </Card>
+      ))}
     </Box>
     </Paper>
   )
