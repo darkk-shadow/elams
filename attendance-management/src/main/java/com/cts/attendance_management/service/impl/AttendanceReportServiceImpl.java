@@ -41,7 +41,7 @@ public class AttendanceReportServiceImpl implements AttendanceReportService {
         employeeClient.checkEmployeeExists(employeeId);
         LocalDate today = LocalDate.now();
         LocalDate startOfYear = today.with(TemporalAdjusters.firstDayOfYear());
-        LocalDate endOfYear = today.with(TemporalAdjusters.lastDayOfYear());
+        LocalDate endOfYear = today;
         List<Attendance> employeeAttendances = attendanceRepository.findByEmployeeIdAndDateBetween(employeeId, startOfYear, endOfYear);
 
         // Reset ID counter for this specific employee's report batch, starting from 1
@@ -113,6 +113,7 @@ public class AttendanceReportServiceImpl implements AttendanceReportService {
         List<EmployeeDto> employees = employeeClient.getEmployeesByManager(managerId);
         List<Long> emploeyeeIds = employees.stream().map(e->e.getId()).toList();
 
+        List<Attendance> attendances = attendanceRepository.getByEmployeeIdInAndDate(emploeyeeIds, date);
         Long totalAbsent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.ABSENT);
         Long totalPresent = attendanceRepository.countByEmployeeIdInAndDateAndStatus(emploeyeeIds, date, AttendanceStatus.PRESENT);
 

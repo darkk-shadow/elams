@@ -51,6 +51,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setEmployeeId(employeeId);
         attendance.setClockInTime(LocalTime.now());
         attendance.setDate(LocalDate.now());
+        attendance.setStatus(AttendanceStatus.PRESENT);
 
         Attendance savedAttendance = attendanceRepository.save(attendance);
         String msg = "Employee with id "+ employeeId
