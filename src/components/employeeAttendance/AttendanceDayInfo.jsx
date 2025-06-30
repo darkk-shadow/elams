@@ -21,7 +21,7 @@ const AttendanceDayInfo = ({attendance, isAbsent, isWeekEnd}) => {
       <Typography variant='h6' textAlign="center">{enumToString(attendance.status)}</Typography>
       { 
         Object.keys(attendance)
-        .filter(k=>k!="id" && k!="employeeId")
+        .filter(k=>k!="id" && k!="employeeId" && k!="status")
         .map(key=><Box sx={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",

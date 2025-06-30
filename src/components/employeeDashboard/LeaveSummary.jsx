@@ -43,14 +43,18 @@ const LeaveSummary = () => {
 			<Box sx={style.leaves}>
 
 				{leaveData.map(d => (
-					<Paper variant='outlined' sx={{...style.leave, borderColor: d.color}} >
-						<d.icon sx={{color: d.color}} />
-						<Typography sx={{color: d.color}} >{d.label}</Typography>
-						{
-							d.label != "More" &&
+					d.label != "More" ?
+						<Paper variant='outlined' sx={{...style.leave, borderColor: d.color}} >
+							<d.icon sx={{color: d.color}} />
+							<Typography sx={{color: d.color}} >{d.label}</Typography>
 							<Typography variant='h6' sx={{color: d.color}} >{d.value}</Typography>
-						}
-					</Paper>
+						</Paper>
+						:
+						<Paper variant='outlined'  onClick={()=>navigate("/leaveManagement")}
+							sx={{...style.leave, borderColor: d.color, ":hover": {cursor: "pointer"}}} >
+							<d.icon sx={{color: d.color}} />
+							<Typography sx={{color: d.color}} >{d.label}</Typography>
+						</Paper>
 				))}
 
 			</Box>
