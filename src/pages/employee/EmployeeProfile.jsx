@@ -92,7 +92,7 @@ const EmployeeProfile = () => {
         }}>
         <Button onClick={()=>navigate("/")}><SpaceDashboardIcon />Dashboard</Button>
         <Button  onClick={()=>navigate("/leaveManagement")}><EditNoteIcon />Leave</Button>
-        <Button  onClick={()=>navigate("/attendanceManagement")}><AssignmentTurnedInIcon />Attendacne</Button>
+        <Button  onClick={()=>navigate("/attendanceManagement")}><AssignmentTurnedInIcon />Attendance</Button>
         <Button color='error' onClick={()=>navigate("/logout")}><LogoutRounded />Logout</Button>
       </Box>
     </Paper>

@@ -5,12 +5,12 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React, { useState } from 'react'
 import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider'
 import { useAuth } from '../../contexts/AuthProvider'
-import { createLeaveRequest } from '../../services/leaveService'
+import { createLeaveRequest, getLeaveRequestByEmployee } from '../../services/leaveService'
 import useSnackBar from '../../contexts/useSnackBar'
 
 const ApplyLeave = ({open, setOpen}) => {
 
-  const {leaveTypes} = useEmployeeLeave();
+  const {leaveTypes, setLeaveRequests} = useEmployeeLeave();
   const {user} = useAuth();
   const showSnackBar = useSnackBar();
 
@@ -37,15 +37,19 @@ const ApplyLeave = ({open, setOpen}) => {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const request = {
       employeeId: user.id,
       leaveType, startDate, endDate, reason
     }
-    createLeaveRequest(request)
+    await createLeaveRequest(request)
       .then(r => showSnackBar("Leave request submitted"))
       .catch(e => showSnackBar("Failed to request leave: "+e.response.data.message, "error"));
+    
+    await getLeaveRequestByEmployee(user.id)
+      .then(r => setLeaveRequests(r.data))
+      .catch(e => console.error(e))
     setOpen(false)
   }
 

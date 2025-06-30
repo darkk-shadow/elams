@@ -16,6 +16,8 @@ const EmployeeLeaveProvider = ({children}) => {
   const [leaveRequests, setLeaveRequests] = useState([])
   const [allocatedLeaves, setAllocatedLeaves] = useState([])
   const [leaveData, setLeaveData] = useState([]);
+  const [leaveStatusDistribution, setLeaveStatusDistribution] = useState([]);
+  const [leaveTypeDistribution, setLeaveTypeDistribution] = useState([]);
 
   const {user} = useAuth();
 
@@ -44,14 +46,18 @@ const EmployeeLeaveProvider = ({children}) => {
   },[])
 
   useEffect(()=>{
-      if(!allocatedLeaves || !leaveBalances) return;
+      if(!allocatedLeaves || !leaveBalances || !leaveStatusDistribution) return;
       if(allocatedLeaves.length <1 && leaveBalances.length < 1) return;
       const totalBalance = leaveBalances.reduce((a, b)=>a+b.balance,0)
       const allLvs =  allocatedLeaves.reduce((a, b)=>a+b.balance,0)
       const usedLeave = allLvs - totalBalance
-      const approvedLeave = usedLeave / 2;
-      const rejectedLeave = usedLeave - approvedLeave;
-  
+
+      let approvedLeave = leaveStatusDistribution?.find(l=>l.label=="APPROVED")?.value;
+      approvedLeave = approvedLeave ? approvedLeave : 0;
+
+      let rejectLeave = leaveStatusDistribution?.find(l=>l.label=="PENDING")?.value;
+      rejectLeave = rejectLeave ? rejectLeave : 0;
+
       setLeaveData([
         {
           label: "Total Balance",
@@ -73,7 +79,7 @@ const EmployeeLeaveProvider = ({children}) => {
         },
         {
           label: "Rejected Leaves",
-          value: rejectedLeave,
+          value: rejectLeave,
           icon: CancelIcon,
           color: "red"
         },
@@ -84,7 +90,39 @@ const EmployeeLeaveProvider = ({children}) => {
           color: "gray"
         }
       ])
-    },[allocatedLeaves, leaveBalances])
+    },[allocatedLeaves, leaveBalances, leaveStatusDistribution, leaveTypeDistribution])
+
+    useEffect(()=>{
+      let lsd={};
+      leaveRequests.forEach(l => {
+        if(lsd[l.status]) lsd[l.status]++
+        else lsd[l.status]=1
+      })
+  
+      let lsdData = [];
+      for(let v in lsd){
+        lsdData.push({
+          label: v,
+          value: lsd[v]
+        })
+      }
+      setLeaveStatusDistribution(lsdData)
+  
+      let ltd={};
+      leaveRequests.forEach(l => {
+        if(ltd[l.leaveType]) ltd[l.leaveType]++
+        else ltd[l.leaveType]=1
+      })
+  
+      let ltdData = [];
+      for(let v in ltd){
+        ltdData.push({
+          label: v,
+          value: ltd[v]
+        })
+      }
+      setLeaveTypeDistribution(ltdData)
+    },[leaveRequests])
 
   return(
     <EmployeeLeaveContext.Provider value={{
@@ -93,6 +131,8 @@ const EmployeeLeaveProvider = ({children}) => {
       leaveRequests, setLeaveRequests,
       allocatedLeaves, setAllocatedLeaves,
       leaveData, setLeaveData,
+      leaveStatusDistribution, setLeaveStatusDistribution,
+      leaveTypeDistribution, setLeaveTypeDistribution
     }}>
         {children}
     </EmployeeLeaveContext.Provider>

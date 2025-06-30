@@ -7,7 +7,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useAuth } from '../../contexts/AuthProvider';
 
 
-const API_BASE = 'http://localhost:9192/api/leave-requests'; // Change if your backend URL is different
+const API_BASE = 'http://localhost:9090/api/leave-requests'; // Change if your backend URL is different
 
 const ManageLeave = () => {
   const { user } = useAuth();

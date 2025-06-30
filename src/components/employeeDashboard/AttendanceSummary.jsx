@@ -40,7 +40,7 @@ const AttendanceSummary = () => {
         color: "Teal"
       },
       {
-        label: `Monthlu Attendance Percentage`,
+        label: `Monthly Attendance Percentage`,
         value: monthlyReport?.percentage,
         icon: CalendarTodayIcon,
         color: "CadetBlue"
