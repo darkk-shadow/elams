@@ -8,6 +8,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import { useEmployee } from '../../contexts/EmployeeProvider';
 import { enumToString } from '../../util/helpers';
+import { LogoutRounded } from '@mui/icons-material';
 
 
 const EmployeeProfile = () => {
@@ -26,7 +27,7 @@ const EmployeeProfile = () => {
         display: "grid", gridAutoFlow: "column",
         gap:"2em", gridTemplateColumns: "7fr 2fr",
       }}>
-        <Box sx={{display: "grid", gap: 5, placeItems:"center",
+        <Box sx={{display: "grid", gap: 5, placeItems:"start", ml:10,
           gridTemplateRows: "1fr 1fr",
         }}>
           <Box sx={{display: "grid", gap:"1em", mt:"2em"}}>
@@ -39,7 +40,7 @@ const EmployeeProfile = () => {
               <Card sx={{alignSelf: "start"}}>
                 <AccountCircle sx={{height: "100px", width: "100px "}} />
               </Card>
-              <Box sx={{gap: 2, display: "grid"}}>
+              <Box sx={{ display: "grid"}}>
                 <Box>
                   <Typography variant='h6'>{user.employeeName}</Typography>
                   <Typography >Employee id: EMP{user.id}</Typography>
@@ -65,7 +66,7 @@ const EmployeeProfile = () => {
               <Card sx={{alignSelf: "start"}}>
                 <AccountCircle sx={{height: "100px", width: "100px "}} />
               </Card>
-              <Box sx={{gap: 2, display: "grid"}}>
+              <Box sx={{display: "grid"}}>
                 <Box>
                   <Typography variant='h6'>{manager?.employeeName}</Typography>
                   <Typography >Employee id: EMP{manager?.id}</Typography>
@@ -92,6 +93,7 @@ const EmployeeProfile = () => {
         <Button onClick={()=>navigate("/")}><SpaceDashboardIcon />Dashboard</Button>
         <Button  onClick={()=>navigate("/leaveManagement")}><EditNoteIcon />Leave</Button>
         <Button  onClick={()=>navigate("/attendanceManagement")}><AssignmentTurnedInIcon />Attendacne</Button>
+        <Button color='error' onClick={()=>navigate("/logout")}><LogoutRounded />Logout</Button>
       </Box>
     </Paper>
   )

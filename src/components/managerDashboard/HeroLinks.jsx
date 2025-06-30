@@ -31,7 +31,7 @@ const HeroLinks = () => {
 
     getCustomEmployeesAttendanceSummary(user.id, fDate, fDate)
       .then(r=>{
-        console.log("No data => ", r.data)
+        console.log(r.data)
         setNoTappedIn(r.data[0].totalPresents)
       })
       .catch(e=>console.error(e))

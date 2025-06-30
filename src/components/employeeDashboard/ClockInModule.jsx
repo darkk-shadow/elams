@@ -85,7 +85,7 @@ const ClockInModule = () => {
       .catch(e => showSnackBar(e.response.data.message))
   }
   const clockOutHandler = () => {
-    confirm("Are you sure want to clock out?")
+    if (!confirm("Are you sure want to clock out?")) return;
     clockOut(user.id)
       .then(r => {
         showSnackBar(`Clocked out at ${r.data.clockOutTime}`)
