@@ -9,6 +9,7 @@ import { addEmployee, addEmployeeToTeam, addManager } from '../../services/emplo
 import axios from "axios"
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from '../../contexts/AuthProvider'
+import useApi from '../../util/useApi'
 
 const AddEmployee = ({open, setOpen}) => {
 
@@ -20,7 +21,8 @@ const AddEmployee = ({open, setOpen}) => {
 
   const [employeeName, setEmployeeName] = useState("");
   const [email, setEmail] = useState("");
-
+  
+  const {data, loading, error, request} = useApi();
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -46,6 +48,7 @@ const AddEmployee = ({open, setOpen}) => {
     const addToManager = e.target[6].checked;
     const employee = { employeeName, email }
 
+
     if(role=="employee"){
       addEmployee(employee)
         .then((r)=>{
@@ -65,16 +68,32 @@ const AddEmployee = ({open, setOpen}) => {
             `can't able to add ${email}: ${e.response.data.message}`, "error")
         })
     }else if(role == "manager"){
-      addManager(employee)
-      .then((r)=>{
-        const savedUser = r.data;
+
+      request(()=>addManager(employee))
+        .then((savedUser)=>{
+          console.log('Manager added successfully:', savedUser);
+          showSnackBar(
+            `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added as manager.`
+          );
+        })
+        .catch((e)=>{
+        console.error('Failed to add manager:', e);
         showSnackBar(
-          `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added as manager.`);
-      }).catch((e)=>{
-        console.log(e);
-        showSnackBar(
-          `can't able to add ${email}: ${e.response.data.message}`, "error")
+          `Can't add ${email}: ${e.response?.data?.message || e.message || 'An unknown error occurred'}`,
+          'error'
+        );
       })
+
+      // addManager(employee)
+      // .then((r)=>{
+      //   const savedUser = r.data;
+      //   showSnackBar(
+      //     `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added as manager.`);
+      // }).catch((e)=>{
+      //   console.log(e);
+      //   showSnackBar(
+      //     `can't able to add ${email}: ${e.response.data.message}`, "error")
+      // })
     }
 
     setOpen(false);
