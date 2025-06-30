@@ -46,8 +46,9 @@ const HeroLinks = () => {
   },[])
 
   useEffect(()=>{
+    let val = leaveStatusDistribution.find(l=>l.label=="PENDING")?.value
     setNoPendingLeave(
-      leaveStatusDistribution.find(l=>l.label=="PENDING")?.value
+      val ? val : 0
     )
   },[leaveStatusDistribution])
 

@@ -29,13 +29,18 @@ export default function AttendanceReport() {
     <Paper>
       <Typography>Attendance Report</Typography>
       <LineChart
+        grid={{ vertical: true, horizontal: true }} 
         loading={loading}
-        yAxis={[{ min: 0, max: 100, date: [1,2,3,4 ]}]}
+        yAxis={[{ min: 0, max: 100, label: "percentage"}]}
         series={[
           {
             data: values,
           },
         ]}
+        xAxis={[{label: "days", data: [1,2,3,4,5,6,7,8,9,10,11]}]}
+        slots={{
+
+        }}
         height={300}
       />
     </Paper>
