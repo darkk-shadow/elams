@@ -1,7 +1,7 @@
 import axios from "axios"
 
-const leaveRequestAx = axios.create({baseURL: "http://localhost:9192/api/leave-requests"});
-const leaveBalanceAx = axios.create({baseURL: "http://localhost:9192/api/leave-balances"})
+const leaveRequestAx = axios.create({baseURL: "http://localhost:9090/api/leave-requests"});
+const leaveBalanceAx = axios.create({baseURL: "http://localhost:9090/api/leave-balances"})
 
 export const getLeaveRequestsByManager = (managerId)=>{
   return  leaveRequestAx.get(`/by-manager/${managerId}`);

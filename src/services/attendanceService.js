@@ -1,15 +1,14 @@
 import axios from "axios"
 
-const attendanceReportAx = axios.create({baseURL: "http://localhost:9193/api/attendance-reports"});
-const attendanceAx = axios.create({baseURL: "http://localhost:9193/api/attendances"});
-const gateway = axios.create({baseURL: "http://localhost:9090/api/attendances"})
+const attendanceReportAx = axios.create({baseURL: "http://localhost:9090/api/attendance-reports"});
+const attendanceAx = axios.create({baseURL: "http://localhost:9090/api/attendances"});
 
 export const getCustomEmployeesAttendanceSummary= async(managerId, startDate, endDate) => {
   return await attendanceReportAx.get(`/manager/${managerId}/custom/?startDate=${startDate}&endDate=${endDate}`)
 }
 
 export const clockIn = async(employeeId) => {
-  return await gateway.post(`clock-in/${employeeId}`,{ headers: {"Authorization" : `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyXzI4QGV4YW1wbGUuY29tIiwiaWF0IjoxNzUxMjYzNjc1LCJleHAiOjE3NTEyNjcyNzV9.hYIdiIL8F4YW-9csHiueRdOanTZyZdAsSnr0HLQbSrc`} })
+  return await attendanceAx.post(`clock-in/${employeeId}`)
 }
 
 export const clockOut = async(employeeId) => {

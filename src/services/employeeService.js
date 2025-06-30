@@ -1,8 +1,8 @@
 import axios from "axios"
 
-const employeeAx = axios.create({baseURL: "http://localhost:9191/api/employees"});
+const employeeAx = axios.create({baseURL: "http://localhost:9090/api/employees"});
 
-const shiftAx = axios.create({baseURL: "http://localhost:9191/api/shifts"});
+const shiftAx = axios.create({baseURL: "http://localhost:9090/api/shifts"});
 
 export const addEmployee = async(employee) => {
   return await employeeAx.post(`add-employee`,employee);
