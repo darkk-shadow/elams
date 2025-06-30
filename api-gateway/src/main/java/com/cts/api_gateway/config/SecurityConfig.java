@@ -39,7 +39,8 @@ public class SecurityConfig {
                 .requestMatchers("auth/login").permitAll());
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("api/attendances/clock-in/*").hasAuthority("EMPLOYEE"));
+                .requestMatchers("api/attendances/clock-in/*").hasAuthority("EMPLOYEE")
+                .anyRequest().permitAll());
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.formLogin(f -> f.disable());
