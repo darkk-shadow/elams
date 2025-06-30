@@ -33,8 +33,14 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers("api/employees/add-employee").hasAnyAuthority("ADMIN", "MANAGER")
                 .requestMatchers("api/employees/add-manager").hasAnyAuthority("ADMIN")
-                .requestMatchers("api/employees/add-admin").hasAnyAuthority("ADMIN")
-                .anyRequest().permitAll());
+                .requestMatchers("api/employees/add-admin").hasAnyAuthority("ADMIN"));
+
+        http.authorizeHttpRequests( auth -> auth
+                .requestMatchers("auth/login").permitAll());
+
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("api/attendances/clock-in/*").hasAuthority("EMPLOYEE"));
+
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.formLogin(f -> f.disable());
         http.csrf(c -> c.disable());
