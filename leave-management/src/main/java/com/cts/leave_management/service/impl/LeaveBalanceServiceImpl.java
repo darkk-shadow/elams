@@ -147,8 +147,6 @@ public class LeaveBalanceServiceImpl implements LeaveBalanceService {
     public void initializeLeaveBalancesForNewEmployee(Long employeeId) {
         logger.info("Initializing leave balances for new employee with ID: {}", employeeId);
 
-        employeeClient.checkEmployeeExists(employeeId);
-
         List<LeaveType> leaveTypesToInitialize = Arrays.asList(
                 LeaveType.CASUAL_LEAVE,
                 LeaveType.SICK_LEAVE,

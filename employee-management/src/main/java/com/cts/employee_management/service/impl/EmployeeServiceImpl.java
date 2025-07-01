@@ -1,6 +1,7 @@
 package com.cts.employee_management.service.impl;
 
 import com.cts.employee_management.client.ApiGatewayClient;
+import com.cts.employee_management.client.LeaveBalanceClient;
 import com.cts.employee_management.dto.EmployeeAuthDto;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
@@ -38,6 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     ApiGatewayClient apiGatewayClient;
 
+    @Autowired
+    LeaveBalanceClient leaveBalanceClient;
+
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     @Override
@@ -51,6 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee savedEmployee = employeeRepository.save(newEmployee);
         this.createAuth(savedEmployee.getId(), savedEmployee.getEmail());
         logger.info("New employee added with ID: " + savedEmployee.getId());
+
+        leaveBalanceClient.initializeLeaveBalances(savedEmployee.getId());
+
         EmployeeResponseDto res = convertToDto(savedEmployee);
         res.setShiftId(savedEmployee.getShift().getId());
         return res;

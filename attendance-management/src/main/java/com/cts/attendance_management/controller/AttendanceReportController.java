@@ -14,8 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/attendance-reports") // Added leading slash for clarity
-@CrossOrigin
+@RequestMapping("/api/attendance-reports")
 public class AttendanceReportController {
 
     @Autowired
