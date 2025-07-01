@@ -28,7 +28,7 @@ const AttendanceSummary = () => {
     if(!attendanceReport) return;
     setWeeklyReport(summary[0])
     setMonthlyReport(summary[1])
-    setYearlyReport(summary[3])
+    setYearlyReport(summary[4])
   },[summary])
 
   useEffect(()=>{

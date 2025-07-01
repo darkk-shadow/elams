@@ -69,7 +69,7 @@ const HeroLinks = () => {
 
   const links = [
     {
-      text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+      text: `Pending Leave Requests`,
     },
     {
       text: `No. Emplyees tapped in ${noTappedIn}`,
@@ -81,7 +81,7 @@ const HeroLinks = () => {
      text: `No. Employees on leave: ${ onLeave}`,
     },
     {
-     text: `No. Pending Leave Requests: ${ noPendingLeave}`,
+     text: `Past 10 days attendace average: ${ noPendingLeave}`,
     }
   ]
 
