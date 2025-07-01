@@ -81,18 +81,18 @@ const Login = () => {
           <Typography variant="h4" fontWeight={700} color="#fff" mb={2} align="center">
             Welcome to ELAMS
           </Typography>
-          <Typography variant="body1" color="#e3f2fd" align="center" sx={{ maxWidth: 220, mb: 2 }}>
+          <Typography variant="body1" color="#e3f2fd" align="center" sx={{ maxWidth: 450, mb: 2 }}>
             Effortlessly Manage your Attendance and leave.
           </Typography>
-          <Typography variant="body2" color="#e3f2fd" align="center" sx={{ maxWidth: 220 }}>
+          {/* <Typography variant="body2" color="#e3f2fd" align="center" sx={{ maxWidth: 220 }}>
             Manage your work hours, request time off, and view your leave balance with ease.
-          </Typography>
+          </Typography> */}
           <img
             src={loginIllustration}
             alt="Login Illustration"
             style={{
               width: "100%",
-              maxWidth: 180, // reverted to original size
+              maxWidth: 250, // reverted to original size
               borderRadius: 0,
               boxShadow: "none",
               marginTop: 18,

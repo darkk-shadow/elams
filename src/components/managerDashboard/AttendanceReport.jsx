@@ -1,5 +1,5 @@
 import { LineChart } from '@mui/x-charts/LineChart';
-import { Paper, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getCustomEmployeesAttendanceSummary } from '../../services/attendanceService';
 import { useAuth } from '../../contexts/AuthProvider';
@@ -26,7 +26,7 @@ export default function AttendanceReport() {
   },[])
 
   return (
-    <Paper>
+    <>
       <Typography>Attendance Report</Typography>
       <LineChart
         loading={loading}
@@ -38,6 +38,6 @@ export default function AttendanceReport() {
         ]}
         height={300}
       />
-    </Paper>
+    </>
   );
 }
