@@ -28,7 +28,11 @@ import AttendanceTable from '../../components/manageAttendance/AttendanceTable';
 
 
 const SummaryCards = () => (
-  <Grid container spacing={2} justifyContent="center" alignContent="center" sx={{ my: 2, flexWrap: 'nowrap', maxWidth: 1200, mx: 'auto' }}>
+  <Box sx={{
+        display: "grid", gridTemplateColumns: "repeat(5, 1fr)",
+        placeContent: "space-around", gridAutoFlow: "column",
+        gap: "10%"
+      }}>
     {[
       { label: 'Total', value: 50, icon: <PeopleIcon color="primary" />, color: 'primary.main' },
       { label: 'Present', value: 35, icon: <CheckCircleIcon sx={{ color: 'green' }} />, color: 'success.main' },
@@ -36,17 +40,13 @@ const SummaryCards = () => (
       { label: 'Leave', value: 5, icon: <BeachAccessIcon sx={{ color: 'gold' }} />, color: 'warning.main' },
       { label: 'Avg Hrs', value: 9, icon: <AccessTimeIcon sx={{ color: '#1976d2' }} />, color: 'info.main' },
     ].map((item, idx) => (
-      <Grid item key={idx}>
-        <Paper elevation={3} sx={{ p: 2, minWidth: 160, textAlign: 'center', height: 110, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+        <Paper sx={{display: "grid", placeItems: "center"}} >
             {item.icon}
             <Typography variant="subtitle1">{item.label}</Typography>
             <Typography variant="h5" sx={{ color: item.color }}>{item.value}</Typography>
-          </Box>
         </Paper>
-      </Grid>
     ))}
-  </Grid>
+  </Box>
 );
 
 export default SummaryCards;

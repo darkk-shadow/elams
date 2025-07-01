@@ -34,3 +34,7 @@ export const getLastAttendanceByEmployee = async(employeeId) => {
 export const getAttendancesByEmployee = async(employeeId) => {
   return await attendanceAx.get(`by-employee/${employeeId}`)
 }
+
+export const getAttendanceByManager = async(managerId) => {
+  return attendanceAx.get(`/by-manager/${managerId}`)
+}

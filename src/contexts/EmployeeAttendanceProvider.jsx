@@ -1,16 +1,27 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getAttendancesByEmployee } from "../services/attendanceService";
+import { getAttendanceByManager, getAttendancesByEmployee } from "../services/attendanceService";
 import { useAuth } from "./AuthProvider";
 import generateAllAttendanceReports from "../util/generateAllAttendanceReports";
+import useApi from "../util/useApi";
 
 const EmployeeAttendanceContext = createContext();
 
 const EmployeeAttendanceProvider = ({children}) => {
 
   const {user} = useAuth();
+  const {
+    data: managerAttendanceReport,
+    loading: managerAttendanceLoading,
+    error: managerAttendanceError,
+    request: fetchAttendanceByManager
+  } = useApi()
 
   const [attendances, setAttendances] = useState([]);
-  const [attendanceReport, setAttendanceReport] = useState(null);
+  const [attendanceReport, setAttendanceReport] = useState();
+
+  useEffect(()=>{
+    fetchAttendanceByManager(()=>getAttendanceByManager(user.id))
+  })
 
   useEffect(()=>{
     getAttendancesByEmployee(user.id)
@@ -27,7 +38,9 @@ const EmployeeAttendanceProvider = ({children}) => {
   return (
     <EmployeeAttendanceContext.Provider value={{
       attendances, setAttendances,
-      attendanceReport, setAttendanceReport
+      attendanceReport, setAttendanceReport,
+      managerAttendanceReport, managerAttendanceError,
+      managerAttendanceLoading,
     }}>
       {children}
     </EmployeeAttendanceContext.Provider>
