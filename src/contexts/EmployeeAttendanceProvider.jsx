@@ -9,19 +9,11 @@ const EmployeeAttendanceContext = createContext();
 const EmployeeAttendanceProvider = ({children}) => {
 
   const {user} = useAuth();
-  const {
-    data: managerAttendanceReport,
-    loading: managerAttendanceLoading,
-    error: managerAttendanceError,
-    request: fetchAttendanceByManager
-  } = useApi()
 
   const [attendances, setAttendances] = useState([]);
   const [attendanceReport, setAttendanceReport] = useState();
 
-  useEffect(()=>{
-    fetchAttendanceByManager(()=>getAttendanceByManager(user.id))
-  })
+
 
   useEffect(()=>{
     getAttendancesByEmployee(user.id)
@@ -39,8 +31,6 @@ const EmployeeAttendanceProvider = ({children}) => {
     <EmployeeAttendanceContext.Provider value={{
       attendances, setAttendances,
       attendanceReport, setAttendanceReport,
-      managerAttendanceReport, managerAttendanceError,
-      managerAttendanceLoading,
     }}>
       {children}
     </EmployeeAttendanceContext.Provider>

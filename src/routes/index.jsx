@@ -13,6 +13,7 @@ import EmployeeAttendanceProvider from "../contexts/EmployeeAttendanceProvider";
 import EmployeeProfile from "../pages/employee/EmployeeProfile";
 import EmployeeProvier from "../contexts/EmployeeProvider";
 import ManageAttendance from "../pages/manager/ManageAttendance.jsx"
+import ManagerAttendanceProvider from "../contexts/ManagerAttendanceProvider.jsx";
 
 
 const RoutesIndex = () => {
@@ -71,7 +72,11 @@ const RoutesIndex = () => {
   const routesForManagerOnly = [
     {
       path: "/",
-      element: <ProtectedRoute /> ,  
+      element: 
+      <ManagerAttendanceProvider>
+        <ProtectedRoute /> 
+      </ManagerAttendanceProvider>
+      ,  
       children: [
         {
           path: "/",

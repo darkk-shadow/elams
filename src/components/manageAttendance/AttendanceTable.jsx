@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
+import { useManagerAttendanceProvider } from '../../contexts/ManagerAttendanceProvider';
+import { enumToString } from '../../util/helpers';
+import { Grow, Typography } from '@mui/material';
 
 // [
 //   {
@@ -20,26 +23,33 @@ const columns = [
   {
     field: "employeeName",
     headerName: "Employee name",
+    flex: 1
   },
   {
     field: "date",
     headerName: "Date",
+    flex: 1
   },
   {
     field: "clockInTime",
     headerName: "Clock in time",
+    flex: 1
   },
   {
     field: "clockOutTime",
     headerName: "Clock out time",
+    flex: 1
   },
   {
     field: "workHours",
     headerName: "Work hours",
+    flex: 1
   },
   {
     field: "status",
     headerName: "Status",
+    valueGetter: (value) => enumToString(value),
+    flex: 1
   },
   
 ];
@@ -47,9 +57,10 @@ const columns = [
 const AttendanceTable = () => {
 
   const {managerAttendanceReport, managerAttendanceError,
-    managerAttendanceLoading} = useEmployeeAttendance()
+    managerAttendanceLoading} = useManagerAttendanceProvider()
 
-  return (
+  return (<>
+    <Typography variant='h6'>Attendance Reports</Typography>
     <DataGrid
       loading={managerAttendanceLoading}
       rows={managerAttendanceReport}
@@ -63,6 +74,6 @@ const AttendanceTable = () => {
       }}
       pageSizeOptions={[10]}
     />
-  );
+  </>);
 };
 export default AttendanceTable;
