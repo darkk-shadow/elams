@@ -64,8 +64,8 @@ const ClockInModule = () => {
       getLastAttendanceByEmployee(user.id)
         .then(r =>{
           setLastClokedDate(r.data.date)
-          if(r.data.clockOutTime) setClockedOutTime(r.data.clockOutTime)
-          else setClockedInTime(r.data.clockInTime)
+          if(r.data.clockOutTime) setClockedOutTime(r.data.clockOutTime.split(".")[0])
+          else setClockedInTime(r.data.clockInTime.split(".")[0])
         })
         .catch(e => {
           console.log(e);

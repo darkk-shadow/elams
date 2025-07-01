@@ -6,6 +6,13 @@ import { getCustomEmployeesAttendanceSummary } from '../../services/attendanceSe
 import { useAuth } from '../../contexts/AuthProvider'
 import { getTeamMembetsCount } from '../../services/employeeService'
 
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import FingerprintIcon from '@mui/icons-material/Fingerprint';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import { enumToString } from '../../util/helpers'
+
 /** @type {import('@mui/system').SxProps} */
 const styles = {
   layout: {
@@ -70,18 +77,33 @@ const HeroLinks = () => {
   const links = [
     {
       text: `Pending Leave Requests`,
+      value: noPendingLeave,
+      icon: PendingActionsIcon,
+      color: "orange"
     },
     {
-      text: `No. Emplyees tapped in ${noTappedIn}`,
+      text: `No. Emplyees tapped in`,
+      value: noTappedIn,
+      icon: FingerprintIcon ,
+      color: "gray"
     },
     {
-     text: `Employees in your team: ${ teamMembersCount}`,
+     text: `Employees in your team`,
+      value: teamMembersCount,
+      icon: PeopleAltIcon ,
+      color: "blue"
     },
     {
-     text: `No. Employees on leave: ${ onLeave}`,
+     text: `Employees on leave`,
+      value: onLeave,
+      icon: BeachAccessIcon ,
+      color: "lightblue"
     },
     {
-     text: `Past 10 days attendace average: ${ noPendingLeave}`,
+     text: `Past 10 days attendace average`,
+      value: 23,
+      icon: BarChartIcon ,
+      color: "green"
     }
   ]
 
@@ -94,9 +116,9 @@ const HeroLinks = () => {
       <Card sx={{padding: 0, height:100, display: "grid", placeContent: "center"}}> 
       <CardActionArea onClick={()=>navigate("")}>
         <CardContent sx={{ height: '100%' }}>
-          <Typography variant='h6' align='center'>
-            {e.text}
-          </Typography>
+          <e.icon sx={{color: e.color}} />
+          <Typography>{enumToString(e.text)}</Typography>
+          <Typography variant='h5' sx={{color: e.color}}>{e.balance}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>
