@@ -39,7 +39,7 @@ const QuickActions = () => {
       <Button variant='outlined' onClick={()=>navigate('/manage-leave')}>
         <Typography>Manage Leave</Typography>
       </Button>
-      <Button variant='outlined'>
+      <Button variant='outlined' onClick={()=>navigate('/manage-attendance') }>
         <Typography>Manage Attendance</Typography>
       </Button>
       <Button variant='outlined' onClick={()=>navigate("manage-employee")}>

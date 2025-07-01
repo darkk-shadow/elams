@@ -12,6 +12,8 @@ import EmployeeLeaveProvider from "../contexts/EmployeeLeaveProvider";
 import EmployeeAttendanceProvider from "../contexts/EmployeeAttendanceProvider";
 import EmployeeProfile from "../pages/employee/EmployeeProfile";
 import EmployeeProvier from "../contexts/EmployeeProvider";
+import ManageAttendance from "../pages/manager/ManageAttendance.jsx"
+
 
 const RoutesIndex = () => {
     const {token, user} = useAuth();
@@ -83,6 +85,11 @@ const RoutesIndex = () => {
           path: "/manage-leave",
           element: <ManageLeavePage />,
         },
+        {
+          path: "/manage-attendance",
+          element: <ManageAttendance />,
+        },
+
       ],
     },
   ];
