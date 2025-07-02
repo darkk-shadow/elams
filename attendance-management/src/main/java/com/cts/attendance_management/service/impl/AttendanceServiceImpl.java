@@ -2,6 +2,8 @@ package com.cts.attendance_management.service.impl;
 
 import com.cts.attendance_management.client.EmployeeClient;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
+import com.cts.attendance_management.dto.EmployeeDto;
+import com.cts.attendance_management.dto.EmployeeResponseDto;
 import com.cts.attendance_management.entity.Attendance;
 import com.cts.attendance_management.entity.enums.AttendanceStatus;
 import com.cts.attendance_management.exception.AttendanceRegisterException;
@@ -18,7 +20,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.Temporal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -184,10 +188,31 @@ public class AttendanceServiceImpl implements AttendanceService {
                 .toList();
     }
 
+    @Override
+    public List<AttendanceResponseDto> getAttendanceByManager(Long managerId) {
+        List<EmployeeDto> employees = employeeClient.getEmployeesByManager(managerId);
+        List<Long> employeesId = employees.stream().map(EmployeeDto::getId).toList();
+        Map<Long, String> employeeIdandName = new HashMap<>();
+
+        employees.forEach(e -> employeeIdandName.put(e.getId(), e.getEmployeeName()));
+
+        List<Attendance> attendances = attendanceRepository.findByEmployeeIdIn(employeesId);
+
+        return attendances
+                .stream().map((a) -> {
+                    AttendanceResponseDto dto = modelMapper.map(a, AttendanceResponseDto.class);
+                    dto.setEmployeeName(employeeIdandName.get(a.getEmployeeId()));
+                    return dto;
+                }).toList();
+    }
+
     private double calculateWorkHours(Temporal clockInTime, Temporal clockOutTime){
         logger.debug("Calculating working hours of "+clockInTime+" and "+clockOutTime);
         Duration duration = Duration.between(clockInTime, clockOutTime);
         double workHours =  (double)duration.toSeconds()/3600;
+        workHours = workHours*100;
+        workHours = (double)((int) workHours);
+        workHours = workHours /100;
         return workHours;
     }
 

@@ -19,4 +19,5 @@ public class AttendanceResponseDto {
     private LocalDate date;
     private AttendanceStatus status;
     private Long employeeId;
+    private String employeeName;
 }

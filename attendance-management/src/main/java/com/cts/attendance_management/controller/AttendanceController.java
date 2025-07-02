@@ -89,4 +89,9 @@ public class AttendanceController {
     public List<AttendanceResponseDto> getAttendancesByEmployee(@PathVariable Long employeeId){
         return  attendanceService.getAttendancesByEmployee(employeeId);
     }
+
+    @GetMapping("/by-manager/{managerId}")
+    public List<AttendanceResponseDto> getAttendancesByManager(@PathVariable Long managerId){
+        return attendanceService.getAttendanceByManager(managerId);
+    }
 }

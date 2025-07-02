@@ -1,6 +1,7 @@
 package com.cts.attendance_management.controller;
 
 import com.cts.attendance_management.dto.AttendanceReportDto;
+import com.cts.attendance_management.dto.AttendanceResponseDto;
 import com.cts.attendance_management.dto.EmployeesAttendanceDailyReportDto;
 import com.cts.attendance_management.exception.ResourceNotFoundException; // Import for ResourceNotFoundException
 import com.cts.attendance_management.service.AttendanceReportService;
@@ -67,4 +68,6 @@ public class AttendanceReportController {
     ){
         return attendanceReportService.getCustomEmployeesAttendanceSummary(managerId, startDate, endDate);
     }
+
+
 }
