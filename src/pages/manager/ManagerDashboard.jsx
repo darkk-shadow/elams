@@ -7,14 +7,12 @@ import ManagerLeaveProvider from '../../contexts/ManagerLeaveProvider'
 
 const ManagerDashboard = () => {
   return (
-    <ManagerLeaveProvider>
     <Box sx={{display: "grid", gap:4}}>
       <HeroLinks />
       <Typography align='center' variant='h4'>Quick Actions</Typography>
       <QuickActions />
       <Charts />
     </Box>
-    </ManagerLeaveProvider>
   )
 }
 

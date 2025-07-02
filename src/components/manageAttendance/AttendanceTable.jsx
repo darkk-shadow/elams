@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEmployeeAttendance } from '../../contexts/EmployeeAttendanceProvider';
-import { useManagerAttendanceProvider } from '../../contexts/ManagerAttendanceProvider';
+import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
 import { enumToString } from '../../util/helpers';
 import { Grow, Typography } from '@mui/material';
 
@@ -57,7 +57,7 @@ const columns = [
 const AttendanceTable = () => {
 
   const {managerAttendanceReport, managerAttendanceError,
-    managerAttendanceLoading} = useManagerAttendanceProvider()
+    managerAttendanceLoading} = useManagerAttendance()
 
   return (<>
     <Typography variant='h6'>Attendance Reports</Typography>

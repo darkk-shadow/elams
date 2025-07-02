@@ -13,6 +13,7 @@ import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { enumToString } from '../../util/helpers'
 import { fontSize, styled } from '@mui/system'
+import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -27,56 +28,9 @@ const styles = {
 
 const HeroLinks = () => {
 
-  const {leaveStatusDistribution, leaveRequests} = useManagerLeave();
-  const [noTappedIn, setNoTappedIn] = useState(0);
-  const {user} = useAuth();
-  const [noPendingLeave, setNoPendingLeave] = useState(0);
-  const [teamMembersCount, setTeamMembersCount] = useState(0);
-  const [onLeave, setOnLeaveCount] = useState(0);
+  const {noPendingLeave, noTappedIn, teamMembersCount, onLeave } = useManagerAttendance();
 
-  useEffect(()=>{
-    let date = new Date();
-    let fDate = date.toISOString().slice(0,10);
-
-    getCustomEmployeesAttendanceSummary(user.id, fDate, fDate)
-      .then(r=>{
-        console.log(r.data)
-        setNoTappedIn(r.data[0].totalPresents)
-      })
-      .catch(e=>console.error(e))
-
-    console.log(leaveStatusDistribution)
-  },[])
-
-  useEffect(()=>{
-    getTeamMembetsCount(user.id)
-      .then(r => setTeamMembersCount(r.data))
-      .catch(e => console.error(e));
-  },[])
-
-  useEffect(()=>{
-    let val = leaveStatusDistribution.find(l=>l.label=="PENDING")?.value
-    setNoPendingLeave(
-      val ? val : 0
-    )
-  },[leaveStatusDistribution])
-
-  useEffect(()=>{
-    let today = new Date()
-    today.setHours(0, 0, 0, 0);
-    let todayAbsentees = leaveRequests
-        .filter(l => {
-          const start = new Date(l.startDate);
-          const end = new Date(l.endDate);
-          start.setHours(0, 0, 0, 0);
-          end.setHours(0, 0, 0, 0); 
-          return start <= today && end >= today;
-        })
-        .filter(l => l.status == "APPROVED")
-      setOnLeaveCount(todayAbsentees.length);
-  },[leaveRequests])
-
-  const links = [
+  const data = [
     {
       text: `Pending Requests`,
       value: noPendingLeave,
@@ -87,32 +41,32 @@ const HeroLinks = () => {
     {
       text: `Tapped in`,
       value: noTappedIn,
-      icon: FingerprintIcon ,
+      icon: FingerprintIcon,
       color: "gray",
       title: "Total employees tapped today"
     },
     {
-     text: `Total Team`,
+      text: `Total Team`,
       value: teamMembersCount,
-      icon: PeopleAltIcon ,
+      icon: PeopleAltIcon,
       color: "blue",
       title: "Total employees in your team"
     },
     {
-     text: `On leave`,
+      text: `On leave`,
       value: onLeave,
-      icon: BeachAccessIcon ,
+      icon: BeachAccessIcon,
       color: "purple",
       title: "Employees on leave today"
     },
     {
-     text: `Attendance average`,
-      value: 23,
-      icon: BarChartIcon ,
+      text: `Attendance`,
+      value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
+      icon: BarChartIcon,
       color: "green",
-      title: "Attendance average of past 10 days"
+      title: "Today attendance percentage"
     }
-  ]
+  ];
 
   const BootstrapTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} arrow classes={{ popper: className }} />
@@ -133,8 +87,8 @@ const HeroLinks = () => {
       gap: 4
     }}>
 
-      
-        {links.map(e => (
+      {console.log(data)}
+        {data.map(e => (
           <BootstrapTooltip title={e.title} arrow >
           <Card sx={{display: "grid", placeItems: "center", gap: 2}}> 
               <e.icon sx={{color: e.color}} />
