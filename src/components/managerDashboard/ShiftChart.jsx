@@ -1,6 +1,6 @@
 import { useAnimate } from '@mui/x-charts/hooks';
 import { ChartContainer } from '@mui/x-charts/ChartContainer';
-import { BarPlot } from '@mui/x-charts/BarChart';
+import { BarChart, BarPlot } from '@mui/x-charts/BarChart';
 import { ChartsXAxis } from '@mui/x-charts/ChartsXAxis';
 import { ChartsYAxis } from '@mui/x-charts/ChartsYAxis';
 import { styled } from '@mui/material/styles';
@@ -24,7 +24,7 @@ export default function ShiftChart() {
   return (
     <Paper>
       <Typography>Shift Chart</Typography>
-    <ChartContainer
+    {/* <ChartContainer
       xAxis={[{ scaleType: 'band', data: ['G', 'M', 'E', 'N'] }]}
       series={[
         {
@@ -33,13 +33,22 @@ export default function ShiftChart() {
           data: [shiftCount.general, shiftCount.morning, shiftCount.evening, shiftCount.night],
         },
       ]}
+
       width={300}
       height={300}
     >
       <BarPlot barLabel="value" slots={{ barLabel: BarLabel }} />
       <ChartsXAxis />
       <ChartsYAxis />
-    </ChartContainer>
+    </ChartContainer> */}
+
+      <BarChart
+        xAxis={[{ data: ['General', 'Morning', 'Evening', 'Night'] }]}
+        series={[{ data: [shiftCount.general, shiftCount.morning, shiftCount.evening, shiftCount.night], label: "shift"}] }
+        height={300}
+        barLabel="value"
+        grid={{ vertical: true , horizontal: true}}
+      />
     </Paper>
   );
 }
