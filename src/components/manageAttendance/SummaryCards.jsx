@@ -45,7 +45,7 @@ const SummaryCards = () => {
           }
           return percentage;
         })
-        .reduce((a, b) => a + b) / attendanceSummary.length;
+        .reduce((a, b) => a + b,0) / attendanceSummary.length;
     setAvgHrs(temp.toFixed(2));
   });
 

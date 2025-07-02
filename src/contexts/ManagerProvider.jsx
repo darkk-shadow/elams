@@ -10,6 +10,7 @@ const ManagerProvider = ({children}) => {
 
   const [teamMembers, setTeamMembers] = useState([]);
   const [employee, setEmployee] = useState(null);
+  const [teamCount, setTeamCount] = useState(0)
 
   useEffect(()=>{
     if(!user) return;
@@ -21,7 +22,10 @@ const ManagerProvider = ({children}) => {
   useEffect(()=>{
     if(!employee) return;
     getEmployeesByManager(user.id)
-      .then(r => setTeamMembers(r.data))
+      .then(r => {
+        setTeamMembers(r.data);
+        setTeamCount(r.data.length);
+      })
       .catch(e => console.error(e))
   },[employee])
 
@@ -29,6 +33,7 @@ const ManagerProvider = ({children}) => {
     <ManagerContext.Provider value={{
       teamMembers, setTeamMembers,
       employee, setEmployee,
+      teamCount, setTeamCount
     }}>
       {children}
     </ManagerContext.Provider>

@@ -10,6 +10,7 @@ import AttendanceTable from '../../components/manageAttendance/AttendanceTable';
 import SummaryCards from '../../components/manageAttendance/SummaryCards';
 import EmployeeStatisticsPieChart from '../../components/manageAttendance/EmployeeStatisticsPieChart';
 import WeeklyWorkHoursBarChart from '../../components/manageAttendance/WeeklyWorkHoursBarChart';
+import AttendanceCalendar from '../../components/manageAttendance/AttendanceCalendar';
 
 // Summary cards for employee stats
 
@@ -31,55 +32,22 @@ const ManageAttendance = () => {
   ];
 
   return (
-    <Box sx={{display: "grid", gap: 2 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        {/* <TextField
-          variant="outlined"
-          size="small"
-          placeholder="Search employee..."
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          sx={{ width: 320, background: '#e0e0e0', borderRadius: 2, pr: 0 }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <Button
-                  variant="contained"
-                  size="small"
-                  sx={{ minWidth: 36, height: 32, p: 0, borderRadius: 2, background: '#1976d2', boxShadow: 'none', '&:hover': { background: '#1565c0' } }}
-                >
-                  <SearchIcon sx={{ color: 'white' }} />
-                </Button>
-              </InputAdornment>
-            ),
-            style: { borderRadius: 8, background: '#e0e0e0' }
-          }}
-        /> */}
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Date"
-              value={selectedDate}
-              onChange={(newValue) => setSelectedDate(newValue)}
-              renderInput={(params) => <Button variant="outlined" {...params} />}
-            />
-          </LocalizationProvider>
-          <Button variant="contained">Report</Button>
-        </Box>
-      </Box>
+    <Box sx={{display: "grid", gap: 4 }}>
       <SummaryCards />
 
-      <Box sx={{display: "grid", placeContent: "space-around", gridAutoFlow: "column"}}>
+      <Box sx={{display: "grid", placeContent: "space-between", gap: 8, gridAutoFlow: "column"}}>
 
-          <EmployeeStatisticsPieChart data={pieChartData} />
+          {/* <EmployeeStatisticsPieChart data={pieChartData} /> */}
+
+          <Paper>
+            <AttendanceCalendar />
+          </Paper>
           
           <AttendanceReport />
             
           <WeeklyWorkHoursBarChart weekDays={weekDays} avgWorkHours={avgWorkHours} />
 
       </Box>
-      
-          
           
       <AttendanceTable />
     </Box>
