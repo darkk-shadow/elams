@@ -35,17 +35,20 @@ const ManageAttendance = () => {
     <Box sx={{display: "grid", gap: 4 }}>
       <SummaryCards />
 
-      <Box sx={{display: "grid", placeContent: "space-between", gap: 8, gridAutoFlow: "column"}}>
+      <Typography variant='h6'>Attendance Statistics</Typography>
 
-          {/* <EmployeeStatisticsPieChart data={pieChartData} /> */}
+      <Box sx={{display: "grid", gap: 8, gridAutoFlow: "column"}}>
+
 
           <Paper>
+            <Typography>Calendar View</Typography>
             <AttendanceCalendar />
           </Paper>
           
           <AttendanceReport />
             
-          <WeeklyWorkHoursBarChart weekDays={weekDays} avgWorkHours={avgWorkHours} />
+          <EmployeeStatisticsPieChart data={pieChartData} />
+          {/* <WeeklyWorkHoursBarChart weekDays={weekDays} avgWorkHours={avgWorkHours} /> */}
 
       </Box>
           

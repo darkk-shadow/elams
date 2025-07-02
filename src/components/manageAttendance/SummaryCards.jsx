@@ -14,6 +14,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import PeopleIcon from "@mui/icons-material/People";
+import BarChartIcon from '@mui/icons-material/BarChart';
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
@@ -79,11 +80,11 @@ const SummaryCards = () => {
       title: "Number of employees from your team leave today"
     },
     {
-      label: "Avg Hrs",
+      label: "Attendance",
       value: `${avgHrs}%`,
-      icon: <AccessTimeIcon sx={{ color: "#1976d2" }} />,
+      icon: <BarChartIcon sx={{ color: "#1976d2" }} />,
       color: "info.main",
-      title: `Average working hour of your team for the past ${attendanceSummary.length} days`
+      title: `Attendance percentage of your team for the past ${attendanceSummary.length} days`
     },
   ];
 
