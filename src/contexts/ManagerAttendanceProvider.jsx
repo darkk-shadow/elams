@@ -26,6 +26,28 @@ const ManagerAttendanceProvider = ({children}) => {
   const [teamMembersCount, setTeamMembersCount] = useState(0);
   const [onLeave, setOnLeaveCount] = useState(0);
 
+  const [attendanceSummaryValues, setAttendanceSummaryValues] = useState([]);
+  const [attendanceSummary, setAttendanceSummary] = useState([]);
+  const [attedanceGraphloading, setAttedanceGraphloading] = useState(true);
+
+  useEffect(()=>{
+    let date = new Date();
+    let toDate = date.toISOString().slice(0,10);
+    date.setDate(date.getDate()-10);
+    let fromDate = date.toISOString().slice(0,10);
+    setAttedanceGraphloading(true);
+    getCustomEmployeesAttendanceSummary(user.id, fromDate, toDate)
+      .then(r => {
+        setAttendanceSummary(r.data)
+        let d = r.data.map(report => {
+          if (teamMembersCount == 0) return 0;
+          return (report.totalPresents/teamMembersCount)*100
+      })
+      setAttendanceSummaryValues(d);
+      setAttedanceGraphloading(false);
+  }).catch(e => console.log(e));
+  },[teamMembersCount])
+
   useEffect(()=>{
     let date = new Date();
     let fDate = date.toISOString().slice(0,10);
@@ -81,6 +103,9 @@ const ManagerAttendanceProvider = ({children}) => {
       noPendingLeave, setNoPendingLeave,
       teamMembersCount, setTeamMembersCount,
       onLeave, setOnLeaveCount,
+      attendanceSummaryValues, setAttendanceSummaryValues,
+      attedanceGraphloading, setAttedanceGraphloading,
+      attendanceSummary, setAttendanceSummary
     }}>
       {children}
     </ManagerAttendanceContext.Provider>

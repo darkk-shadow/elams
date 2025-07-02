@@ -14,6 +14,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import { enumToString } from '../../util/helpers'
 import { fontSize, styled } from '@mui/system'
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider'
+import BootstrapTooltip from '../../util/BootStrapTooltip'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -67,17 +68,6 @@ const HeroLinks = () => {
       title: "Today attendance percentage"
     }
   ];
-
-  const BootstrapTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} arrow classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.arrow}`]: {
-      color: theme.palette.common.black,
-    },
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: theme.palette.common.black,
-    },
-  }));
 
   return (
 
