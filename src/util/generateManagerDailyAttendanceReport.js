@@ -30,10 +30,6 @@ export function generateManagerDailyAttendanceReport(rawAttendances, employeeCou
       const dateStr = current.format("YYYY-MM-DD");
       const attendances = attendanceByDate[dateStr] || [];
 
-      // Get unique employee IDs present that day
-      const uniqueEmployeeIds = new Set(attendances.map((a) => a.employeeId));
-      const totalEmployeesForDay = Math.max(employeeCount, uniqueEmployeeIds.size);
-
       const present = attendances.filter(
         (a) => a.status === "PRESENT" || a.status === "HALF_DAY" || a.status === "ABNORMAL"
       ).length;
@@ -47,8 +43,8 @@ export function generateManagerDailyAttendanceReport(rawAttendances, employeeCou
       );
 
       const averageWorkHour = present > 0 ? totalWorkHours / present : 0;
-      const absent = totalEmployeesForDay - present;
-      const percentage = totalEmployeesForDay > 0 ? (present / totalEmployeesForDay) * 100 : 0;
+      const absent = Math.max(employeeCount - present, 0);
+      const percentage = employeeCount > 0 ? Math.min((present / employeeCount) * 100, 100) : 0;
 
       reports.push({
         date: dateStr,

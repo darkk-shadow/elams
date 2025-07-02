@@ -15,16 +15,17 @@ const AttendanceCalendar = () => {
   const [value, setValue] = useState(dayjs())
   const [attendanceReports, setAttendanceReports] = useState([]);
   const {teamCount} = useManager();
-  const {user} = useAuth()
+  const {user} = useAuth();
 
   useState(()=>{
+    console.log(teamCount)
     getAttendanceByManager(user.id)
       .then(r => {
         const report = generateManagerDailyAttendanceReport(r.data, teamCount);
         setAttendanceReports(report);
         console.log(report)
       })
-  },[])
+  },[teamCount])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
