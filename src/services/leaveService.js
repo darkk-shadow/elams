@@ -11,7 +11,7 @@ export const getLeaveRequestsByManager = (managerId)=>{
 }
 
 export const getLeaveTypes = () => {
-  return  leaveBalanceAx.get(`${leaveRequestBaseURL}/get-leave-types`)
+  return  axios.get(`${leaveBalanceBaseURL}/get-leave-types`)
 }
 
 export const createLeaveRequest = (request) => {
@@ -19,7 +19,7 @@ export const createLeaveRequest = (request) => {
 }
 
 export const getLeaveBalanceByEmployee = (employeeId) => {
-  return  leaveBalanceAx.get(`${leaveRequestBaseURL}/employee/${employeeId}`);
+  return  axios.get(`${leaveBalanceBaseURL}/employee/${employeeId}`);
 }
 
 export const getLeaveRequestByEmployee = (employeeId) => {
@@ -27,5 +27,5 @@ export const getLeaveRequestByEmployee = (employeeId) => {
 }
 
 export const getAllocatedLeaves =  (employeeId) => {
-  return  leaveBalanceAx.get(`${leaveRequestBaseURL}/get-allocated-leaves`)
+  return  axios.get(`${leaveBalanceBaseURL}/get-allocated-leaves`)
 }
