@@ -1,53 +1,55 @@
 import axios from "axios"
 
-const employeeAx = axios.create({baseURL: "http://localhost:9090/api/employees"});
+const employeeBaseURL = "http://localhost:9090/api/employees";
 
-const shiftAx = axios.create({baseURL: "http://localhost:9090/api/shifts"});
+const shiftBaseURL = "http://localhost:9090/api/shifts";
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
 export const addEmployee = async(employee) => {
-  return await employeeAx.post(`add-employee`,employee);
+  return await axios.post(`${employeeBaseURL}/add-employee`,employee);
 }
 
 export const addManager = async(manager) => {
-  return await employeeAx.post(`add-manager`, manager);
+  return await axios.post(`${employeeBaseURL}/add-manager`, manager);
 }
 
 export const getEmployeesByManager = async(managerId) => {
-  return await employeeAx.get(`get-employees-by-manager/${managerId}`);
+  return await axios.get(`${employeeBaseURL}/get-employees-by-manager/${managerId}`);
 }
 
 export const getShifts = async() => {
-  return shiftAx.get(`all`);
+  return axios.get(`${shiftBaseURL}/all`);
 }
 
 export const getShiftById = async(id) => {
-  return shiftAx.get(`${id}`)
+  return axios.get(`${shiftBaseURL}/${id}`)
 }
 
 export const assignShift = async(employeeId, shiftType) => {
-  return employeeAx.put(`${employeeId}/assign-shift/?shiftType=${shiftType}`)
+  return axios.put(`${employeeBaseURL}/${employeeId}/assign-shift/?shiftType=${shiftType}`)
 }
 
 export const addEmployeeToTeam = async(managerId, employeeId) => {
-  return employeeAx.put(`${employeeId}/assign-manager/${managerId}`)
+  return axios.put(`${employeeBaseURL}/${employeeId}/assign-manager/${managerId}`)
 }
 
 export const getAvailableEmployees = async() => {
-  return employeeAx.get(`get-available-employees`)
+  return axios.get(`${employeeBaseURL}/get-available-employees`)
 }
 
 export const removeEmployeeFromTeam = async(managerId, employeeId) => {
-   return employeeAx.put(`${managerId}/remove-employee-from-team/${employeeId}`)
+   return axios.put(`${employeeBaseURL}/${managerId}/remove-employee-from-team/${employeeId}`)
 }
 
 export const getShiftReportByManager = async(managerId) => {
-  return employeeAx.get(`get-shift-report-by-manager/${managerId}`);
+  return axios.get(`${employeeBaseURL}/get-shift-report-by-manager/${managerId}`);
 }
 
 export const getTeamMembetsCount = async(managerId) => {
-  return employeeAx.get(`${managerId}/get-team-members-count`);
+  return axios.get(`${employeeBaseURL}/${managerId}/get-team-members-count`);
 }
 
 export const getEmployeeById = async(employeeId) => {
-  return employeeAx.get(`${employeeId}`);
+  return axios.get(`${employeeBaseURL}/${employeeId}`);
 }
