@@ -15,6 +15,8 @@ import EmployeeProvier from "../contexts/EmployeeProvider";
 import ManageAttendance from "../pages/manager/ManageAttendance.jsx"
 import ManagerAttendanceProvider from "../contexts/ManagerAttendanceProvider.jsx";
 import ManagerLeaveProvider from "../contexts/ManagerLeaveProvider.jsx";
+import ManagerProfile from "../pages/manager/ManagerProfile.jsx";
+import ManagerProvider from "../contexts/ManagerProvider.jsx";
 
 
 const RoutesIndex = () => {
@@ -73,12 +75,14 @@ const RoutesIndex = () => {
   const routesForManagerOnly = [
     {
       path: "/",
-      element: 
+      element:
+      <ManagerProvider>
       <ManagerLeaveProvider>
       <ManagerAttendanceProvider>
         <ProtectedRoute /> 
       </ManagerAttendanceProvider>
       </ManagerLeaveProvider>
+      </ManagerProvider>
       ,  
       children: [
         {
@@ -97,7 +101,10 @@ const RoutesIndex = () => {
           path: "/manage-attendance",
           element: <ManageAttendance />,
         },
-
+        {
+          path: "/profile",
+          element: <ManagerProfile />
+        }
       ],
     },
   ];
