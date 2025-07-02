@@ -17,11 +17,17 @@ export default function AttendanceReport() {
     date.setDate(date.getDate()-10);
     let fromDate = date.toISOString().slice(0,10);
     setLoading(true);
+    const xAxisTemp = [];
     getCustomEmployeesAttendanceSummary(user.id, fromDate, toDate)
       .then(r => {
-        let d = r.data.map(report => (report.totalPresents/report.totalEmployees)*100);
-        setValues(d);
-        setLoading(false);
+        let d = r.data.map(report => {
+          xAxisTemp.push(report.date.split("-")[2])
+          if (report.totalEmployees == 0) return 0;
+          return (report.totalPresents/report.totalEmployees)*100
+      })
+      setXAxis(xAxisTemp);
+      setValues(d);
+      setLoading(false);
   }).catch(e => console.log(e));
   },[])
 
@@ -31,16 +37,14 @@ export default function AttendanceReport() {
       <LineChart
         grid={{ vertical: true, horizontal: true }} 
         loading={loading}
-        yAxis={[{ min: 0, max: 100, label: "percentage"}]}
+        yAxis={[{ min: 0, max: 100}]}
         series={[
           {
-            data: values,
+            data: values,label: "percentage",
           },
         ]}
-        xAxis={[{label: "days", data: [1,2,3,4,5,6,7,8,9,10,11]}]}
-        slots={{
-
-        }}
+        xAxis={[{label: "days",
+            data: Array.from({length: 11}).map((_,i)=>i)}]}
         height={300}
       />
     </Paper>

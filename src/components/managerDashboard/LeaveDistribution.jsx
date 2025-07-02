@@ -36,15 +36,22 @@ export default function LeaveDistribution() {
           innerRadius: 0,
           outerRadius: 80,
           data: leaveStatusDistribution,
+          paddingAngle: 3,
+          cornerRadius: 5,
+          startAngle: 0,
+          endAngle: 360,
         },
         {
           innerRadius: 100,
           outerRadius: 120,
           data: leaveTypeDistribution,
+          paddingAngle: 3,
+          cornerRadius: 5,
+          startAngle: 0,
+          endAngle: 360,
         },
       ]}
       height={300}
-      hideLegend
     /></Paper>
   );
 }
