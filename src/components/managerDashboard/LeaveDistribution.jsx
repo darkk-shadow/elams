@@ -29,7 +29,7 @@ export default function LeaveDistribution() {
 
   return (
     <Paper>
-      <Typography>Leave Distribution</Typography>
+      <Typography>Leave Request Distribution</Typography>
     <PieChart
       series={[
         {

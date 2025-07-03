@@ -47,10 +47,10 @@ const EmployeeProfile = () => {
                 </Box>
                 <Typography variant='h6'>email: {user.email}</Typography>
                 <Typography variant='h6'>shift: {enumToString(shift.type)}</Typography>
-                <Box sx={{display: "flex", gap: 2}}>
+                {/* <Box sx={{display: "flex", gap: 2}}>
                   <Button variant='outlined' color='warning'>Change password</Button>
                   <Button variant='outlined'>Update profile</Button>
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           </Box>
