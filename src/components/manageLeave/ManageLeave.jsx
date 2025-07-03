@@ -5,6 +5,7 @@ import axios from 'axios';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useAuth } from '../../contexts/AuthProvider';
+import useSnackBar from '../../contexts/useSnackBar';
 
 
 const API_BASE = 'http://localhost:9090/api/leave-requests'; // Change if your backend URL is different
@@ -19,6 +20,8 @@ const ManageLeave = () => {
   const [reasonText, setReasonText] = useState('');
   const [showOnLeaveDialog, setShowOnLeaveDialog] = useState(false);
   const [showReqs, setShowReqs] = useState(true); // Toggle for showing requests
+  
+  const showSnackBar = useSnackBar()
 
   // Fetch leave requests for employees under this manager
   const fetchLeaves = () => {
@@ -42,9 +45,10 @@ const ManageLeave = () => {
     try {
       await axios.put(`${API_BASE}/${id}/status?status=APPROVED`);
       fetchLeaves();
+      showSnackBar("Leave approved")
     } catch (err) {
       console.error('Approve error:', err);
-      alert('Failed to approve leave.');
+      showSnackBar('Failed to approve leave: '+err.response.data.message,"error");
     }
   };
 

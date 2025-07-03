@@ -1,21 +1,19 @@
 import axios from "axios"
+import jwtHeader from "../util/jwtHeader";
 
 const leaveRequestBaseURL = "http://localhost:9090/api/leave-requests";
 const leaveBalanceBaseURL = "http://localhost:9090/api/leave-balances";
 
-
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-
 export const getLeaveRequestsByManager = (managerId)=>{
-  return  axios.get(`${leaveRequestBaseURL}/by-manager/${managerId}`);
+  return  axios.get(`${leaveRequestBaseURL}/by-manager/${managerId}`, jwtHeader);
 }
 
 export const getLeaveTypes = () => {
-  return  axios.get(`${leaveBalanceBaseURL}/get-leave-types`)
+  return  axios.get(`${leaveBalanceBaseURL}/get-leave-types`, jwtHeader)
 }
 
 export const createLeaveRequest = (request) => {
-  return  axios.post(leaveRequestBaseURL, request)
+  return  axios.post(leaveRequestBaseURL, request, jwtHeader)
 }
 
 export const getLeaveBalanceByEmployee = (employeeId) => {

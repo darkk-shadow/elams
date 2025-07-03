@@ -32,9 +32,9 @@ const ManagerAttendanceProvider = ({children}) => {
 
   useEffect(()=>{
     let date = new Date();
-    let toDate = date.toISOString().slice(0,10);
+    let toDate = date.toLocaleString("sv").split(" ")[0];
     date.setDate(date.getDate()-10);
-    let fromDate = date.toISOString().slice(0,10);
+    let fromDate = date.toLocaleString("sv").split(" ")[0]
     setAttedanceGraphloading(true);
     getCustomEmployeesAttendanceSummary(user.id, fromDate, toDate)
       .then(r => {
@@ -50,7 +50,7 @@ const ManagerAttendanceProvider = ({children}) => {
 
   useEffect(()=>{
     let date = new Date();
-    let fDate = date.toISOString().slice(0,10);
+    let fDate = date.toLocaleString("sv").split(" ")[0]
 
     getCustomEmployeesAttendanceSummary(user.id, fDate, fDate)
       .then(r=>{
