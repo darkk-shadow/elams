@@ -44,10 +44,10 @@ const ManagerProfile = () => {
                   <Typography >Employee id: EMP{user.id}</Typography>
                 </Box>
                 <Typography variant='h6'>email: {user.email}</Typography>
-                <Box sx={{display: "flex", gap: 2}}>
+                {/* <Box sx={{display: "flex", gap: 2}}>
                   <Button variant='outlined' color='warning'>Change password</Button>
                   <Button variant='outlined'>Update profile</Button>
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           </Box>

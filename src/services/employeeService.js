@@ -53,3 +53,7 @@ export const getTeamMembetsCount = async(managerId) => {
 export const getEmployeeById = async(employeeId) => {
   return axios.get(`${employeeBaseURL}/${employeeId}`);
 }
+
+export const deleteEmployeeById = async(employeeId) => {
+  return axios.delete(`${employeeBaseURL}/${employeeId}/delete`)
+}
