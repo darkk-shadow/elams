@@ -21,7 +21,7 @@ export default function AttendanceReport() {
             data: attendanceSummaryValues,label: "percentage",
           },
         ]}
-        xAxis={[{label: "days",
+        xAxis={[{label: "past 10 days",
             data: Array.from({length: 11}).map((_,i)=>i)}]}
         height={300}
       />
