@@ -42,7 +42,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/employees/add-employee").hasAuthority("MANAGER")
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/employees/add-employee").hasAuthority("MANAGER")
+                        .requestMatchers("/api/leave-requests/*/status").hasAuthority("MANAGER")
+                        .requestMatchers("/api/attendances/clock-in/*").hasAuthority("EMPLOYEE")
+                        .requestMatchers("/api/attendances/clock-out/*").hasAuthority("EMPLOYEE")
+                        .anyRequest().authenticated()
                 )
 
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
