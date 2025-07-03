@@ -30,6 +30,7 @@ const styles = {
 const HeroLinks = () => {
 
   const {noPendingLeave, noTappedIn, teamMembersCount, onLeave } = useManagerAttendance();
+  const navigate = useNavigate();
 
   const data = [
     {
@@ -37,35 +38,40 @@ const HeroLinks = () => {
       value: noPendingLeave,
       icon: PendingActionsIcon,
       color: "orange",
-      title: "Pending leave requests"
+      title: "Pending leave requests",
+      link: "/manage-leave"
     },
     {
       text: `Tapped in`,
       value: noTappedIn,
       icon: FingerprintIcon,
       color: "gray",
-      title: "Total employees tapped today"
+      title: "Total employees tapped today",
+      link: "/manage-attendance"
     },
     {
       text: `Total Team`,
       value: teamMembersCount,
       icon: PeopleAltIcon,
       color: "blue",
-      title: "Total employees in your team"
+      title: "Total employees in your team",
+      link: "/manage-employee"
     },
     {
       text: `On leave`,
       value: onLeave,
       icon: BeachAccessIcon,
       color: "purple",
-      title: "Employees on leave today"
+      title: "Employees on leave today",
+      link: "/manage-leave"
     },
     {
       text: `Attendance`,
       value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
       icon: BarChartIcon,
       color: "green",
-      title: "Today attendance percentage"
+      title: "Today attendance percentage",
+      link: "/manage-attendance"
     }
   ];
 
@@ -80,7 +86,8 @@ const HeroLinks = () => {
       {console.log(data)}
         {data.map(e => (
           <BootstrapTooltip title={e.title} arrow >
-          <Card sx={{display: "grid", placeItems: "center", gap: 2}}> 
+          <Card onClick = {()=>navigate(e.link)}
+            sx={{display: "grid", placeItems: "center", gap: 2, ":hover":{cursor:"pointer"}}}> 
               <e.icon sx={{color: e.color}} />
               <Typography>{enumToString(e.text)}</Typography>
               <Typography  variant='h5' sx={{color: e.color}}>{e.value}</Typography>
