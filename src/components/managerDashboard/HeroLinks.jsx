@@ -83,7 +83,6 @@ const HeroLinks = () => {
       gap: 4
     }}>
 
-      {console.log(data)}
         {data.map(e => (
           <BootstrapTooltip title={e.title} arrow >
           <Card onClick = {()=>navigate(e.link)}

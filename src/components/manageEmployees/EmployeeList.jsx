@@ -16,17 +16,20 @@ export default function EmployeeList() {
     {
       field: "employeeName",
       headerName: "Employee name",
-      width: 350,
+      // width: 350,
+      flex: 1
     },
     {
       field: "email",
       headerName: "Email",
-      width: 400,
+      // width: 400,
+      flex: 1
     },
     {
       field: "shiftId",
       headerName: "Shift",
-      width: 400,
+      flex: 1,
+      // width: 400,
       valueGetter: (value) => `${shifts.find((s)=>s.id==value).type}`
     },
   ];

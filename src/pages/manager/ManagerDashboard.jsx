@@ -1,5 +1,5 @@
 import React from 'react'
-import HeroLinks from '../../components/managerDashboard/heroLinks'
+import HeroLinks from '../../components/managerDashboard/HeroLinks'
 import { Box, Typography } from '@mui/material'
 import QuickActions from '../../components/managerDashboard/QuickActions'
 import Charts from '../../components/managerDashboard/Charts'
