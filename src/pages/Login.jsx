@@ -34,6 +34,7 @@ const Login = () => {
         setToken(res.data.jwtToken);
         setUser(res.data);
         navigate("/", { replace: true });
+        window.location.reload()
       })
       .catch((a) => {
         setError(true);
