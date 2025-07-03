@@ -3,24 +3,12 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { getEmployeesByManager, getShifts } from "../../services/employeeService";
 import { useAuth } from "../../contexts/AuthProvider";
+import { useManagerEmployees } from "../../contexts/ManagerEmployeesProvider";
 
 
 
 export default function EmployeeList() {
-  const [employees, setEmployees] = useState([]);
-  const { user } = useAuth();
-  const [shifts, setShifts] = useState([]);
-
-  useEffect(() => {
-    getShifts()
-      .then((r) => setShifts(r.data))
-      .catch(e => console.error(e));
-
-    getEmployeesByManager(user.id)
-      .then((r) => setEmployees(r.data))
-      .catch((e) => console.error(e));
-
-  }, []);
+  const {employees, shifts} = useManagerEmployees()
 
 
   const columns = [

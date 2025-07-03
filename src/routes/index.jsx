@@ -17,6 +17,7 @@ import ManagerAttendanceProvider from "../contexts/ManagerAttendanceProvider.jsx
 import ManagerLeaveProvider from "../contexts/ManagerLeaveProvider.jsx";
 import ManagerProfile from "../pages/manager/ManagerProfile.jsx";
 import ManagerProvider from "../contexts/ManagerProvider.jsx";
+import ManagerEmployeeProvider from "../contexts/ManagerEmployeesProvider.jsx";
 
 
 const RoutesIndex = () => {
@@ -77,11 +78,13 @@ const RoutesIndex = () => {
       path: "/",
       element:
       <ManagerProvider>
+      <ManagerEmployeeProvider>
       <ManagerLeaveProvider>
       <ManagerAttendanceProvider>
         <ProtectedRoute /> 
       </ManagerAttendanceProvider>
       </ManagerLeaveProvider>
+      </ManagerEmployeeProvider>
       </ManagerProvider>
       ,  
       children: [

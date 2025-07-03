@@ -4,27 +4,15 @@ import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { assignShift, getEmployeesByManager, getShifts } from '../../services/employeeService';
+import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
+import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
 
 
 const AssignShift = ({open, setOpen}) => {
 
-  const [shifts, setShifts] = useState([]);
-
-  const [employees, setEmployees] = useState([]);
+  const {shifts, employees, fetchData} = useManagerEmployees();
 
   const showSnackBar = useSnackBar();
-
-  const {user} = useAuth();
-
-  useEffect(()=>{
-    getEmployeesByManager(user.id)
-      .then((r) => setEmployees(r.data))
-      .catch(e => console.error(e));
-
-    getShifts()
-      .then((r) => setShifts(r.data))
-      .catch(e => console.error(e));
-  },[])
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -50,6 +38,7 @@ const AssignShift = ({open, setOpen}) => {
     const employeeName = employees.find((e)=>e.id==employeeId).employeeName;
     assignShift(employeeId, shiftType)
       .then((r)=>showSnackBar(`${shiftType} shift assigned to ${employeeId}: ${employeeName}`))
+      .then(()=>fetchData())
       .catch((e)=>showSnackBar("Failed to assign shift","error"))
     setOpen(false);
   }

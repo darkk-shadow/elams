@@ -4,20 +4,15 @@ import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, getAvailableEmployees, getEmployeesByManager, removeEmployeeFromTeam } from '../../services/employeeService';
+import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
 
 const RemoveEmployeeFromTeam = ({open, setOpen}) => {
 
-  const [employees, setEmployees] = useState([]);
+  const {employees, fetchData} = useManagerEmployees()
 
   const showSnackBar = useSnackBar();
 
   const {user} = useAuth();
-
-  useEffect(()=>{
-    getEmployeesByManager(user.id)
-      .then((r) => setEmployees(r.data))
-      .catch(e =>console.log(e));
-  },[])
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -42,6 +37,7 @@ const RemoveEmployeeFromTeam = ({open, setOpen}) => {
     const employeeName = employees.find((e)=>e.id==employeeId).employeeName;
     removeEmployeeFromTeam(user.id, employeeId)
       .then((r)=>showSnackBar(`${r.data.employeeName} removed from your team`, "warning"))
+      .then(()=>fetchData())
       .catch((e)=>showSnackBar(`Failed to remove ${r.data.employeeName} from your team`, "error"))
     setOpen(false);
   }

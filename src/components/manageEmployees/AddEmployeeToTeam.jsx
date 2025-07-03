@@ -4,20 +4,15 @@ import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, assignShift, getAvailableEmployees, getEmployeesByManager, getShifts } from '../../services/employeeService';
+import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
+import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
 
 const AddEmployeeToTeam = ({open, setOpen}) => {
 
-  const [employees, setEmployees] = useState([]);
+  const {user} = useAuth()
 
   const showSnackBar = useSnackBar();
-
-  const {user} = useAuth();
-
-  useEffect(()=>{
-    getAvailableEmployees()
-      .then((r) => setEmployees(r.data))
-      .catch(e => console.error(e));
-  },[])
+  const {availableEmployees, fetchData} = useManagerEmployees();
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -39,9 +34,11 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     const employeeId = e.target[0].value.split(" ")[0];
-    const employeeName = employees.find((e)=>e.id==employeeId).employeeName;
+    const employeeName = availableEmployees.find((e)=>e.id==employeeId).employeeName;
     addEmployeeToTeam(user.id, employeeId)
-      .then((r)=>showSnackBar(`${employeeName} Added to your team`))
+      .then((r)=>{
+        showSnackBar(`${employeeName} Added to your team`);
+      }).then(()=>fetchData())
       .catch((e)=>showSnackBar("Failed to add employee","error"))
     setOpen(false);
   }
@@ -57,7 +54,7 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
 
         <Autocomplete
           disablePortal
-          options={employees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
+          options={availableEmployees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
           sx={{ width: 300 }}
           renderInput={(params) => {
           return <TextField {...params} label="Employee" />}}

@@ -10,8 +10,11 @@ import axios from "axios"
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from '../../contexts/AuthProvider'
 import useApi from '../../util/useApi'
+import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider'
 
 const AddEmployee = ({open, setOpen}) => {
+
+  const {fetchData} = useManagerEmployees();
 
   const [role, setRole] = useState("");
 
@@ -61,7 +64,7 @@ const AddEmployee = ({open, setOpen}) => {
                 .then((r)=>showSnackBar(`${savedUser.employeeName} added to your team`))
                 .catch(e=>showSnackBar(e.response.data))
             }
-        })
+        }).then(()=>fetchData())
         .catch((e)=>{
           console.log(e);
           showSnackBar(
