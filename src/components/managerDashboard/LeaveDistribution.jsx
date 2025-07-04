@@ -1,6 +1,7 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import { Paper, Typography } from '@mui/material';
 import { useManagerLeave } from '../../contexts/ManagerLeaveProvider';
+import useIsMobile from '../../util/useMobile';
 
 const data1 = [
   { label: 'Group A', value: 400 },
@@ -25,12 +26,22 @@ const data2 = [
 
 export default function LeaveDistribution() {
 
-   const {leaveStatusDistribution, leaveTypeDistribution} = useManagerLeave()
+   const {leaveStatusDistribution, leaveTypeDistribution} = useManagerLeave();
+   const {isTablet} = useIsMobile();
 
   return (
     <Paper>
       <Typography>Leave Request Distribution</Typography>
-    <PieChart
+    <PieChart 
+      slotProps={{
+        legend: {
+          direction: 'horizontal',
+          position: { 
+            vertical: 'bottom',
+            horizontal: 'center',
+          }
+        }
+      }}
       series={[
         {
           innerRadius: 0,

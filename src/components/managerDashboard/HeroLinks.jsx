@@ -81,8 +81,9 @@ const HeroLinks = () => {
 
         {data.map(e => (
 
-          <Grid item size={{xs: 6, lg: 2.4}} sx={{border: "1px solid red"}}>
+          <Grid item size={{xs: 6, lg: 2.4}}>
           <BootstrapTooltip title={e.title} arrow >
+          
           <Card onClick = {()=>navigate(e.link)}
             sx={{display: "grid", placeItems: "center", gap: 2, ":hover":{cursor:"pointer"}}}> 
               <e.icon sx={{color: e.color}} />

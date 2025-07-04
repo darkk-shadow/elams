@@ -3,11 +3,12 @@ import { useAuth } from "../contexts/AuthProvider";
 import TopBar from "../components/TopBar";
 import PageWrapper from "../components/PageWrapper";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
+import useIsMobile from "../util/useMobile";
 
 export const ProtectedRoute = () => {
     const {token} = useAuth();
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+    const {isMobile} = useIsMobile()
 
     if(!token) {
         return <Navigate to="/login" />;

@@ -8,16 +8,6 @@ const ThemeContextProvider = ({children}) => {
 
     const theme = useMemo(() => {
         return createTheme({
-            breakpoints: {
-              values: {
-                xs: 0,
-                sm: 450,
-                md: 600,
-                lg: 900,
-                xl: 1200,
-                tablet:1024
-              }
-            },
             palette: {
                 mode: darkTheme ? "dark" : "light",
             },
