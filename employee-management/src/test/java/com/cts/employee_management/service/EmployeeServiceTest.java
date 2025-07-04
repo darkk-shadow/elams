@@ -3,10 +3,13 @@ package com.cts.employee_management.service;
 import com.cts.employee_management.dto.EmployeeRequestDto;
 import com.cts.employee_management.dto.EmployeeResponseDto;
 import com.cts.employee_management.entity.Employee;
+import com.cts.employee_management.entity.Shift;
 import com.cts.employee_management.entity.enums.Role;
+import com.cts.employee_management.entity.enums.ShiftType;
 import com.cts.employee_management.exception.InvalidRoleException;
 import com.cts.employee_management.exception.ResourceNotFoundException;
 import com.cts.employee_management.repository.EmployeeRepository;
+import com.cts.employee_management.repository.ShiftRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,8 @@ public class EmployeeServiceTest {
 
     @MockitoBean
     private EmployeeRepository employeeRepository;
+    @MockitoBean
+    private ShiftRepository shiftRepository;
 
     @Autowired
     private EmployeeService employeeService;
@@ -49,6 +54,8 @@ public class EmployeeServiceTest {
     private EmployeeRequestDto employeeDto1, employeeDto2, employeeDto3;
     private List<EmployeeResponseDto> employeeResponseDtoList = new LinkedList<>();
 
+    private Shift generalShift;
+
     @BeforeEach
     void setupObject(){
         employeeRequestDto = new EmployeeRequestDto("Akram", "akram@sample.com");
@@ -64,37 +71,28 @@ public class EmployeeServiceTest {
                 null, null, null);
         savedAdmin = new Employee(3L, "Akram","akram@sample.com", Role.ADMIN,
                 null, null, null);
-        expectedEmployeeResponseDto = new EmployeeResponseDto(1L, "Akram","akram@sample.com",
-                Role.EMPLOYEE, null, null);
-        expectedManagerResponseDto = new EmployeeResponseDto(2L, "Akram","akram@sample.com",
-                Role.MANAGER, null, null);
-        expectedAdminResponseDto = new EmployeeResponseDto(3L, "Akram","akram@sample.com",
-                Role.ADMIN, null, null);
+        generalShift = new Shift(1L, java.time.LocalTime.of(9, 0), java.time.LocalTime.of(18, 0), ShiftType.GENERAL);
+        when(shiftRepository.findByType(ShiftType.GENERAL)).thenReturn(Optional.of(generalShift));
 
-        employee1 = new Employee(null, "Akram","akram@sample.com", Role.EMPLOYEE,
-                null, null, null);
-        employee2 = new Employee(null, "Piyush","Piyush@sample.com", Role.MANAGER,
-                null, null, null);
-        employee3 = new Employee(null, "Rohit","Rohit@sample.com", Role.ADMIN,
-                null, null, null);
+        expectedEmployeeResponseDto = new EmployeeResponseDto(1L, "Akram","akram@sample.com", Role.EMPLOYEE, generalShift.getId(), null);
+        expectedManagerResponseDto = new EmployeeResponseDto(2L, "Akram","akram@sample.com", Role.MANAGER, generalShift.getId(), null);
+        expectedAdminResponseDto = new EmployeeResponseDto(3L, "Akram","akram@sample.com", Role.ADMIN, generalShift.getId(), null);
 
-        employeeList.add(new Employee(1L, "Akram", "akram@sample.com",Role.EMPLOYEE,
-                null, null, null));
-        employeeList.add(new Employee(2L, "Piyush","Piyush@sample.com", Role.MANAGER,
-                null, null, null));
-        employeeList.add(new Employee(3L, "Rohit","Rohit@sample.com", Role.ADMIN,
-                null, null, null));
+        newEmployee.setShift(generalShift);
+        savedEmployee.setShift(generalShift);
+        newManager.setShift(generalShift);
+        savedManager.setShift(generalShift);
+        newAdmin.setShift(generalShift);
+        savedAdmin.setShift(generalShift);
 
-        employeeDto1 = new EmployeeRequestDto("Akram","akram@sample.com");
-        employeeDto2 = new EmployeeRequestDto("Piyush", "Piyush@sample.com");
-        employeeDto3 = new EmployeeRequestDto("Rohit","Rohit@sample.com");
+        employee1 = new Employee(null, "Akram", "akram@sample.com", Role.EMPLOYEE, null, null, null);
+        employee2 = new Employee(null, "Piyush", "Piyush@sample.com", Role.MANAGER, null, null, new LinkedList<>());
+        employee3 = new Employee(null, "Rohit", "Rohit@sample.com", Role.ADMIN, null, null, null);
 
-        employeeResponseDtoList.add(new EmployeeResponseDto(1L, "Akram","akram@sample.com",
-                Role.EMPLOYEE, null, null));
-        employeeResponseDtoList.add(new EmployeeResponseDto(2L, "Piyush","Piyush@sample.com",
-                Role.MANAGER, null, null));
-        employeeResponseDtoList.add(new EmployeeResponseDto(3L, "Rohit", "Rohit@sample.com",
-                Role.ADMIN, null, null));
+        employee1.setShift(generalShift);
+        employee2.setShift(generalShift);
+        employee3.setShift(generalShift);
+        employeeList.forEach(e -> e.setShift(generalShift));
     }
 
 

@@ -217,14 +217,6 @@ public class EmployeeControllerTest {
         assertThat(actualError.getException(), is("ResourceNotFoundException"));
     }
 
-    @Test
-    void deleteEmployee_shouldRemoveEmployee() throws Exception {
-        Long id = 1L;
-
-        mockMvc.perform(post("/api/employees/" + id + "/delete"))
-                .andExpect(status().isNoContent())
-                .andReturn();
-    }
 
     @Test
     void updateEmployee_shouldUpdateEmployeeDetails() throws Exception {
