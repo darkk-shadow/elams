@@ -55,7 +55,7 @@ const EmployeeLeaveProvider = ({children}) => {
       let approvedLeave = leaveStatusDistribution?.find(l=>l.label=="APPROVED")?.value;
       approvedLeave = approvedLeave ? approvedLeave : 0;
 
-      let rejectLeave = leaveStatusDistribution?.find(l=>l.label=="PENDING")?.value;
+      let rejectLeave = leaveStatusDistribution?.find(l=>l.label=="REJECTED")?.value;
       rejectLeave = rejectLeave ? rejectLeave : 0;
 
       setLeaveData([
