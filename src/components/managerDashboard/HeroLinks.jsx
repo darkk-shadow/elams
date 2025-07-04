@@ -15,6 +15,7 @@ import { enumToString } from '../../util/helpers'
 import { fontSize, Grid, styled } from '@mui/system'
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider'
 import BootstrapTooltip from '../../util/BootStrapTooltip'
+import useIsMobile from '../../util/useMobile'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -31,6 +32,7 @@ const HeroLinks = () => {
 
   const {noPendingLeave, noTappedIn, teamMembersCount, onLeave } = useManagerAttendance();
   const navigate = useNavigate();
+  const {isMobile} = useIsMobile();
 
   const data = [
     {
@@ -64,16 +66,17 @@ const HeroLinks = () => {
       color: "purple",
       title: "Employees on leave today",
       link: "/manage-leave"
-    },
-    {
-      text: `Attendance`,
-      value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
-      icon: BarChartIcon,
-      color: "green",
-      title: "Today attendance percentage",
-      link: "/manage-attendance"
     }
   ];
+
+  if(!isMobile) data.push({
+    text: `Attendance`,
+    value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
+    icon: BarChartIcon,
+    color: "green",
+    title: "Today attendance percentage",
+    link: "/manage-attendance"
+  })
 
   return (
 

@@ -7,6 +7,8 @@ import useSnackBar from '../../contexts/useSnackBar';
 import AssignShift from './AssignShift';
 import { useNavigate } from 'react-router-dom';
 import { Grid } from '@mui/system';
+import useIsMobile from '../../util/useMobile';
+import Action from './Action';
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -24,8 +26,13 @@ const styles = {
 const QuickActions = () => {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [openAssignShift, setOpenAssignShift] = useState(false);
+  const {isMobile} = useIsMobile();
 
-  const navigate = useNavigate();
+  if(isMobile) return <Box
+    sx={{position: "fixed", bottom: 24, right: 24, zIndex: 1000}}>
+      <Action />
+    </Box>
+
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
