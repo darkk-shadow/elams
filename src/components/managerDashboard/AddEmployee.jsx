@@ -1,6 +1,6 @@
 import { CheckBox } from '@mui/icons-material'
 import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Grid } from '@mui/system'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo'
@@ -11,8 +11,11 @@ import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from '../../contexts/AuthProvider'
 import useApi from '../../util/useApi'
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider'
+import useIsMobile from '../../util/useMobile'
 
 const AddEmployee = ({open, setOpen}) => {
+
+  const {isMobile} = useIsMobile()
 
   const {fetchData} = useManagerEmployees();
 
@@ -29,14 +32,14 @@ const AddEmployee = ({open, setOpen}) => {
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
-    modal: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: 400,
-      bgcolor: 'background.paper',
-    },
+    // modal: {
+    //   position: 'absolute',
+    //   top: '50%',
+    //   left: '50%',
+    //   transform: 'translate(-50%, -50%)',
+    //   bgcolor: 'background.paper',
+    //   width: isMobile? null : 400,
+    // },
     form: {
       padding: "2em",
       display: "grid",
@@ -86,17 +89,6 @@ const AddEmployee = ({open, setOpen}) => {
           'error'
         );
       })
-
-      // addManager(employee)
-      // .then((r)=>{
-      //   const savedUser = r.data;
-      //   showSnackBar(
-      //     `${savedUser.employeeName}(${savedUser.id}) with ${savedUser.email} added as manager.`);
-      // }).catch((e)=>{
-      //   console.log(e);
-      //   showSnackBar(
-      //     `can't able to add ${email}: ${e.response.data.message}`, "error")
-      // })
     }
 
     setOpen(false);
@@ -107,7 +99,7 @@ const AddEmployee = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper sx={style.modal}>
+        <Paper>
         <Typography>Add Employee</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
           <TextField label="Employee Name" required />
@@ -125,11 +117,11 @@ const AddEmployee = ({open, setOpen}) => {
               control={<Checkbox />}
               label="add to your team"
             />}
-             <Box sx={{display: "flex", placeContent: "space-around"}}>
+             <Grid container justifyContent="space-around">
                 <Button color='error' variant='outlined'
                   onClick={()=>setOpen(false)}>Cancel</Button>
                 <Button color="success" type="submit" variant='outlined'>Add</Button>
-              </Box>
+              </Grid>
         </form>
         </Paper>
       </Modal>

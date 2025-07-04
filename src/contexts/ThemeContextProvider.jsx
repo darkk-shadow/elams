@@ -1,10 +1,12 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { createContext, useContext, useMemo, useState } from "react"
+import useIsMobile from "../util/useMobile";
 
 const ThemeContext = createContext();
 
 const ThemeContextProvider = ({children}) => {
     const [darkTheme, setDarkTheme] = useState(false);
+    const {isMobile} = useIsMobile();
 
     const theme = useMemo(() => {
         return createTheme({
@@ -20,9 +22,26 @@ const ThemeContextProvider = ({children}) => {
                         },
                     },
                 },
+                MuiModal: {
+                    styleOverrides: {
+                        root: {
+                            top: '50%',
+                            left: '50%',
+                            width: isMobile? null : 400,
+                            transform: 'translate(-50%, -50%)',
+                        },
+                        backdrop: {
+                            top: '50%',
+                            left: '50%',
+                            width: "100vw",
+                            height: "100vh",
+                            transform: 'translate(-50%, -50%)',
+                        }
+                    }
+                }
             },
         });
-    }, [darkTheme]);
+    }, [darkTheme, isMobile]);
 
     const toggleTheme = () => {
         setDarkTheme((prev) => !prev);
