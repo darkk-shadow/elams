@@ -6,6 +6,7 @@ import { useSnackbar } from 'notistack';
 import useSnackBar from '../../contexts/useSnackBar';
 import AssignShift from './AssignShift';
 import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/system';
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -29,7 +30,7 @@ const QuickActions = () => {
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
     <AssignShift open={openAssignShift} setOpen={setOpenAssignShift}/>
-    <Box sx={styles.layout}>
+    <Grid container spacing={4} justifyContent="space-around">
       <Button variant='outlined' onClick={()=>setOpenAddEmployee(true)}>
         <Typography>Add Employee</Typography>
       </Button>
@@ -45,7 +46,7 @@ const QuickActions = () => {
       <Button variant='outlined' onClick={()=>navigate("manage-employee")}>
         <Typography>Manage Employee</Typography>
       </Button>
-    </Box>
+    </Grid>
     </>
   )
 }

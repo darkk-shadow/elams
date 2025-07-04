@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import React from 'react'
 import ShiftChart from './ShiftChart'
 import LeaveDistribution from './LeaveDistribution'
@@ -6,15 +6,11 @@ import AttendanceReport from './AttendanceReport'
 
 const Charts = () => {
   return (
-    <Box sx={{
-      display: "grid",
-      gap: 4,
-      gridTemplateColumns: "auto auto auto"
-    }}>
+    <Grid container spacing={4} justifyContent="space-around">
       <ShiftChart />
       <LeaveDistribution />
       <AttendanceReport />
-    </Box>
+    </Grid>
   )
 }
 
