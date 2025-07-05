@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { getEmployeesByManager, getShifts } from "../../services/employeeService";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useManagerEmployees } from "../../contexts/ManagerEmployeesProvider";
+import { Typography } from "@mui/material";
 
 
 
@@ -36,6 +37,7 @@ export default function EmployeeList() {
 
   return (
     <Box>
+      <Typography>Team Members</Typography>
       <DataGrid
         rows={employees}
         columns={columns}
