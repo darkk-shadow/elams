@@ -1,5 +1,5 @@
 import { Autocomplete, Button, FormControl, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Grid } from '@mui/system'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import React, { useState } from 'react'
@@ -7,6 +7,7 @@ import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider'
 import { useAuth } from '../../contexts/AuthProvider'
 import { createLeaveRequest, getLeaveRequestByEmployee } from '../../services/leaveService'
 import useSnackBar from '../../contexts/useSnackBar'
+import useIsMobile from '../../util/useMobile'
 
 const ApplyLeave = ({open, setOpen}) => {
 
@@ -18,6 +19,7 @@ const ApplyLeave = ({open, setOpen}) => {
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [reason, setReason] = useState("");
+  const {isMobile} = useIsMobile()
 
 
   /** @type {import('@mui/system').SxProps} */
@@ -31,7 +33,7 @@ const ApplyLeave = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -58,14 +60,13 @@ const ApplyLeave = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper sx={style.modal}>
+        <Paper >
         <Typography>Apply Leave</Typography>
         <form style={style.form} onSubmit={handleSubmit}>
           <Autocomplete
             onChange={(e,v) => setLeaveType(v.label)}
             disablePortal
             options={leaveTypes.map(l=>({label: l}))}
-            sx={{ width: 300 }}
             renderInput={(params) => {
             return <TextField {...params} label="Leave Type"  required/>}}
           />
@@ -90,11 +91,11 @@ const ApplyLeave = ({open, setOpen}) => {
           
           
         <TextField required label="Reason" onChange={e => setReason(e.target.value)} />
-        <Box sx={{display: "flex", placeContent: "space-around"}}>
+        <Grid container spacing={4} justifyContent="space-around">
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>
           <Button color="success" type="submit" variant='outlined'>Add</Button>
-        </Box>
+        </Grid>
         </form>
         </Paper>
       </Modal>

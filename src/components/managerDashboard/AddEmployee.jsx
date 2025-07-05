@@ -41,7 +41,7 @@ const AddEmployee = ({open, setOpen}) => {
     //   width: isMobile? null : 400,
     // },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }

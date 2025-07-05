@@ -6,10 +6,12 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, assignShift, getAvailableEmployees, getEmployeesByManager, getShifts } from '../../services/employeeService';
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 const AddEmployeeToTeam = ({open, setOpen}) => {
 
   const {user} = useAuth()
+  const {isMobile} = useIsMobile()
 
   const showSnackBar = useSnackBar();
   const {availableEmployees, fetchData} = useManagerEmployees();
@@ -25,7 +27,7 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }

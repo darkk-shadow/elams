@@ -5,12 +5,15 @@ import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, getAvailableEmployees, getEmployeesByManager, removeEmployeeFromTeam } from '../../services/employeeService';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 const RemoveEmployeeFromTeam = ({open, setOpen}) => {
 
   const {employees, fetchData} = useManagerEmployees()
 
   const showSnackBar = useSnackBar();
+
+  const {isMobile} = useIsMobile();
 
   const {user} = useAuth();
 
@@ -25,7 +28,7 @@ const RemoveEmployeeFromTeam = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }

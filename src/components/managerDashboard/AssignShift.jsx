@@ -6,11 +6,13 @@ import { useAuth } from "../../contexts/AuthProvider";
 import { assignShift, getEmployeesByManager, getShifts } from '../../services/employeeService';
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 
 const AssignShift = ({open, setOpen}) => {
 
   const {shifts, employees, fetchData} = useManagerEmployees();
+  const {isMobile} = useIsMobile()
 
   const showSnackBar = useSnackBar();
 
@@ -25,7 +27,7 @@ const AssignShift = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }

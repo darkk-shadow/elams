@@ -5,6 +5,7 @@ import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, deleteEmployeeById, getAvailableEmployees, getEmployeesByManager, removeEmployeeFromTeam } from '../../services/employeeService';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 const DeleteEmployee = ({open, setOpen}) => {
 
@@ -13,6 +14,7 @@ const DeleteEmployee = ({open, setOpen}) => {
   const showSnackBar = useSnackBar();
 
   const {user} = useAuth();
+  const {isMobile}  = useIsMobile();
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
@@ -25,7 +27,7 @@ const DeleteEmployee = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }

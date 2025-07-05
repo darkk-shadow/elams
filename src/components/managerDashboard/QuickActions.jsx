@@ -27,6 +27,7 @@ const QuickActions = () => {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [openAssignShift, setOpenAssignShift] = useState(false);
   const {isMobile} = useIsMobile();
+  const navigate = useNavigate()
 
   if(isMobile) return <Box
     sx={{position: "fixed", bottom: 24, right: 24, zIndex: 1000}}>
