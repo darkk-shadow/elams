@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import LaunchIcon from '@mui/icons-material/Launch';
 import { useNavigate } from 'react-router-dom';
 import { useEmployeeLeave } from '../../contexts/EmployeeLeaveProvider';
+import { Grid } from '@mui/system';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
@@ -40,15 +41,16 @@ const LeaveSummary = () => {
 			>Leave Balances<LaunchIcon fontSize='small' /></Button>
 
 
-			<Box sx={style.leaves}>
+			<Grid container spacing={4}>
 
 				{leaveData.map(d => (
 					d.label != "More" ?
+					<Grid size={{xs:6, md:3	}}>
 						<Paper variant='outlined' sx={{...style.leave, borderColor: d.color}} >
 							<d.icon sx={{color: d.color}} />
 							<Typography sx={{color: d.color}} >{d.label}</Typography>
 							<Typography variant='h6' sx={{color: d.color}} >{d.value}</Typography>
-						</Paper>
+						</Paper></Grid>
 						:
 						<Paper variant='outlined'  onClick={()=>navigate("/leaveManagement")}
 							sx={{...style.leave, borderColor: d.color, ":hover": {cursor: "pointer"}}} >
@@ -57,7 +59,7 @@ const LeaveSummary = () => {
 						</Paper>
 				))}
 
-			</Box>
+			</Grid>
 		</Paper>
   )
 }
