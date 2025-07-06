@@ -9,22 +9,26 @@ import LeaveRequestModule from '../../components/employeeDashboard/LeaveRequestM
 import AttendanceModule from '../../components/employeeDashboard/AttendanceModule';
 import ApplyLeave from '../../components/employeeDashboard/ApplyLeave';
 import LeaveBalanceInfo from '../../components/leaveManagement/LeaveBalanceInfo';
+import {Grid} from "@mui/material"
 
 
 export default function EmployeeLeave() {
 
   const [modalOpen, setModalOpen] = useState(false)
 
-  return (<Box sx={{
-      display: "grid",
-      gap: "2em",
-    }}>
-        <Box  sx={{display: "grid", gridTemplateColumns:"1fr auto", gap: 4}}>
-          <LeaveBalanceModule />
-          <LeaveBalanceInfo />
-        </Box>
-        <LeaveRequestModule />
+  return (<Grid container spacing={4}>
+        <Grid container spacing={4}>
+          <Grid size={{xs: 12, md: "grow" }}>
+            <LeaveBalanceModule />
+          </Grid>
+          <Grid size={{xs: "auto"}}>
+            <LeaveBalanceInfo />
+          </Grid>
+        </Grid>
+        <Grid size={{xs:12}}>
+          <LeaveRequestModule />
+        </Grid>
         
-      </Box>
+      </Grid>
   );
 }

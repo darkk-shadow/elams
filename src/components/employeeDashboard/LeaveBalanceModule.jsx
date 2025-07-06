@@ -9,6 +9,7 @@ import BeachAccessIcon from '@mui/icons-material/BeachAccess';     // CASUAL_LEA
 import EventIcon from '@mui/icons-material/Event';                 // VACATION_LEAVE  - green
 import ChildCareIcon from '@mui/icons-material/ChildCare';         // PATERNITY_LEAVE - purple
 import AccessTimeIcon from '@mui/icons-material/AccessTime';       // COMPENSATORY_OFF- teal
+import { Grid } from '@mui/system';
 
 /** @type {import('@mui/system').SxProps} */
 const style = {
@@ -60,10 +61,11 @@ const LeaveBalanceModule = () => {
 
 	return (
 		<Paper>
-			<Box sx={{display: "grid", gap:2}}>
+			<Grid container spacing={4}>
 			<Typography variant="h6">Leave Balances</Typography>
-			<Box sx={{display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 4, gridAutoFlow: "column", placeContent:"space-around"}}>
+			<Grid container spacing={4}>
 				{data.map(lb=> (
+					<Grid  size={{xs: 6, md: 4, lg: 2}}>
 					<Paper variant='outlined' sx={{
 						borderColor: lb.color, display: "grid",
 						gap:1, placeItems: "center",
@@ -73,10 +75,11 @@ const LeaveBalanceModule = () => {
 						<Typography>{enumToString(lb.leaveType)}</Typography>
 						<Typography variant='h5' sx={{color: lb.color}}>{lb.balance}</Typography>
 					</Paper>
+					</Grid>
 				))}
-			</Box>
+			</Grid>
 
-			</Box>
+			</Grid>
 		</Paper>
 	)
 }
