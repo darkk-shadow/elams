@@ -13,6 +13,7 @@ import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
+import useIsMobile from '../util/useMobile';
 
 
 export default function TopBar() {
@@ -23,6 +24,8 @@ export default function TopBar() {
   const {darkTheme, toggleTheme } = useCustomTheme();
 
   const { setToken, user } = useAuth();
+
+  const {isMobile} = useIsMobile()
   
     const handleLogout = () => {
       setToken();
@@ -51,7 +54,7 @@ export default function TopBar() {
             <HomeRounded />
           </IconButton>
           <Typography fontWeight="bold" variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ELAMS
+            {isMobile? "" : "ELAMS"}
           </Typography>
 
           <IconButton
@@ -65,8 +68,10 @@ export default function TopBar() {
             {darkTheme? <LightModeRoundedIcon />: <DarkModeRoundedIcon />}
           </IconButton>
           <Typography>
-            Hello, 
-            <Typography component="span" fontWeight="bold"> {user.employeeName}</Typography>
+            {isMobile? "" : "Hello,"} 
+            <Typography component="span" variant={isMobile? null : "subtitle1"} fontWeight={isMobile? null :"bold"}>
+              {user.employeeName}
+            </Typography>
           </Typography>
             <div>
               <IconButton

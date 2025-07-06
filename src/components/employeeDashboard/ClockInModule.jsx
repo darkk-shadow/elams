@@ -13,7 +13,7 @@ const style = {
   layout: {
     display: "grid",
     gap: 1,
-    placeItems: "center"
+    placeItems: "center",   
   }
 }
 
