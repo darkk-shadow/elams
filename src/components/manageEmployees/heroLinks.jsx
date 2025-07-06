@@ -83,9 +83,9 @@ const HeroLinks = () => {
       </Box>
     }
     {!isMobile &&
-      <Grid container spacing={4}>
+      <Grid container alignContent="space-between" spacing={4}>
         {data.map(d => (
-          <Grid>
+          <Grid size={{xs: 2.4}}>
             <Button variant="outlined" color={d.color} onClick={d.action}>
               <Typography>{d.label.replaceAll("_"," ")}</Typography>
             </Button>

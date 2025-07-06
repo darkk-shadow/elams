@@ -36,8 +36,6 @@ export default function EmployeeList() {
   ];
 
   return (
-    <Paper>
-      <Typography>Team Members</Typography>
       <DataGrid
         rows={employees}
         columns={columns}
@@ -52,6 +50,5 @@ export default function EmployeeList() {
         // checkboxSelection
         // disableRowSelectionOnClick
       />
-    </Paper>
   );
 }
