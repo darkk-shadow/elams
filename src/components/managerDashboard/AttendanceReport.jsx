@@ -10,9 +10,8 @@ export default function AttendanceReport() {
   const {attendanceSummaryValues, attedanceGraphloading} = useManagerAttendance()
 
   return (
-    <Paper>
-      <Typography>Attendance Report</Typography>
       <LineChart
+        height={300}
         grid={{ vertical: true, horizontal: true }} 
         loading={attedanceGraphloading}
         yAxis={[{ min: 0, max: 100}]}
@@ -23,8 +22,6 @@ export default function AttendanceReport() {
         ]}
         xAxis={[{label: "past 10 days",
             data: Array.from({length: 11}).map((_,i)=>i)}]}
-        height={300}
       />
-    </Paper>
   );
 }

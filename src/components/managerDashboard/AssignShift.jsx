@@ -1,16 +1,18 @@
 import { Autocomplete, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Grid } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { assignShift, getEmployeesByManager, getShifts } from '../../services/employeeService';
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 
 const AssignShift = ({open, setOpen}) => {
 
   const {shifts, employees, fetchData} = useManagerEmployees();
+  const {isMobile} = useIsMobile()
 
   const showSnackBar = useSnackBar();
 
@@ -20,12 +22,12 @@ const AssignShift = ({open, setOpen}) => {
       position: 'absolute',
       top: '50%',
       left: '50%',
+      width: null,
       transform: 'translate(-50%, -50%)',
-      width: 400,
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -48,14 +50,13 @@ const AssignShift = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper sx={style.modal}>
+        <Paper>
         <Typography>Assign Shift</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
 
         <Autocomplete
           disablePortal
           options={employees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
-          sx={{ width: 300 }}
           renderInput={(params) => {
           return <TextField {...params} label="Employee" />}}
         />  
@@ -63,17 +64,16 @@ const AssignShift = ({open, setOpen}) => {
         <Autocomplete
           disablePortal
           options={shifts.map(s=>({label:`${s.type}`}))}
-          sx={{ width: 300 }}
           renderInput={(params) => {
           console.log(params)
           return <TextField {...params} label="Shift" />}}
         /> 
             
-        <Box sx={{display: "flex", placeContent: "space-around"}}>
+        <Grid container justifyContent="space-around">
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>
           <Button color="success" type="submit" variant='outlined'>Assign</Button>
-        </Box>
+        </Grid>
         </form>
         </Paper>
       </Modal>

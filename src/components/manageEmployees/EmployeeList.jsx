@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { getEmployeesByManager, getShifts } from "../../services/employeeService";
 import { useAuth } from "../../contexts/AuthProvider";
 import { useManagerEmployees } from "../../contexts/ManagerEmployeesProvider";
+import { Paper, Typography } from "@mui/material";
 
 
 
@@ -35,7 +36,6 @@ export default function EmployeeList() {
   ];
 
   return (
-    <Box>
       <DataGrid
         rows={employees}
         columns={columns}
@@ -50,6 +50,5 @@ export default function EmployeeList() {
         // checkboxSelection
         // disableRowSelectionOnClick
       />
-    </Box>
   );
 }

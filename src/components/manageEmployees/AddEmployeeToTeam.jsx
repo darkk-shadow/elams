@@ -1,15 +1,17 @@
 import { Autocomplete, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Grid } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, assignShift, getAvailableEmployees, getEmployeesByManager, getShifts } from '../../services/employeeService';
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 const AddEmployeeToTeam = ({open, setOpen}) => {
 
   const {user} = useAuth()
+  const {isMobile} = useIsMobile()
 
   const showSnackBar = useSnackBar();
   const {availableEmployees, fetchData} = useManagerEmployees();
@@ -25,7 +27,7 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -48,23 +50,22 @@ const AddEmployeeToTeam = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper sx={style.modal}>
+        <Paper>
         <Typography>Add Employee to the team</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
 
         <Autocomplete
           disablePortal
           options={availableEmployees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
-          sx={{ width: 300 }}
           renderInput={(params) => {
           return <TextField {...params} label="Employee" />}}
         />
             
-        <Box sx={{display: "flex", placeContent: "space-around"}}>
+        <Grid container justifyContent="space-around">
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>
           <Button color="success" type="submit" variant='outlined'>Add</Button>
-        </Box>
+        </Grid>
         </form>
         </Paper>
       </Modal>

@@ -35,29 +35,50 @@ const ManageAttendance = () => {
     { id: 2, value: onLeave, label: 'Leave', color: '#ffb300' },
   ];
 
+  const charts = [
+    {
+      title: "Calendar View",
+      comp: <AttendanceCalendar />,
+    },
+    {
+      title: "Attendance Report",
+      comp: <AttendanceReport />,
+    },
+    {
+      title: "Employee Statistics",
+      comp: <EmployeeStatisticsPieChart data={pieChartData} />,
+    }
+  ]
+
   return (
-    <Box sx={{display: "grid", gap: 4 }}>
-      <SummaryCards />
-
-      <Typography variant='h6'>Attendance Statistics</Typography>
-
-      <Box sx={{display: "grid", gap: 8, gridAutoFlow: "column"}}>
+    <Grid container spacing={8}>
+      <Grid size={{xs: 12}}>
+        <SummaryCards />
+      </Grid> 
 
 
-          <Paper>
-            <Typography>Calendar View</Typography>
-            <AttendanceCalendar />
+      <Grid container spacing={8} size={{xs: 12}}>
+        <Grid size={{xs:12}}>
+          <Typography textAlign="center" variant='h5'>Attendance Summary</Typography>
+        </Grid>
+        {charts.map(e => (
+          <Grid size={{xs: 12, lg:4}}>
+          <Paper sx={{height: "100%"}}>
+            <Typography variant='h6'>{e.title}</Typography>
+            {e.comp}
           </Paper>
-          
-          <AttendanceReport />
-            
-          <EmployeeStatisticsPieChart data={pieChartData} />
-          {/* <WeeklyWorkHoursBarChart weekDays={weekDays} avgWorkHours={avgWorkHours} /> */}
+        </Grid>
+        ))}
 
-      </Box>
+      </Grid>
           
-      <AttendanceTable />
-    </Box>
+      <Grid size={{xs: 12}}>
+        <Paper>
+            <Typography variant='h6'>Attendance Reports</Typography>
+          <AttendanceTable />
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 

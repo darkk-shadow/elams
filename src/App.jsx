@@ -1,4 +1,4 @@
-import { ThemeProvider, useTheme } from '@mui/material'
+import { CssBaseline, ThemeProvider, useTheme } from '@mui/material'
 import './App.css'
 import AuthProvider from './contexts/AuthProvider'
 import RoutesIndex from './routes'
@@ -17,6 +17,7 @@ function App() {
 
   return (
     <div className='App'>
+      <CssBaseline>
       <ThemeContextProvider>
       <AuthProvider>
       <SnackbarProvider>
@@ -24,7 +25,7 @@ function App() {
       </SnackbarProvider>
       </AuthProvider>
       </ThemeContextProvider>
-      
+      </CssBaseline>
     </div>
   )
 }

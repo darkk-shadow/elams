@@ -60,7 +60,6 @@ const AttendanceTable = () => {
     managerAttendanceLoading} = useManagerAttendance()
 
   return (<>
-    <Typography variant='h6'>Attendance Reports</Typography>
     <DataGrid
       loading={managerAttendanceLoading}
       rows={managerAttendanceReport}

@@ -83,12 +83,12 @@ const EmployeeLeaveProvider = ({children}) => {
           icon: CancelIcon,
           color: "red"
         },
-        {
-          label: "More",
-          value: "...",
-          icon: MoreHorizIcon,
-          color: "gray"
-        }
+        // {
+        //   label: "More",
+        //   value: "...",
+        //   icon: MoreHorizIcon,
+        //   color: "gray"
+        // }
       ])
     },[allocatedLeaves, leaveBalances, leaveStatusDistribution, leaveTypeDistribution])
 

@@ -1,16 +1,19 @@
 import { Autocomplete, Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Modal, Paper, Select, TextField, Typography } from '@mui/material'
-import { Box } from '@mui/system'
+import { Box, Grid } from '@mui/system'
 import React, { useState, useEffect } from 'react'
 import useSnackBar from '../../contexts/useSnackBar'
 import { useAuth } from "../../contexts/AuthProvider";
 import { addEmployeeToTeam, getAvailableEmployees, getEmployeesByManager, removeEmployeeFromTeam } from '../../services/employeeService';
 import { useManagerEmployees } from '../../contexts/ManagerEmployeesProvider';
+import useIsMobile from '../../util/useMobile';
 
 const RemoveEmployeeFromTeam = ({open, setOpen}) => {
 
   const {employees, fetchData} = useManagerEmployees()
 
   const showSnackBar = useSnackBar();
+
+  const {isMobile} = useIsMobile();
 
   const {user} = useAuth();
 
@@ -25,7 +28,7 @@ const RemoveEmployeeFromTeam = ({open, setOpen}) => {
       bgcolor: 'background.paper',
     },
     form: {
-      padding: "2em",
+      padding: isMobile? null : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -47,23 +50,22 @@ const RemoveEmployeeFromTeam = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper sx={style.modal}>
+        <Paper>
         <Typography>Remove Employee from the team</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
 
         <Autocomplete
           disablePortal
           options={employees.map(e=>({label:`${e.id} : ${e.employeeName}`}))}
-          sx={{ width: 300 }}
           renderInput={(params) => {
           return <TextField {...params} label="Employee" />}}
         />
             
-        <Box sx={{display: "flex", placeContent: "space-around"}}>
+        <Grid container justifyContent="space-around">
           <Button color='error' variant='outlined'
             onClick={()=>setOpen(false)}>Cancel</Button>
           <Button color="warning" type="submit" variant='outlined'>Remove</Button>
-        </Box>
+        </Grid>
         </form>
         </Paper>
       </Modal>

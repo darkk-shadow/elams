@@ -6,6 +6,9 @@ import { useSnackbar } from 'notistack';
 import useSnackBar from '../../contexts/useSnackBar';
 import AssignShift from './AssignShift';
 import { useNavigate } from 'react-router-dom';
+import { Grid } from '@mui/system';
+import useIsMobile from '../../util/useMobile';
+import Action from './Action';
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -23,13 +26,18 @@ const styles = {
 const QuickActions = () => {
   const [OpenAddEmployee, setOpenAddEmployee] = useState(false);
   const [openAssignShift, setOpenAssignShift] = useState(false);
+  const {isMobile} = useIsMobile();
+  const navigate = useNavigate()
 
-  const navigate = useNavigate();
+  if(isMobile) return <Box
+    sx={{position: "fixed", bottom: 24, right: 24, zIndex: 1000}}>
+      <Action />
+    </Box>
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
     <AssignShift open={openAssignShift} setOpen={setOpenAssignShift}/>
-    <Box sx={styles.layout}>
+    <Grid container spacing={4} justifyContent="space-around">
       <Button variant='outlined' onClick={()=>setOpenAddEmployee(true)}>
         <Typography>Add Employee</Typography>
       </Button>
@@ -45,7 +53,7 @@ const QuickActions = () => {
       <Button variant='outlined' onClick={()=>navigate("manage-employee")}>
         <Typography>Manage Employee</Typography>
       </Button>
-    </Box>
+    </Grid>
     </>
   )
 }

@@ -12,9 +12,10 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import { enumToString } from '../../util/helpers'
-import { fontSize, styled } from '@mui/system'
+import { fontSize, Grid, styled } from '@mui/system'
 import { useManagerAttendance } from '../../contexts/ManagerAttendanceProvider'
 import BootstrapTooltip from '../../util/BootStrapTooltip'
+import useIsMobile from '../../util/useMobile'
 
 /** @type {import('@mui/system').SxProps} */
 const styles = {
@@ -31,6 +32,7 @@ const HeroLinks = () => {
 
   const {noPendingLeave, noTappedIn, teamMembersCount, onLeave } = useManagerAttendance();
   const navigate = useNavigate();
+  const {isMobile} = useIsMobile();
 
   const data = [
     {
@@ -64,27 +66,27 @@ const HeroLinks = () => {
       color: "purple",
       title: "Employees on leave today",
       link: "/manage-leave"
-    },
-    {
-      text: `Attendance`,
-      value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
-      icon: BarChartIcon,
-      color: "green",
-      title: "Today attendance percentage",
-      link: "/manage-attendance"
     }
   ];
 
+  if(!isMobile) data.push({
+    text: `Attendance`,
+    value: `${Number((noTappedIn/teamMembersCount)*100).toFixed(2)}%`,
+    icon: BarChartIcon,
+    color: "green",
+    title: "Today attendance percentage",
+    link: "/manage-attendance"
+  })
+
   return (
 
-    <Box sx={{
-      display: "grid",
-      gridTemplateColumns: "repeat(5, 1fr)",
-      gap: 4
-    }}>
+    <Grid container spacing={4} justifyContent="space-around">
 
         {data.map(e => (
+
+          <Grid item size={{xs: 6, lg: 2.4}}>
           <BootstrapTooltip title={e.title} arrow >
+          
           <Card onClick = {()=>navigate(e.link)}
             sx={{display: "grid", placeItems: "center", gap: 2, ":hover":{cursor:"pointer"}}}> 
               <e.icon sx={{color: e.color}} />
@@ -92,9 +94,10 @@ const HeroLinks = () => {
               <Typography  variant='h5' sx={{color: e.color}}>{e.value}</Typography>
           </Card>
           </BootstrapTooltip>
+          </Grid>
     ))}
 
-    </Box>
+    </Grid>
   )
 }
 
