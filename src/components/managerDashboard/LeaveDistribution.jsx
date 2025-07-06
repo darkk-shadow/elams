@@ -27,11 +27,8 @@ const data2 = [
 export default function LeaveDistribution() {
 
    const {leaveStatusDistribution, leaveTypeDistribution} = useManagerLeave();
-   const {isTablet} = useIsMobile();
 
   return (
-    <Paper>
-      <Typography>Leave Request Distribution</Typography>
     <PieChart 
       slotProps={{
         legend: {
@@ -63,6 +60,6 @@ export default function LeaveDistribution() {
         },
       ]}
       height={300}
-    /></Paper>
+    />
   );
 }

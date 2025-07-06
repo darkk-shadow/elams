@@ -22,34 +22,13 @@ export default function ShiftChart() {
   },[])
 
   return (
-    <Paper>
-      <Typography>Shift Chart</Typography>
-    {/* <ChartContainer
-      xAxis={[{ scaleType: 'band', data: ['G', 'M', 'E', 'N'] }]}
-      series={[
-        {
-          type: 'bar',
-          id: 'base',
-          data: [shiftCount.general, shiftCount.morning, shiftCount.evening, shiftCount.night],
-        },
-      ]}
-
-      width={300}
-      height={300}
-    >
-      <BarPlot barLabel="value" slots={{ barLabel: BarLabel }} />
-      <ChartsXAxis />
-      <ChartsYAxis />
-    </ChartContainer> */}
-
       <BarChart
         xAxis={[{ data: ['General', 'Morning', 'Evening', 'Night'] }]}
         series={[{ data: [shiftCount.general, shiftCount.morning, shiftCount.evening, shiftCount.night], label: "shift"}] }
-        height={300}
         barLabel="value"
         grid={{ vertical: true , horizontal: true}}
+        height={300}
       />
-    </Paper>
   );
 }
 

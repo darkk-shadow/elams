@@ -34,7 +34,6 @@ const QuickActions = () => {
       <Action />
     </Box>
 
-
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
     <AssignShift open={openAssignShift} setOpen={setOpenAssignShift}/>

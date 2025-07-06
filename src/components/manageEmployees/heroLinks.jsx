@@ -41,39 +41,33 @@ const HeroLinks = () => {
         label: "Add_Employee",
         action: ()=>setOpenAddEmployee(true),
         icon: PersonAddAltIcon,
-        color: "primary"
+        color: "primary",
       },
       {
         label: "Assign_Shift",
         action: ()=>setOpenAssignShift(true),
         icon: AccessTimeIcon,
-        color: "primary"
+        color: "primary",
       },
       {
         label: "Add_to_team",
         action: ()=>setOpenAddEmployeeToTeam(true),
         icon: GroupAddIcon,
-        color: "primary"
+        color: "primary",
       },
       {
         label: "Remove_from_team",
         action: ()=>setOpenRemoveEmployeeFromTeam(true),
         icon: GroupRemoveIcon,
-        color: "warning"
+        color: "warning",
       },
       {
         label: "Delete_Employee",
         action: ()=>setOpenDeleteEmployee(true),
         icon: PersonRemoveIcon,
-        color: "error"
+        color: "error",
       },
     ]
-
-  // if(isMobile) return <Box
-  //     sx={{position: "fixed", bottom: 24, right: 24, zIndex: 1000}}>
-  //       <Action data={data} />
-  //     </Box>
-
 
   return (<>
     <AddEmployee open={OpenAddEmployee} setOpen={setOpenAddEmployee}/>
