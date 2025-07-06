@@ -3,8 +3,6 @@ import { Typography, Paper } from '@mui/material';
 import { PieChart } from '@mui/x-charts/PieChart';
 
 const EmployeeStatisticsPieChart = ({ data }) => (<>
-  <Paper  sx={{display: "grid", gridTemplateRows:"auto 1fr"}} >
-  <Typography >Employee Statistics</Typography>
     <PieChart
       series={[{
         data,
@@ -28,7 +26,6 @@ const EmployeeStatisticsPieChart = ({ data }) => (<>
         }
       }}
     />
-  </Paper>
   </>);
 
 export default EmployeeStatisticsPieChart;

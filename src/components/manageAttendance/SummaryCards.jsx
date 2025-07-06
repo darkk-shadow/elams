@@ -28,12 +28,14 @@ import AttendanceReport from "../../components/managerDashboard/AttendanceReport
 import AttendanceTable from "../../components/manageAttendance/AttendanceTable";
 import { useManagerAttendance } from "../../contexts/ManagerAttendanceProvider";
 import BootstrapTooltip from "../../util/BootStrapTooltip";
+import useIsMobile from "../../util/useMobile";
 
 const SummaryCards = () => {
   const { noTappedIn, attendanceSummary, teamMembersCount, onLeave } =
     useManagerAttendance();
 
   const [avgHrs, setAvgHrs] = useState();
+  const {isMobile} = useIsMobile();
 
   useState(() => {
     console.log(attendanceSummary);
@@ -89,16 +91,11 @@ const SummaryCards = () => {
   ];
 
   return (
-    <Box
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(5, 1fr)",
-        placeContent: "space-around",
-        gridAutoFlow: "column",
-        gap: "10%",
-      }}
-    >
-      {data.map((item, idx) => (
+    <Grid container spacing={4}>
+      {data
+      .filter((e) => !(isMobile && e.label == "Absent"))
+      .map((item, idx) => (
+        <Grid size={{xs: 6, md:2.4}}>
         <BootstrapTooltip title={item.title}>
         <Paper sx={{ display: "grid", placeItems: "center" }}>
           {item.icon}
@@ -108,8 +105,9 @@ const SummaryCards = () => {
           </Typography>
         </Paper>
         </BootstrapTooltip>
+        </Grid>
       ))}
-    </Box>
+    </Grid>
   );
 };
 
