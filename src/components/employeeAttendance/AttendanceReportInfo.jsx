@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material'
+import { Grid, Paper } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import AttendanceWeeklyReport from './AttendanceWeeklyReport'
 import AttendanceMonthlyReport from './AttendanceMonthlyReport'
@@ -33,18 +33,22 @@ const AttendanceReportInfo = () => {
 
   },[attendanceReport])
 
+  const comps = [
+    <AttendanceWeeklyReport label="This Week Report" report={currentWeeklyReport}/>,
+    <AttendanceWeeklyReport label ="Last Week Report" report={lastFullWeeklyReport} />,
+    <AttendanceMonthlyReport label ="This Month Report" report={summary[1]}/>,
+    <AttendanceMonthlyReport label ="Last Month Report" report={summary[3]} />,
+  ]
+
   return (
-    <Paper sx ={{
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr",
-      gridTemplateRows: "1fr auto",
-      gap: 4
-    }}>
-      {console.log(summary)}
-      <AttendanceWeeklyReport label="This Week Report" report={currentWeeklyReport}/>
-      <AttendanceWeeklyReport label ="Last Week Report" report={lastFullWeeklyReport} />
-      <AttendanceMonthlyReport label ="This Month Report" report={summary[1]}/>
-      <AttendanceMonthlyReport label ="Last Month Report" report={summary[3]} />
+    <Paper>
+      <Grid container spacing={4}>
+        {comps.map(c=> (
+          <Grid size={{xs: 12, md: 6}} >
+            {c}
+          </Grid>
+        ))}
+      </Grid>
     </Paper>
   )
 }
