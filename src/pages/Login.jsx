@@ -16,6 +16,7 @@ import { useState } from "react";
 import { login } from "../services/authService";
 import ctslogo from "../assets/ctslogo.png";
 import loginIllustration from "../assets/login illustration.png";
+import useIsMobile from "../util/useMobile";
 
 const Login = () => {
   const { setToken, setUser } = useAuth();
@@ -23,6 +24,7 @@ const Login = () => {
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const theme = useTheme();
+  const {isMobile} = useIsMobile()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -66,6 +68,7 @@ const Login = () => {
         }}
       >
         {/* Left Side - Info Only, No Image */}
+        {!isMobile &&
         <Box
           sx={{
             flex: 1.2,
@@ -88,20 +91,21 @@ const Login = () => {
           {/* <Typography variant="body2" color="#e3f2fd" align="center" sx={{ maxWidth: 220 }}>
             Manage your work hours, request time off, and view your leave balance with ease.
           </Typography> */}
-          <img
-            src={loginIllustration}
-            alt="Login Illustration"
-            style={{
-              width: "100%",
-              maxWidth: 250, // reverted to original size
-              borderRadius: 0,
-              boxShadow: "none",
-              marginTop: 18,
-              objectFit: "cover",
-              background: "none"
-            }}
-          />
+            <img
+              src={loginIllustration}
+              alt="Login Illustration"
+              style={{
+                width: "100%",
+                maxWidth: 250, // reverted to original size
+                borderRadius: 0,
+                boxShadow: "none",
+                marginTop: 18,
+                objectFit: "cover",
+                background: "none"
+              }}
+            />
         </Box>
+          }
         {/* Right Side - Login Form */}
         <Box
           sx={{

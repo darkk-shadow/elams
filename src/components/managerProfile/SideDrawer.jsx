@@ -12,37 +12,47 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import { IconButton } from '@mui/material';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import { useNavigate } from 'react-router-dom';
 
 export default function SideDrawer() {
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate()
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
+  const options = [
+    {
+      label: "Dashboard",
+      action: ()=>navigate("/"),
+      icon: <SpaceDashboardIcon />,
+    },
+    {
+      label: "Leave",
+      action: ()=>navigate("/manage-leave"),
+      icon: <EditNoteIcon />,
+    },
+    {
+      label: "Attendance",
+      action: ()=>navigate("/manage-attendance"),
+      icon: <AssignmentTurnedInIcon />,
+    },
+  ]
+
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+        {options.map((option) => (
+          <ListItem key={option.label} disablePadding>
+            <ListItemButton onClick={option.action} sx={{color: "primary.main"}}>
+              <ListItemIcon sx={{color: "primary.main"}}>
+                {option.icon}
               </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={option.label} />
             </ListItemButton>
           </ListItem>
         ))}

@@ -26,30 +26,26 @@ const ManagerProfile = () => {
     <Paper>
     <Grid container spacing={4}>
         <Grid size={{xs:"grow"}}>
-          <Box sx={{display: "grid", gap: 5, placeItems:"start", ml:10,
-            gridTemplateRows: "auto 1fr",
-          }}>
-            <Box sx={{display: "grid", gap:"1em", mt:"2em"}}>
+          <Grid container spacing={4}>
+            <Grid size={{xs:12}}>
               <Typography color="primary" variant='h5' textAlign="center">Your Profile</Typography>
-              <Box sx={{
-                  display: "grid", gridAutoFlow: "column", gap:"2em",
-                  gridTemplateColumns: "auto 1fr",
-                  justifySelf: "center"
-                }}>
+              <Grid container spacing={4}>
+                <Grid >
                 <Card sx={{alignSelf: "start"}}>
                   <AccountCircle sx={{height: "100px", width: "100px "}} />
                 </Card>
-                <Box sx={{ display: "grid"}}>
+                </Grid>
+                <Grid >
                   <Box>
                     <Typography variant='h6'>{user.employeeName}</Typography>
                     <Typography >Employee id: EMP{user.id}</Typography>
                   </Box>
                   <Typography variant='h6'>email: {user.email}</Typography>
-                </Box>
-              </Box>
-            </Box>
+                </Grid>
+              </Grid>
+            </Grid>
             <TeamMembers teamMembers={teamMembers}/>
-          </Box>
+          </Grid>
         </Grid>
         <Grid size={{xs:"auto"}}>
           {!isTablet && 
@@ -66,7 +62,6 @@ const ManagerProfile = () => {
               <Button onClick={()=>navigate("/")}><SpaceDashboardIcon />Dashboard</Button>
               <Button  onClick={()=>navigate("/manage-leave")}><EditNoteIcon />Leave</Button>
               <Button  onClick={()=>navigate("/manage-attendance")}><AssignmentTurnedInIcon />Attendance</Button>
-              <Button color='error' onClick={()=>navigate("/logout")}><LogoutRounded />Logout</Button>
             </Box>
           }
           {isTablet &&
