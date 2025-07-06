@@ -43,8 +43,8 @@ const AttendanceReportInfo = () => {
       {console.log(summary)}
       <AttendanceWeeklyReport label="This Week Report" report={currentWeeklyReport}/>
       <AttendanceWeeklyReport label ="Last Week Report" report={lastFullWeeklyReport} />
-      <AttendanceMonthlyReport label ="This Month Report" report={summary[0]}/>
-      <AttendanceMonthlyReport label ="Last Month Report" report={summary[2]} />
+      <AttendanceMonthlyReport label ="This Month Report" report={summary[1]}/>
+      <AttendanceMonthlyReport label ="Last Month Report" report={summary[3]} />
     </Paper>
   )
 }
