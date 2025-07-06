@@ -25,32 +25,12 @@ const ThemeContextProvider = ({children}) => {
                 MuiModal: {
                     styleOverrides: {
                         root: {
-                            top: '50%',
-                            left: '50%',
-                            width: isMobile? null : 400,
-                            transform: 'translate(-50%, -50%)',
+                            display: "grid",
+                            placeContent: "center"
                         },
-                        backdrop: {
-                            top: '50%',
-                            left: '50%',
-                            width: "100vw",
-                            height: "100vh",
-                            transform: 'translate(-50%, -50%)',
-                        }
                     }
                 },
-                MuiMenu: {
-                    styleOverrides:{
-                        root: {
-                            top: '50%',
-                            left: '50%',
-                            width: "100vw",
-                            height: "100vh",
-                            transform: 'translate(-50%, -50%)',
-                        },
-
-                    }
-                }
+                
             },
         });
     }, [darkTheme, isMobile]);
