@@ -37,7 +37,7 @@ const AttendanceReportInfo = () => {
     <AttendanceWeeklyReport label="This Week Report" report={currentWeeklyReport}/>,
     <AttendanceWeeklyReport label ="Last Week Report" report={lastFullWeeklyReport} />,
     <AttendanceMonthlyReport label ="This Month Report" report={summary[1]}/>,
-    <AttendanceMonthlyReport label ="Last Month Report" report={summary[3]} />,
+    <AttendanceMonthlyReport label ="Last Month Report" report={summary[2]} />,
   ]
 
   return (

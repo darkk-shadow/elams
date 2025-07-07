@@ -28,7 +28,7 @@ const AttendanceSummary = () => {
     if(!attendanceReport) return;
     setWeeklyReport(summary[0])
     setMonthlyReport(summary[1])
-    setYearlyReport(summary[4])
+    setYearlyReport(summary[3])
   },[summary])
 
   useEffect(()=>{
@@ -58,7 +58,7 @@ const AttendanceSummary = () => {
         color: "DarkSlateBlue"
       },
     ])
-  },[yearlyReport])
+  },[yearlyReport, weeklyReport, monthlyReport, ])
 
   return (
     <Paper sx={{display: "grid", gridTemplateRows: "auto 1fr", gap: 4}}>
