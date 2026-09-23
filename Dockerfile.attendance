@@ -1,0 +1,13 @@
+FROM eclipse-temurin:21-jdk-alpine AS build
+WORKDIR /app
+COPY elams-microservices/attendance-management/.mvn/ .mvn
+COPY elams-microservices/attendance-management/mvnw elams-microservices/attendance-management/pom.xml ./
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
+COPY elams-microservices/attendance-management/src ./src
+RUN ./mvnw package -DskipTests
+
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 9193
+ENTRYPOINT ["java", "-jar", "app.jar"]
