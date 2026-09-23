@@ -1,8 +1,9 @@
 import axios from "axios"
+import API_BASE_URL from "./api";
 
-const employeeBaseURL = "http://localhost:9090/api/employees";
+const employeeBaseURL = `${API_BASE_URL}/api/employees`;
 
-const shiftBaseURL = "http://localhost:9090/api/shifts";
+const shiftBaseURL = `${API_BASE_URL}/api/shifts`;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 

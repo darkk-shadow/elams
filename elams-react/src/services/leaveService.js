@@ -1,8 +1,9 @@
 import axios from "axios"
 import jwtHeader from "../util/jwtHeader";
+import API_BASE_URL from "./api";
 
-const leaveRequestBaseURL = "http://localhost:9090/api/leave-requests";
-const leaveBalanceBaseURL = "http://localhost:9090/api/leave-balances";
+const leaveRequestBaseURL = `${API_BASE_URL}/api/leave-requests`;
+const leaveBalanceBaseURL = `${API_BASE_URL}/api/leave-balances`;
 
 export const getLeaveRequestsByManager = (managerId)=>{
   return  axios.get(`${leaveRequestBaseURL}/by-manager/${managerId}`, jwtHeader);

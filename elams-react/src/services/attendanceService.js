@@ -1,7 +1,8 @@
 import axios from "axios"
+import API_BASE_URL from "./api";
 
-const attendanceReportBaseURL = "http://localhost:9090/api/attendance-reports";
-const attendanceBaseURL = "http://localhost:9090/api/attendances";
+const attendanceReportBaseURL = `${API_BASE_URL}/api/attendance-reports`;
+const attendanceBaseURL = `${API_BASE_URL}/api/attendances`;
 
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
