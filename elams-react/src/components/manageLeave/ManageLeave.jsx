@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Box, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField, IconButton, Collapse } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from 'axios';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useAuth } from '../../contexts/AuthProvider';
 import useSnackBar from '../../contexts/useSnackBar';
-import API_BASE_URL from '../../services/api';
-
-const API_BASE = `${API_BASE_URL}/api/leave-requests`;
+import apiClient from '../../services/api';
 
 const ManageLeave = () => {
   const { user } = useAuth();
@@ -19,36 +17,45 @@ const ManageLeave = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [reasonText, setReasonText] = useState('');
   const [showOnLeaveDialog, setShowOnLeaveDialog] = useState(false);
-  const [showReqs, setShowReqs] = useState(true); // Toggle for showing requests
-  
-  const showSnackBar = useSnackBar()
+  const [showReqs, setShowReqs] = useState(true);
+  const [lastRefreshed, setLastRefreshed] = useState(new Date());
+
+  const showSnackBar = useSnackBar();
 
   // Fetch leave requests for employees under this manager
-  const fetchLeaves = () => {
+  const fetchLeaves = useCallback(() => {
     if (!user?.id) return;
-    axios.get(`${API_BASE}/by-manager/${user.id}`)
+    apiClient.get(`/api/leave-requests/by-manager/${user.id}`)
       .then(res => {
         const all = res.data || [];
         setLeaveRequests(all.filter(lr => lr.status === 'PENDING'));
         let temp = all.filter(lr => lr.status === 'APPROVED' || lr.status === 'REJECTED');
         setApprovedLeaves(temp.sort((a, b) => b.id - a.id));
+        setLastRefreshed(new Date());
       })
       .catch(err => console.error(err));
-  };
+  }, [user?.id]);
 
+  // Initial load
   useEffect(() => {
     fetchLeaves();
-  }, []);
+  }, [fetchLeaves]);
+
+  // Auto-refresh every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(fetchLeaves, 10000);
+    return () => clearInterval(interval);
+  }, [fetchLeaves]);
 
   // Approve leave request
   const handleApprove = async (id) => {
     try {
-      await axios.put(`${API_BASE}/${id}/status?status=APPROVED`);
+      await apiClient.put(`/api/leave-requests/${id}/status?status=APPROVED`);
       fetchLeaves();
       showSnackBar("Leave approved")
     } catch (err) {
       console.error('Approve error:', err);
-      showSnackBar('Failed to approve leave: '+err.response.data.message,"error");
+      showSnackBar('Failed to approve leave: '+err.response?.data?.message,"error");
     }
   };
 
@@ -75,7 +82,7 @@ const ManageLeave = () => {
   // Submit the rejection reason
   const handleDialogSubmit = async () => {
     try {
-      await axios.put(`${API_BASE}/${selectedId}/status?status=REJECTED`);
+      await apiClient.put(`/api/leave-requests/${selectedId}/status?status=REJECTED`);
       fetchLeaves();
     } catch (err) {
       console.error('Reject error:', err);
@@ -208,12 +215,17 @@ const ManageLeave = () => {
   return (
     <>
       <Box sx={{ display: 'flex', justifyContent: "space-between", mb: 2 }}>
-        {/* <Box sx={{display: "flex", placeContent: "space-between" }} /> */}
         <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
           <IconButton onClick={()=> setShowReqs(p=>!p)}>
             {showReqs? <ArrowDropDownIcon />: <ArrowRightIcon  />}
           </IconButton>
-          Manage Leave Requests 
+          Manage Leave Requests
+          <IconButton onClick={fetchLeaves} title="Refresh" size="small" sx={{ ml: 1 }}>
+            <RefreshIcon fontSize="small" />
+          </IconButton>
+          <Typography variant="caption" color="text.secondary" sx={{ ml: 1 }}>
+            Last updated: {lastRefreshed.toLocaleTimeString()}
+          </Typography>
         </Typography>
         <Button
           variant="contained"

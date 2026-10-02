@@ -32,16 +32,16 @@ const AddEmployee = ({open, setOpen}) => {
 
   /** @type {import('@mui/system').SxProps} */
   const style = {
-    // modal: {
-    //   position: 'absolute',
-    //   top: '50%',
-    //   left: '50%',
-    //   transform: 'translate(-50%, -50%)',
-    //   bgcolor: 'background.paper',
-    //   width: isMobile? null : 400,
-    // },
+    modal: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      bgcolor: 'background.paper',
+      width: isMobile ? '90vw' : 400,
+    },
     form: {
-      padding: isMobile? null : "2em",
+      padding: isMobile? "1em" : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -99,7 +99,7 @@ const AddEmployee = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper>
+        <Paper sx={style.modal}>
         <Typography>Add Employee</Typography>
         <form style={style.form} onSubmit={submitHandler}> 
           <TextField label="Employee Name" required />

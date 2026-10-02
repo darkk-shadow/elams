@@ -3,13 +3,13 @@ package com.cts.api_gateway.config;
 import com.cts.api_gateway.security.JwtFilter;
 import com.cts.api_gateway.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,10 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter; // Correct for MVC
 
-import java.util.Arrays; // Import for Arrays.asList
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -32,35 +33,64 @@ public class SecurityConfig {
     CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    JwtFilter jwtFilter; // Assuming this is a standard Servlet Filter
+    JwtFilter jwtFilter;
+
+    @Value("${FRONTEND_URL:http://localhost:5173}")
+    private String frontendUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF as you intend for stateless JWT auth
+                // Wire CORS directly into Spring Security (must come first)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/employees/add-employee").hasAuthority("MANAGER")
                         .requestMatchers("/api/employees/add-employee").hasAuthority("MANAGER")
                         .requestMatchers("/api/leave-requests/*/status").hasAuthority("MANAGER")
                         .requestMatchers("/api/attendances/clock-in/*").hasAuthority("EMPLOYEE")
                         .requestMatchers("/api/attendances/clock-out/*").hasAuthority("EMPLOYEE")
                         .anyRequest().authenticated()
                 )
-
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-        http.sessionManagement(session -> session
-                .sessionCreationPolicy(
-                        org.springframework.security.config.http.SessionCreationPolicy.STATELESS
-                ));
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(
+                                org.springframework.security.config.http.SessionCreationPolicy.STATELESS
+                        ));
 
         return http.build();
     }
 
-    // Authentication-related beans (correct for MVC)
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        List<String> originPatterns = new ArrayList<>();
+        for (String origin : frontendUrl.split(",")) {
+            String trimmed = origin.trim();
+            if (!trimmed.isEmpty()) {
+                originPatterns.add(trimmed);
+            }
+        }
+        originPatterns.add("http://localhost:5173");
+        originPatterns.add("http://localhost:4173");
+        originPatterns.add("https://*.vercel.app");
+        config.setAllowedOriginPatterns(originPatterns);
+        config.setAllowedHeaders(Arrays.asList(
+                "Authorization", "Content-Type", "Accept",
+                "Origin", "X-Requested-With"
+        ));
+        config.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
+    }
+
     @Bean
     UserDetailsService userDetailsService() {
         return customUserDetailsService;
@@ -82,24 +112,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    // CORS Filter Bean (use this IF you DO NOT have globalcors in application.properties)
-    // If you have globalcors in application.properties, REMOVE this bean to avoid duplicates.
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        // Use addAllowedOriginPattern for '*' to work correctly with credentials
-        // If your frontend is always http://localhost:5173, you can use:
-        // config.addAllowedOrigin("http://localhost:5173");
-        // Otherwise, if allowing truly all, use:
-        config.addAllowedOriginPattern("*");
-        config.setAllowedHeaders(Arrays.asList("*")); // Use Arrays.asList for varargs
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS
-        config.setMaxAge(3600L); // Max age for preflight cache
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
     }
 }

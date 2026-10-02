@@ -7,7 +7,6 @@ import com.cts.employee_management.dto.ShiftReportByManagerDto;
 import com.cts.employee_management.entity.enums.ShiftType;
 import com.cts.employee_management.service.EmployeeService;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

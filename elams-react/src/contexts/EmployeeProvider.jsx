@@ -21,9 +21,11 @@ const EmployeeProvier = ({children}) => {
 
   useEffect(()=>{
     if(!employee) return;
-    getEmployeeById(employee.managerId)
-      .then(r=>setManager(r.data))
-      .catch(e => console.error(e))
+    if(employee.managerId) {
+      getEmployeeById(employee.managerId)
+        .then(r=>setManager(r.data))
+        .catch(e => console.error(e))
+    }
 
     getShiftById(employee.shiftId)
       .then(r => setShift(r.data))

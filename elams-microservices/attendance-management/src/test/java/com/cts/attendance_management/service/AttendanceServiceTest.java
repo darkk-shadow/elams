@@ -82,16 +82,16 @@ public class AttendanceServiceTest {
         savedClockOutAttendance = new Attendance(1L, MORNING_8_AM, EVENING_6_PM,
                 10.0, TODAY, AttendanceStatus.PRESENT, 1L);
         expectedClockInAttendanceResponse = new AttendanceResponseDto(1L, MORNING_8_AM, null,
-                0, TODAY, null, 1L);
+                0, TODAY, null, 1L, null);
         expectedClockOutAttendanceResponse = new AttendanceResponseDto(1L, MORNING_8_AM, EVENING_6_PM,
-                10.0, TODAY, AttendanceStatus.PRESENT, 1L);
+                10.0, TODAY, AttendanceStatus.PRESENT, 1L, null);
     }
 
     @Test
     void punchIn_shouldRegisterClockInTime(){
         when(attendanceRepository.save(any(Attendance.class))).thenReturn(savedClockInAttendance);
 
-        assertThat(attendanceService.clockIn(attendanceClockInRequestDto),
+        assertThat(attendanceService.clockIn(1L),
                 is(expectedClockInAttendanceResponse));
     }
 
@@ -100,7 +100,7 @@ public class AttendanceServiceTest {
         when(attendanceRepository.findByEmployeeIdAndDate(1L, TODAY))
                 .thenReturn(Optional.of(savedClockInAttendance));
         assertThrows(AttendanceRegisterException.class,
-                ()->attendanceService.clockIn(attendanceClockInRequestDto));
+                ()->attendanceService.clockIn(1L));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class AttendanceServiceTest {
         when(attendanceRepository.save(any(Attendance.class))).thenReturn(savedClockOutAttendance);
 
         AttendanceResponseDto savedAttendanceResponseDto
-                = attendanceService.clockOut(attendanceClockOutRequestDto);
+                = attendanceService.clockOut(1L);
         assertThat(savedAttendanceResponseDto, is(expectedClockOutAttendanceResponse));
     }
 
@@ -119,7 +119,7 @@ public class AttendanceServiceTest {
         when(attendanceRepository.findByEmployeeIdAndDate(1L, TODAY))
                 .thenReturn(Optional.of(savedClockOutAttendance));
         assertThrows(AttendanceRegisterException.class,
-                ()->attendanceService.clockOut(attendanceClockOutRequestDto));
+                ()->attendanceService.clockOut(1L));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class AttendanceServiceTest {
         when(attendanceRepository.findByEmployeeIdAndDate(1L, TODAY))
                 .thenReturn(Optional.empty());
         assertThrows(AttendanceRegisterException.class,
-                ()->attendanceService.clockOut(attendanceClockOutRequestDto));
+                ()->attendanceService.clockOut(1L));
     }
 
     @Test

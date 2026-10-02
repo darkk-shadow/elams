@@ -1,5 +1,5 @@
 import React from 'react'
-import HeroLinks from '../../components/manageEmployees/HeroLinks'
+import HeroLinks from '../../components/manageEmployees/heroLinks'
 import EmployeeList from '../../components/manageEmployees/EmployeeList'
 import { Box, Typography } from '@mui/material'
 import { Grid } from '@mui/system'

@@ -1,30 +1,28 @@
-import axios from "axios"
-import jwtHeader from "../util/jwtHeader";
-import API_BASE_URL from "./api";
+import apiClient from "./api";
 
-const leaveRequestBaseURL = `${API_BASE_URL}/api/leave-requests`;
-const leaveBalanceBaseURL = `${API_BASE_URL}/api/leave-balances`;
+const leaveRequestBaseURL = `/api/leave-requests`;
+const leaveBalanceBaseURL = `/api/leave-balances`;
 
-export const getLeaveRequestsByManager = (managerId)=>{
-  return  axios.get(`${leaveRequestBaseURL}/by-manager/${managerId}`, jwtHeader);
-}
+export const getLeaveRequestsByManager = (managerId) => {
+  return apiClient.get(`${leaveRequestBaseURL}/by-manager/${managerId}`);
+};
 
 export const getLeaveTypes = () => {
-  return  axios.get(`${leaveBalanceBaseURL}/get-leave-types`, jwtHeader)
-}
+  return apiClient.get(`${leaveBalanceBaseURL}/get-leave-types`);
+};
 
 export const createLeaveRequest = (request) => {
-  return  axios.post(leaveRequestBaseURL, request, jwtHeader)
-}
+  return apiClient.post(leaveRequestBaseURL, request);
+};
 
 export const getLeaveBalanceByEmployee = (employeeId) => {
-  return  axios.get(`${leaveBalanceBaseURL}/employee/${employeeId}`);
-}
+  return apiClient.get(`${leaveBalanceBaseURL}/employee/${employeeId}`);
+};
 
 export const getLeaveRequestByEmployee = (employeeId) => {
-  return  axios.get(`${leaveRequestBaseURL}/by-employee?employeeId=${employeeId}`)
-}
+  return apiClient.get(`${leaveRequestBaseURL}/by-employee?employeeId=${employeeId}`);
+};
 
-export const getAllocatedLeaves =  (employeeId) => {
-  return  axios.get(`${leaveBalanceBaseURL}/get-allocated-leaves`)
-}
+export const getAllocatedLeaves = () => {
+  return apiClient.get(`${leaveBalanceBaseURL}/get-allocated-leaves`);
+};

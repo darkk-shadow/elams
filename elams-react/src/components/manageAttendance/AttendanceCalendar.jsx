@@ -1,6 +1,6 @@
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AttendanceDay from './AttendanceDay'
 import dayjs from 'dayjs'
 import { useManager } from '../../contexts/ManagerProvider'
@@ -17,7 +17,7 @@ const AttendanceCalendar = () => {
   const {teamCount} = useManager();
   const {user} = useAuth();
 
-  useState(()=>{
+  useEffect(()=>{
     console.log(teamCount)
     getAttendanceByManager(user.id)
       .then(r => {

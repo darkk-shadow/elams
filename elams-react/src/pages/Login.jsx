@@ -23,24 +23,27 @@ const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const theme = useTheme();
   const {isMobile} = useIsMobile()
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    login({
-        email: e.target[0].value,
-        password: e.target[2].value,
-      })
+    console.log("LOGIN SENDING:", { email, password });
+    login({ email, password })
       .then((res) => {
+        // Write to localStorage immediately — before React state batching resolves
+        localStorage.setItem('token', res.data.jwtToken);
+        localStorage.setItem('user', JSON.stringify(res.data));
         setToken(res.data.jwtToken);
         setUser(res.data);
         navigate("/", { replace: true });
-        window.location.reload()
       })
       .catch((a) => {
+        console.log("LOGIN ERROR:", a?.response?.status, a?.response?.data);
         setError(true);
-        setErrorMsg(a.response.data.message);
+        setErrorMsg(a?.response?.data?.message || "Login failed. Please try again.");
       });
   };
 
@@ -138,7 +141,8 @@ const Login = () => {
             </Typography>
             <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <TextField
-                onChange={() => setError(false)}
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(false); }}
                 id="email"
                 label="Email address"
                 size="small"
@@ -148,7 +152,8 @@ const Login = () => {
                 required
               />
               <TextField
-                onChange={() => setError(false)}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(false); }}
                 helperText={errorMsg}
                 error={error}
                 id="password"

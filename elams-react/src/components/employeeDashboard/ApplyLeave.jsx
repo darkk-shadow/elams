@@ -29,11 +29,11 @@ const ApplyLeave = ({open, setOpen}) => {
       top: '50%',
       left: '50%',
       transform: 'translate(-50%, -50%)',
-      width: 400,
+      width: isMobile ? '90vw' : 400,
       bgcolor: 'background.paper',
     },
     form: {
-      padding: isMobile? null : "2em",
+      padding: isMobile? "1em" : "2em",
       display: "grid",
       gap: "1em"
     }
@@ -60,7 +60,7 @@ const ApplyLeave = ({open, setOpen}) => {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <Paper >
+        <Paper sx={style.modal}>
         <Typography>Apply Leave</Typography>
         <form style={style.form} onSubmit={handleSubmit}>
           <Autocomplete

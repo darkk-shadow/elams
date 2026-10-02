@@ -55,7 +55,7 @@ const ManagerAttendanceProvider = ({children}) => {
     getCustomEmployeesAttendanceSummary(user.id, fDate, fDate)
       .then(r=>{
         console.log(r.data)
-        setNoTappedIn(r.data[0].totalPresents)
+        setNoTappedIn(r.data?.[0]?.totalPresents ?? 0)
       })
       .catch(e=>console.error(e))
 

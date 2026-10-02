@@ -1,6 +1,5 @@
 import axios from "axios";
-import {  useContext, createContext, useEffect, useState } from "react";
-
+import { useContext, createContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
 
@@ -11,22 +10,25 @@ const AuthProvider = ({children}) => {
         JSON.parse(localStorage.getItem("user"))
     );
 
+    // Save both token AND user whenever either changes.
+    // Previously only [token] was in the dep array — React batches setToken+setUser,
+    // so the effect fired with the new token but stale user=null, writing null to localStorage.
     useEffect(() => {
-        if(token){
+        if (token && user) {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
-        }else{
+        } else if (!token) {
             delete axios.defaults.headers.common["Authorization"];
             localStorage.removeItem('token');
             localStorage.removeItem('user');
         }
-    }, [token]);
+    }, [token, user]);
 
-    return(
+    return (
         <AuthContext.Provider value={{token, setToken, user, setUser}}>
             {children}
         </AuthContext.Provider>
-    )
+    );
 }
 
 export const useAuth = () => {

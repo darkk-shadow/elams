@@ -62,11 +62,11 @@ public class AttendanceControllerTest {
         clockOutRequestDto = new AttendanceClockOutRequestDto(LocalTime.of(17, 0), today, employeeId);
 
         attendanceResponseDtoClockIn = new AttendanceResponseDto(
-                1L, LocalTime.of(9, 0), null, 0.0, today, AttendanceStatus.PRESENT, employeeId
+                1L, LocalTime.of(9, 0), null, 0.0, today, AttendanceStatus.PRESENT, employeeId, null
         );
 
         attendanceResponseDtoClockOut = new AttendanceResponseDto(
-                1L, LocalTime.of(9, 0), LocalTime.of(17, 0), 8.0, today, AttendanceStatus.PRESENT, employeeId
+                1L, LocalTime.of(9, 0), LocalTime.of(17, 0), 8.0, today, AttendanceStatus.PRESENT, employeeId, null
         );
     }
 
@@ -75,7 +75,7 @@ public class AttendanceControllerTest {
         List<AttendanceResponseDto> expectedAttendanceList = List.of(attendanceResponseDtoClockIn, attendanceResponseDtoClockOut);
         when(attendanceService.findAllAttendance()).thenReturn(expectedAttendanceList);
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/attendance"))
+        MvcResult mvcResult = mockMvc.perform(get("/api/attendances"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -91,7 +91,7 @@ public class AttendanceControllerTest {
     void getAllAttendance_shouldReturnEmptyList_whenNoAttendanceExists() throws Exception {
         when(attendanceService.findAllAttendance()).thenReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/api/attendance"))
+        mockMvc.perform(get("/api/attendances"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isEmpty());
@@ -101,9 +101,7 @@ public class AttendanceControllerTest {
     void clockIn_shouldReturnCreatedAttendanceResponse_whenValidInput() throws Exception {
         when(attendanceService.clockIn(employeeId)).thenReturn(attendanceResponseDtoClockIn);
 
-        MvcResult mvcResult = mockMvc.perform(post("/api/attendance/clock-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(clockInRequestDto)))
+        MvcResult mvcResult = mockMvc.perform(post("/api/attendances/clock-in/" + employeeId))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -118,9 +116,7 @@ public class AttendanceControllerTest {
     void clockOut_shouldReturnUpdatedAttendanceResponse_whenValidInput() throws Exception {
         when(attendanceService.clockOut(employeeId)).thenReturn(attendanceResponseDtoClockOut);
 
-        MvcResult mvcResult = mockMvc.perform(post("/api/attendance/clock-out")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(toJsonString(clockOutRequestDto)))
+        MvcResult mvcResult = mockMvc.perform(post("/api/attendances/clock-out/" + employeeId))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -136,7 +132,7 @@ public class AttendanceControllerTest {
         Long id = 1L;
         doNothing().when(attendanceService).deleteAttendance(id);
 
-        mockMvc.perform(delete("/api/attendance/" + id + "/delete"))
+        mockMvc.perform(delete("/api/attendances/" + id + "/delete"))
                 .andExpect(status().isOk());
         verify(attendanceService, times(1)).deleteAttendance(id);
     }
@@ -147,7 +143,7 @@ public class AttendanceControllerTest {
         doThrow(new ResourceNotFoundException("Attendance not found with id: " + id))
                 .when(attendanceService).deleteAttendance(id);
 
-        MvcResult mvcResult = mockMvc.perform(delete("/api/attendance/" + id + "/delete"))
+        MvcResult mvcResult = mockMvc.perform(delete("/api/attendances/" + id + "/delete"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -164,7 +160,7 @@ public class AttendanceControllerTest {
         Long id = 1L;
         when(attendanceService.findAttendanceById(id)).thenReturn(attendanceResponseDtoClockOut);
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/attendance/" + id))
+        MvcResult mvcResult = mockMvc.perform(get("/api/attendances/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
@@ -182,7 +178,7 @@ public class AttendanceControllerTest {
                 new ResourceNotFoundException("Attendance not found with id: " + id)
         );
 
-        MvcResult mvcResult = mockMvc.perform(get("/api/attendance/" + id))
+        MvcResult mvcResult = mockMvc.perform(get("/api/attendances/" + id))
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();

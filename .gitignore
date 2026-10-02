@@ -1,0 +1,13 @@
+node_modules/
+dist/
+dist-ssr/
+target/
+.env
+.env.*
+!.env.example
+*.log
+.idea/
+.vscode/
+.vs/
+*.iml
+.DS_Store

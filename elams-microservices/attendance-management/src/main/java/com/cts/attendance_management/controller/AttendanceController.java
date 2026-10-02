@@ -4,7 +4,6 @@ import com.cts.attendance_management.dto.AttendanceClockInRequestDto;
 import com.cts.attendance_management.dto.AttendanceClockOutRequestDto;
 import com.cts.attendance_management.dto.AttendanceResponseDto;
 import com.cts.attendance_management.service.AttendanceService;
-import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

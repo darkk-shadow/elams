@@ -35,7 +35,7 @@ const ClockInModule = () => {
         setClockedIn(r.data);
       })
       .catch(e => console.log(e));
-  })
+  }, [user.id])
 
   useEffect(()=>{
     if(clockedIn){
@@ -43,13 +43,13 @@ const ClockInModule = () => {
         .then(r=>setClockedInTime(r.data.clockInTime.split(".")[0]))
         .catch(e => console.error(e))
     }
-  })
+  }, [clockedIn, user.id])
   
   useEffect(()=>{
     isClockedOut(user.id)
     .then(r => setClockedOut(r.data))
     .catch(e => console.log(e));
-  })
+  }, [user.id])
   
   useEffect(()=>{
     if(clockedOut){
@@ -57,10 +57,10 @@ const ClockInModule = () => {
         .then(r=>setClockedOutTime(r.data.clockOutTime.split(".")[0]))
         .catch(e => console.error(e))
     }
-  })
+  }, [clockedOut, user.id])
 
   useEffect(()=>{
-    if(!clockedIn && !clockedIn){
+    if(!clockedIn && !clockedOut){
       getLastAttendanceByEmployee(user.id)
         .then(r =>{
           setLastClokedDate(r.data.date)
@@ -74,7 +74,7 @@ const ClockInModule = () => {
     }else{
       setLastClokedDate("Today")
     }
-  })
+  }, [clockedIn, clockedOut, user.id])
 
   const clockInHandler = () => {
     clockIn(user.id)
