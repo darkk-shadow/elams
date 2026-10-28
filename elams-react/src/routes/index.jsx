@@ -122,7 +122,9 @@ const router = createBrowserRouter([
   },
   // Catch-all fallback
   { path: "*", element: <Navigate to="/" replace /> },
-]);
+], {
+  basename: import.meta.env.BASE_URL,
+});
 
 const RoutesIndex = () => <RouterProvider router={router} />;
 
