@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
-import axios from "axios";
 import {
   Box,
   Button,
@@ -14,7 +13,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { login } from "../services/authService";
-import ctslogo from "../assets/ctslogo.png";
+import elamsLogo from "../assets/elams-logo.svg";
 import loginIllustration from "../assets/login illustration.png";
 import useIsMobile from "../util/useMobile";
 
@@ -30,7 +29,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("LOGIN SENDING:", { email, password });
     login({ email, password })
       .then((res) => {
         // Write to localStorage immediately — before React state batching resolves
@@ -122,8 +120,8 @@ const Login = () => {
           }}
         >
           <img
-            src={ctslogo}
-            alt="Cognizant Logo"
+            src={elamsLogo}
+            alt="ELAMS"
             style={{
               width: 180,
               marginBottom: 18,
