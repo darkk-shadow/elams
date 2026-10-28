@@ -330,6 +330,12 @@ docker run -p 9090:9090 elams-gateway
 VITE_API_URL=http://localhost:9090
 ```
 
+### GitHub Pages frontend preview
+
+The React frontend is built and deployed to [https://darkk-shadow.github.io/elams/](https://darkk-shadow.github.io/elams/) by the `Deploy ELAMS frontend to GitHub Pages` workflow. The preview serves the frontend only; GitHub Pages does not run the Spring Boot services or MySQL database.
+
+To enable sign-in against a deployed backend, add a repository Actions variable named `VITE_API_URL` containing the public API Gateway URL. The gateway must allow requests from the GitHub Pages origin. Without that backend configuration, the login form is visible but authentication and live data are unavailable.
+
 ### Backend — configure in each service's `application.properties` or Config Server:
 
 ```properties
