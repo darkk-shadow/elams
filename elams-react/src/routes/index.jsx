@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import Login from "../pages/Login";
+import DemoDashboard from "../pages/DemoDashboard";
 import EmployeeDashboard from "../pages/employee/EmployeeDashboard";
 import EmployeeLeave from "../pages/employee/EmployeeLeave";
 import EmployeeAttendanceReport from "../pages/employee/EmployeeAttendanceReport";
@@ -93,6 +94,10 @@ const ProfileIndex = () => {
 
 // ── Single stable router (created once at module level) ───────────────────────
 const router = createBrowserRouter([
+  {
+    path: "/demo",
+    element: <DemoDashboard />,
+  },
   {
     path: "/login",
     element: <Login />,

@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { login } from "../services/authService";
+import { Link as RouterLink } from "react-router-dom";
 import elamsLogo from "../assets/elams-logo.svg";
 import loginIllustration from "../assets/login illustration.png";
 import useIsMobile from "../util/useMobile";
@@ -179,6 +180,18 @@ const Login = () => {
                 Login
               </Button>
             </form>
+            <Button
+              component={RouterLink}
+              to="/demo"
+              variant="outlined"
+              fullWidth
+              sx={{ mt: 2, fontWeight: 600, borderRadius: 2 }}
+            >
+              Explore sample demo
+            </Button>
+            <Typography variant="caption" color="text.secondary" display="block" textAlign="center" sx={{ mt: 1 }}>
+              Preview only - uses fictional sample data
+            </Typography>
           </Box>
         </Box>
       </Paper>
